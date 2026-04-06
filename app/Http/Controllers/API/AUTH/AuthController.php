@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\AUTH;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\AUTH\LoginRequest;
+use App\Http\Requests\API\AUTH\RefreshTokenRequest;
 use App\Http\Requests\API\AUTH\RegisterRequest;
 use App\Http\Requests\API\AUTH\ResendOtpRegisterRequest;
 use App\Http\Requests\API\AUTH\UpdateProfileRequest;
@@ -68,6 +69,24 @@ class AuthController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
       $result = $this->authService->updateProfile($request->validated());
+      if(!$result['status']){
+        return $this->error($result['message'],400);
+      }
+      return $this->success($result['data'], $result['message'],200);
+    }
+
+    public function logout()
+    {
+      $result = $this->authService->logout();
+      if(!$result['status']){
+        return $this->error($result['message'],400);
+      }
+      return $this->success($result['data'], $result['message'],200);
+    }
+
+    public function refreshToken(RefreshTokenRequest $request)
+    {
+      $result = $this->authService->refreshToken($request->validated());
       if(!$result['status']){
         return $this->error($result['message'],400);
       }

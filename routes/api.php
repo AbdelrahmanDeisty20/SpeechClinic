@@ -18,9 +18,11 @@ Route::group(['middleware' => setLang::class], function () {
     Route::post('forget-password', [ForgetPasswordController::class, 'forgetPassword']);
     Route::post('verify-otp-forget-password', [ForgetPasswordController::class, 'verifyOtp']);
     Route::post('reset-password', [ForgetPasswordController::class, 'resetPassword']);
+    Route::post('refresh-token', [AuthController::class, 'refreshToken']);
     Route::post('resend-otp-forget-password', [ForgetPasswordController::class, 'resendOtpForgetPassword']);
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('show-profile', [AuthController::class, 'showProfile']);
         Route::put('update-profile', [AuthController::class, 'updateProfile']);
+        Route::post('logout', [AuthController::class, 'logout']);
     });
 });

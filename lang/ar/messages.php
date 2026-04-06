@@ -59,4 +59,10 @@ return [
     'email_nullable' => 'البريد الإلكتروني اختياري',
     'email_string' => 'البريد الإلكتروني يجب أن يكون نص',
     'email_max' => 'البريد الإلكتروني يجب ألا يتجاوز 255 حرف',
+    'user_profile_updated_successfully' => 'تم تحديث ملف المستخدم بنجاح',
+    'user_logged_out_successfully' => 'تم تسجيل الخروج بنجاح',
+    'token_refreshed_successfully' => 'تم تحديث التوكن بنجاح',
+    'token_refresh_failed' => 'فشل تحديث التوكن',
+    'refresh_token_required' => 'رمز التحديث مطلوب',
+    'refresh_token_string' => 'رمز التحديث يجب أن يكون نص',
 ];

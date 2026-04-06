@@ -5,10 +5,12 @@ namespace App\Services;
 use App\Http\Resources\API\UserResource;
 use App\Mail\OtpMail;
 use App\Models\Otp;
+use App\Models\RefreshToken;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Hash;
 use Mail;
+use Str;
 
 class AuthService
 {
@@ -86,12 +88,19 @@ class AuthService
         if ($user) {
             if (Hash::check($data['password'], $user->password)) {
                 $token = $user->createToken('auth_token')->plainTextToken;
+                $refreshToken = Str::random(64);
+                RefreshToken::create([
+                    'user_id' => $user->id,
+                    'expires_at' => now()->addDays(30),
+                    'token' => Hash('sha256', $refreshToken),
+                ]);
                 return [
                     'status' => true,
                     'message' => __('messages.user_logged_in_successfully'),
                     'data' => [
                         'user' => new UserResource($user),
-                        'token' => $token
+                        'token' => $token,
+                        'refresh_token' => $refreshToken,
                     ]
                 ];
             }
@@ -144,6 +153,42 @@ class AuthService
             'status' => true,
             'message' => __('messages.user_profile_updated_successfully'),
             'data' => new UserResource($user)
+        ];
+    }
+
+    public function logout()
+    {
+        $user = auth()->user();
+        $user->currentAccessToken()->delete();
+        return [
+            'status' => true,
+            'message' => __('messages.user_logged_out_successfully'),
+            'data' => []
+        ];
+    }
+
+    public function refreshToken(array $data)
+    {
+        $refreshToken = RefreshToken::where('token', Hash('sha256', $data['refresh_token']))->first();
+        if ($refreshToken) {
+            $refreshToken->update([
+                'expires_at' => now()->addDays(30),
+            ]);
+            $token = $refreshToken->user->createToken('auth_token')->plainTextToken;
+            return [
+                'status' => true,
+                'message' => __('messages.token_refreshed_successfully'),
+                'data' => [
+                    'user' => new UserResource($refreshToken->user),
+                    'token' => $token,
+                    'refresh_token' => $refreshToken->token,
+                ]
+            ];
+        }
+        return [
+            'status' => false,
+            'message' => __('messages.token_refresh_failed'),
+            'data' => []
         ];
     }
 }

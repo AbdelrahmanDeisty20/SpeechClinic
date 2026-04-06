@@ -45,4 +45,10 @@ return [
     'resend_forget_password_otp_sent_successfully' => 'resend OTP code for forget password sent successfully to your email',
     'password_reset_successfully' => 'Password reset successfully',
     'user_profile_fetched_successfully' => 'User profile fetched successfully',
+    'user_profile_updated_successfully' => 'User profile updated successfully',
+    'user_logged_out_successfully' => 'Logged out successfully',
+    'token_refreshed_successfully' => 'Token refreshed successfully',
+    'token_refresh_failed' => 'Token refresh failed',
+    'refresh_token_required' => 'Refresh token is required',
+    'refresh_token_string' => 'Refresh token must be a string',
 ];
