@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'success' => 'Success',
+    'error' => 'Error',
+    'welcome' => 'Welcome',
+    
+    // Auth & OTP Service Messages
+    'user_registered_successfully' => 'User registered successfully, please check your email to activate your account',
+    'otp_verified_successfully' => 'OTP verified successfully and account activated',
+    'forget_password_otp_verified_successfully' => 'OTP verified successfully, you can now set a new password',
+    'otp_verification_failed' => 'Invalid or expired verification code',
+    'user_not_active' => 'Account is not active, please activate your account first via the code sent to your email',
+    'user_logged_in_successfully' => 'Logged in successfully',
+    'user_login_failed' => 'Invalid email or password',
+    
+    // Email Subjects
+    'otp_subject_register' => 'Account Verification - OTP Code',
+    'otp_subject_reset_password' => 'Reset Your Password',
+    'otp_subject_resend' => 'New Verification Code',
+
+    // Email View Content
+    'otp_message_register' => 'Thank you for registering with us. Please use the code below to verify your account.',
+    'otp_message_reset_password' => 'Thank you for your request to reset your password. Please use the code below to verify your identity.',
+    'otp_message_resend' => 'Thank you for your request to resend the verification code. Please use the code below to verify your account.',
+    'otp_expiry_notice' => 'This code will expire in :minutes minutes.',
+    'otp_ignore_notice' => 'If you did not initiate this request, please ignore this email.',
+
+    // Validation Messages
+    'first_name_required' => 'First name is required',
+    'last_name_required' => 'Last name is required',
+    'phone_required' => 'Phone number is required',
+    'phone_invalid' => 'Invalid phone number, must be a valid Egyptian number',
+    'email_required' => 'Email is required',
+    'email_invalid' => 'Invalid email address',
+    'email_not_exists' => 'This email is not registered in our records',
+    'email_exists' => 'This email is already registered',
+    'password_required' => 'Password is required',
+    'password_min' => 'Password must be at least 8 characters',
+    'password_confirmed' => 'Password confirmation does not match',
+    'otp_required' => 'OTP code is required',
+    'otp_invalid' => 'OTP code must be 6 digits',
+    'register_otp_sent_successfully' => 'OTP code resent successfully to your email',
+    'forget_password_otp_sent_successfully' => 'OTP code sent successfully to your email',
+    'resend_forget_password_otp_sent_successfully' => 'resend OTP code for forget password sent successfully to your email',
+    'password_reset_successfully' => 'Password reset successfully',
+    'user_profile_fetched_successfully' => 'User profile fetched successfully',
+];

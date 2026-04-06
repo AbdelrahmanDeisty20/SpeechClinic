@@ -1,0 +1,62 @@
+<?php
+
+return [
+    'success' => 'تم بنجاح',
+    'error' => 'حدث خطأ',
+    'welcome' => 'مرحبا',
+    
+    // Auth & OTP Service Messages
+    'user_registered_successfully' => 'تم تسجيل المستخدم بنجاح، يرجى التحقق من البريد الإلكتروني لتفعيل الحساب',
+    'otp_verified_successfully' => 'تم التحقق من الرمز بنجاح وتفعيل الحساب',
+    'forget_password_otp_verified_successfully' => 'تم التحقق من الرمز بنجاح، يمكنك الآن تعيين كلمة مرور جديدة',
+    'otp_verification_failed' => 'كود التحقق غير صحيح أو انتهت صلاحيته',
+    'user_not_active' => 'الحساب غير مفعل، يرجى تفعيل الحساب أولاً عبر رمز التحقق المرسل لبريدك',
+    'user_logged_in_successfully' => 'تم تسجيل الدخول بنجاح',
+    'user_login_failed' => 'خطأ في البريد الإلكتروني أو كلمة المرور',
+    
+    // Email Subjects
+    'otp_subject_register' => 'تأكيد الحساب - كود التحقق',
+    'otp_subject_reset_password' => 'إعادة تعيين كلمة المرور',
+    'otp_subject_resend' => 'رمز التحقق الجديد',
+
+    // Email View Content
+    'otp_message_register' => 'شكراً لتسجيلك معنا. يرجى استخدام الرمز أدناه للتحقق من حسابك.',
+    'otp_message_reset_password' => 'شكراً لطلبك إعادة تعيين كلمة المرور. يرجى استخدام الرمز أدناه للتحقق من هويتك.',
+    'otp_message_resend' => 'شكراً لطلبك إعادة إرسال رمز التحقق. يرجى استخدام الرمز أدناه للتحقق من حسابك.',
+    'otp_expiry_notice' => 'هذا الرمز سينتهي خلال :minutes دقائق.',
+    'otp_ignore_notice' => 'إذا لم تقم بطلب هذا الإجراء، يرجى تجاهل هذا البريد.',
+
+    // Validation Messages
+    'first_name_required' => 'الاسم الأول مطلوب',
+    'last_name_required' => 'الاسم الأخير مطلوب',
+    'phone_required' => 'رقم الهاتف مطلوب',
+    'phone_invalid' => 'رقم الهاتف غير صحيح، يجب أن يكون رقم مصري صالح',
+    'email_required' => 'البريد الإلكتروني مطلوب',
+    'email_invalid' => 'البريد الإلكتروني غير صالح',
+    'email_not_exists' => 'البريد الإلكتروني غير مسجل لدينا',
+    'email_exists' => 'البريد الإلكتروني مسجل مسبقاً',
+    'password_required' => 'كلمة المرور مطلوبة',
+    'password_min' => 'كلمة المرور يجب ألا تقل عن 8 أحرف',
+    'password_confirmed' => 'تأكيد كلمة المرور غير متطابق',
+    'otp_required' => 'كود التحقق مطلوب',
+    'otp_invalid' => 'كود التحقق يجب أن يكون 6 أرقام',
+    'register_otp_sent_successfully' => 'تم إعادة إرسال رمز التحقق بنجاح إلى بريدك الإلكتروني ',
+    'forget_password_otp_sent_successfully' => 'تم إرسال رمز التحقق الخاص بنسيان كلمة المرور بنجاح إلى بريدك الإلكتروني ',
+    'resend_forget_password_otp_sent_successfully' => 'تم إعادة إرسال رمز التحقق الخاص بنسيان كلمة المرور بنجاح إلى بريدك الإلكتروني ',
+    'password_reset_successfully' => 'تم إعادة تعيين كلمة المرور بنجاح',
+    'token_required' => 'التوكن مطلوب',
+    'token_invalid' => 'التوكن غير صالح',
+    'user_profile_fetched_successfully' => 'تم جلب ملف المستخدم بنجاح',
+    'first_name_nullable' => 'الاسم الأول اختياري',
+    'first_name_string' => 'الاسم الأول يجب أن يكون نص',
+    'first_name_max' => 'الاسم الأول يجب ألا يتجاوز 255 حرف',
+    'last_name_nullable' => 'الاسم الأخير اختياري',
+    'last_name_string' => 'الاسم الأخير يجب أن يكون نص',
+    'last_name_max' => 'الاسم الأخير يجب ألا يتجاوز 255 حرف',
+    'phone_nullable' => 'رقم الهاتف اختياري',
+    'phone_string' => 'رقم الهاتف يجب أن يكون نص',
+    'phone_max' => 'رقم الهاتف يجب ألا يتجاوز 255 حرف',
+    'email_nullable' => 'البريد الإلكتروني اختياري',
+    'email_string' => 'البريد الإلكتروني يجب أن يكون نص',
+    'email_max' => 'البريد الإلكتروني يجب ألا يتجاوز 255 حرف',
+];

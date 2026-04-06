@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('gender_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('nationality_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('image')->nullable();
+            $table->boolean('is_active')->default(false);
         });
     }
 
@@ -23,8 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['gender_id', 'nationality_id']);
-            $table->dropColumn(['gender_id', 'nationality_id']);
+            $table->dropColumn(['image', 'is_active']);
         });
     }
 };
