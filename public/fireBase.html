@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firebase Auth Tester</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f2f5; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; max-width: 500px; width: 90%; }
+        button { background: #4285F4; color: white; border: none; padding: 12px 24px; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #357ae8; }
+        textarea { width: 100%; height: 150px; margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 12px; display: none; }
+        .label { margin-top: 15px; font-weight: bold; color: #333; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Firebase ID Token Grabber</h2>
+    <p>Use this to get an <b>idToken</b> for your Laravel API testing.</p>
+    <button id="loginBtn">Sign in with Google</button>
+    
+    <div id="resultArea">
+        <p class="label" id="tokenLabel">Your ID Token:</p>
+        <textarea id="tokenResult" readonly></textarea>
+        
+        <button id="testApiBtn" style="background: #34a853; margin-top: 15px; display: none;">Test Laravel API</button>
+        
+        <p class="label" id="apiLabel" style="margin-top: 20px;">API Response:</p>
+        <pre id="apiResponse" style="text-align: left; background: #eee; padding: 10px; border-radius: 4px; font-size: 12px; display: none; overflow-x: auto;"></pre>
+        
+        <p id="status" style="color: #666; font-size: 14px; margin-top: 10px;"></p>
+    </div>
+</div>
+
+<!-- Firebase SDKs (Compatibility Version) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+    // 1. استبدل هذه البيانات بالبيانات الخاصة بمشروعك (مهم جداً!)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDf1rGW2t-Z5J2g3Q3CyyBMyMV40dgF110",
+        authDomain: "loginspeechclinic.firebaseapp.com",
+        projectId: "loginspeechclinic",
+        storageBucket: "loginspeechclinic.firebasestorage.app",
+        messagingSenderId: "452774786030",
+        appId: "1:452774786030:web:a8adbc37b0ff76974354ff",
+        measurementId: "G-2B6BZHVG1J"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const loginBtn = document.getElementById('loginBtn');
+    const tokenResult = document.getElementById('tokenResult');
+    const tokenLabel = document.getElementById('tokenLabel');
+    const status = document.getElementById('status');
+
+    loginBtn.addEventListener('click', () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        
+        status.innerText = "Opening Google login...";
+        
+        firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                status.innerText = "Fetching ID Token...";
+                // الحصول على الـ ID Token
+                return result.user.getIdToken();
+            })
+            .then((idToken) => {
+                status.innerText = "Success!";
+                tokenLabel.style.display = 'block';
+                tokenResult.style.display = 'block';
+                tokenResult.value = idToken;
+                
+                // Show the Test API button
+                document.getElementById('testApiBtn').style.display = 'block';
+                
+                console.log("ID Token:", idToken);
+            })
+            .catch((error) => {
+                console.error(error);
+                status.innerText = "Error: " + error.message;
+                alert("Login failed! Check console.");
+            });
+    });
+
+    // Test Laravel API Button
+    const testApiBtn = document.getElementById('testApiBtn');
+    const apiResponse = document.getElementById('apiResponse');
+    const apiLabel = document.getElementById('apiLabel');
+
+    testApiBtn.addEventListener('click', () => {
+        const idToken = document.getElementById('tokenResult').value;
+        if (!idToken) return;
+
+        status.innerText = "Sending to Laravel API...";
+        testApiBtn.disabled = true;
+
+        fetch('http://localhost:8000/api/auth/firebase/google', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Accept-Language': 'ar' // Arabic responses
+            },
+            body: JSON.stringify({ idToken: idToken })
+        })
+        .then(response => response.json())
+        .then(data => {
+            status.innerText = "API Request Finished!";
+            apiLabel.style.display = 'block';
+            apiResponse.style.display = 'block';
+            apiResponse.innerText = JSON.stringify(data, null, 2);
+            testApiBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error(error);
+            status.innerText = "API Request Failed!";
+            apiLabel.style.display = 'block';
+            apiResponse.style.display = 'block';
+            apiResponse.innerText = "Error contacting API: " + error.message;
+            testApiBtn.disabled = false;
+        });
+    });
+</script>
+
+</body>
+</html>

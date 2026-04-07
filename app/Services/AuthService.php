@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Traits\ApiResponse;
 use Hash;
 use Mail;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 use Str;
 
 class AuthService
@@ -190,5 +191,63 @@ class AuthService
             'message' => __('messages.token_refresh_failed'),
             'data' => []
         ];
+    }
+
+    public function firebaseGoogleLogin(array $data)
+    {
+        try {
+            $auth = Firebase::auth();
+            $verifiedIdToken = $auth->verifyIdToken($data['idToken']);
+            $claims = $verifiedIdToken->claims();
+            $email = $claims->get('email');
+            $name = $claims->get('name');
+            $avatar = $claims->get('picture');
+            $firebaseId = $claims->get('sub');
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                // Split name into first and last name if possible
+                $nameParts = explode(' ', $name, 2);
+                $firstName = $nameParts[0];
+                $lastName = $nameParts[1] ?? '';
+
+                $user = User::create([
+                    'first_name'        => $firstName,
+                    'last_name'         => $lastName,
+                    'email'             => $email,
+                    'password'          => \Hash::make($firebaseId), // Random password
+                    'image'            => $avatar,
+                    'is_active'         => true,
+                    'email_verified_at' => now(),
+                ]);
+            }
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+            $refreshToken = Str::random(64);
+            RefreshToken::create([
+                'user_id' => $user->id,
+                'expires_at' => now()->addDays(30),
+                'token' => Hash('sha256', $refreshToken),
+            ]);
+
+            return [
+                'status' => true,
+                'message' => __('messages.user_logged_in_successfully'),
+                'data' => [
+                    'user' => new UserResource($user),
+                    'token' => $token,
+                    'refresh_token' => $refreshToken,
+                ]
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => false,
+                'message' => __('messages.social_login_failed'),
+                'data' => [
+                    'error' => $e->getMessage()
+                ]
+            ];
+        }
     }
 }

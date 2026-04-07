@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\AUTH;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\AUTH\FirebaseGoogleLoginRequest;
 use App\Http\Requests\API\AUTH\LoginRequest;
 use App\Http\Requests\API\AUTH\RefreshTokenRequest;
 use App\Http\Requests\API\AUTH\RegisterRequest;
@@ -91,5 +92,14 @@ class AuthController extends Controller
         return $this->error($result['message'],400);
       }
       return $this->success($result['data'], $result['message'],200);
+    }
+
+    public function firebaseGoogleLogin(FirebaseGoogleLoginRequest $request)
+    {
+      $result = $this->authService->firebaseGoogleLogin($request->validated());
+      if(!$result['status']){
+        return $this->error($result['message'], 400, $result['data']);
+      }
+      return $this->success($result['data'], $result['message'], 200);
     }
 }

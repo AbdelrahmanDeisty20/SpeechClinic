@@ -14,6 +14,7 @@ Route::group(['middleware' => setLang::class], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('auth/firebase/google', [AuthController::class, 'firebaseGoogleLogin']);
     Route::post('resend-otp-register', [AuthController::class, 'resendOtpRegister']);
     Route::post('forget-password', [ForgetPasswordController::class, 'forgetPassword']);
     Route::post('verify-otp-forget-password', [ForgetPasswordController::class, 'verifyOtp']);
