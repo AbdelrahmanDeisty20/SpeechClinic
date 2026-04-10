@@ -1,7 +1,7 @@
 <?php
-namespace App\Services;
+namespace App\Services\API;
 
-use App\Http\Resources\CVResource;
+use App\Http\Resources\API\CVResource;
 use App\Models\Cv;
 class CvProfileService{
     public function getCvProfile()

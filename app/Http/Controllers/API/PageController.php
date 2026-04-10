@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Services\PageService;
+use App\Services\API\PageService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 

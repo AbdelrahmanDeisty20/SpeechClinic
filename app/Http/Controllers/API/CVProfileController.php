@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Services\CvProfileService;
+use App\Services\API\CvProfileService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 

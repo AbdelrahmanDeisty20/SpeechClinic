@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\API\AUTH;
 
 use App\Http\Resources\API\UserResource;
 use App\Mail\OtpMail;

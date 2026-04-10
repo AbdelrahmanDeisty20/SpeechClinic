@@ -1,7 +1,7 @@
 <?php
-namespace App\Services;
+namespace App\Services\API;
 
-use App\Http\Resources\SettingResource;
+use App\Http\Resources\API\SettingResource;
 use App\Models\Setting;
 class SettingService{
     public function getSettings()

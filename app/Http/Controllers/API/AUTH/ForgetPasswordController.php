@@ -7,9 +7,8 @@ use App\Http\Requests\API\AUTH\FORGETPASSWORD\ForgetPasswordRequest;
 use App\Http\Requests\API\AUTH\FORGETPASSWORD\ResendOtpRegisterRequest;
 use App\Http\Requests\API\AUTH\FORGETPASSWORD\ResetPasswordRequest;
 use App\Http\Requests\API\AUTH\FORGETPASSWORD\VerifyOtpRequest;
-use App\Services\ForgetPasswordService;
+use App\Services\API\AUTH\ForgetPasswordService;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 
 class ForgetPasswordController extends Controller
 {

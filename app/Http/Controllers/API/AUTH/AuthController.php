@@ -10,7 +10,7 @@ use App\Http\Requests\API\AUTH\RegisterRequest;
 use App\Http\Requests\API\AUTH\ResendOtpRegisterRequest;
 use App\Http\Requests\API\AUTH\UpdateProfileRequest;
 use App\Http\Requests\API\AUTH\VerifyOtpRequest;
-use App\Services\AuthService;
+use App\Services\API\AUTH\AuthService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 

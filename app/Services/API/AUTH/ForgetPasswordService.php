@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\API\AUTH;
 
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Mail;

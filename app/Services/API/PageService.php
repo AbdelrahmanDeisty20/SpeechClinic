@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\API;
 
 use App\Http\Resources\API\PageResource;
 use App\Models\Page;
