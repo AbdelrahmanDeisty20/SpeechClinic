@@ -78,4 +78,6 @@ return [
     'settings_successfully' => 'تم جلب الإعدادات بنجاح',
     'cv_notfound' => 'لا يوجد سيرة ذاتية',
     'cv_successfully' => 'تم جلب السيرة الذاتية بنجاح',
+    'branches_not_found' => 'لا يوجد فروع',
+    'branches_retrieved_successfully' => 'تم جلب الفروع بنجاح',
 ];

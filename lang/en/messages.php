@@ -64,4 +64,6 @@ return [
     'settings_successfully' => 'Settings fetched successfully',
     'cv_notfound' => 'No cv found',
     'cv_successfully' => 'CV fetched successfully',
+    'branches_not_found' => 'No branches found',
+    'branches_retrieved_successfully' => 'Branches retrieved successfully',
 ];
