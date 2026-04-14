@@ -9,16 +9,11 @@ class GenderSeeder extends Seeder
 {
     public function run(): void
     {
-        $genders = [
-            ['name_ar' => 'ذكر',  'name_en' => 'Male'],
-            ['name_ar' => 'أنثى', 'name_en' => 'Female'],
-        ];
+        Gender::truncate();
 
-        foreach ($genders as $gender) {
-            Gender::updateOrCreate(
-                ['name_en' => $gender['name_en']],
-                $gender
-            );
-        }
+        Gender::insert([
+            ['name_ar' => 'ذكر',  'name_en' => 'Male',   'created_at' => now(), 'updated_at' => now()],
+            ['name_ar' => 'أنثى', 'name_en' => 'Female', 'created_at' => now(), 'updated_at' => now()],
+        ]);
     }
 }

@@ -9,13 +9,17 @@ class BannerSeeder extends Seeder
 {
     public function run(): void
     {
-        $banners = [
+        Banner::truncate();
+
+        Banner::insert([
             [
                 'title_ar'       => 'مرحباً بكم في عيادة النطق',
                 'title_en'       => 'Welcome to Speech Clinic',
                 'description_ar' => 'نقدم أفضل خدمات علاج النطق واللغة للأطفال والبالغين على يد متخصصين معتمدين.',
                 'description_en' => 'We provide the best speech and language therapy services for children and adults by certified specialists.',
                 'image'          => 'banners/banner1.png',
+                'created_at'     => now(),
+                'updated_at'     => now(),
             ],
             [
                 'title_ar'       => 'خدماتنا المتميزة',
@@ -23,6 +27,8 @@ class BannerSeeder extends Seeder
                 'description_ar' => 'نوفر جلسات علاجية متخصصة لاضطرابات النطق والصوت واللغة بأحدث الأساليب العلمية.',
                 'description_en' => 'We offer specialized therapy sessions for speech, voice, and language disorders using the latest scientific methods.',
                 'image'          => 'banners/banner2.png',
+                'created_at'     => now(),
+                'updated_at'     => now(),
             ],
             [
                 'title_ar'       => 'احجز جلستك الآن',
@@ -30,14 +36,9 @@ class BannerSeeder extends Seeder
                 'description_ar' => 'تواصل معنا اليوم واحجز جلستك مع أفضل أخصائيي النطق واللغة.',
                 'description_en' => 'Contact us today and book your session with the best speech and language specialists.',
                 'image'          => 'banners/banner3.png',
+                'created_at'     => now(),
+                'updated_at'     => now(),
             ],
-        ];
-
-        foreach ($banners as $banner) {
-            Banner::updateOrCreate(
-                ['title_en' => $banner['title_en']],
-                $banner
-            );
-        }
+        ]);
     }
 }

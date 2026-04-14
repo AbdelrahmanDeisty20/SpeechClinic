@@ -9,6 +9,8 @@ class CvSeeder extends Seeder
 {
     public function run(): void
     {
+        Cv::truncate();
+
         $cvs = [
             [
                 'name'  => 'دينا أحمد سعيد',
@@ -32,10 +34,10 @@ class CvSeeder extends Seeder
                 'image' => 'cv_images/reham.png',
             ],
             [
-                'name'  => 'يوسف عبد الرحمن',
-                'email' => 'youssef.abdelrahman@example.com',
+                'name'  => 'يوسف عبد الرحمن فرج',
+                'email' => 'youssef.farag@example.com',
                 'phone' => '01077778888',
-                'cv'    => 'cvs/youssef_cv.pdf',
+                'cv'    => 'cvs/youssef_farag_cv.pdf',
                 'image' => 'cv_images/youssef.png',
             ],
             [
