@@ -9,8 +9,20 @@ class Setting extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'key',
-        'value',
+        'key_ar',
+        'key_en',
+        'value_ar',
+        'value_en',
         'type',
     ];
+
+    public function getValueAttribute(): string
+    {
+        return app()->getLocale() === 'ar' ? $this->value_ar : $this->value_en;
+    }
+
+    public function getKeyAttribute(): string
+    {
+        return app()->getLocale() === 'ar' ? $this->key_ar : $this->key_en;
+    }
 }
