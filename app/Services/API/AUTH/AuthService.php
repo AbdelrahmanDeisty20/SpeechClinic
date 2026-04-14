@@ -30,7 +30,7 @@ class AuthService
             $code = random_int(100000, 999999);
             $codeHash = Hash::make((string) $code);
             $expiresAt = now()->addMinutes(10);
-            Mail::to($user->email)->queue(new OtpMail($user->full_name, (string) $code, 'register'));
+            Mail::to($user->email)->locale(app()->getLocale())->queue(new OtpMail($user->full_name, (string) $code, 'register'));
             $otp = Otp::create([
                 'phone' => $user->phone,
                 'email' => $user->email,
