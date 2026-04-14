@@ -17,6 +17,13 @@ class Setting extends Model
         'type',
     ];
 
-    // NOTE: لا تستخدم getKeyAttribute() هنا لأن 'key' محجوزة في Eloquent
-    // الـ localization يتم في SettingResource مباشرة
+    public function getValueAttribute(): string
+    {
+        return app()->getLocale() === 'ar' ? $this->value_ar : $this->value_en;
+    }
+
+    public function getKeyAttribute(): string
+    {
+        return app()->getLocale() === 'ar' ? $this->key_ar : $this->key_en;
+    }
 }
