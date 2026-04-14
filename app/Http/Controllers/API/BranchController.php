@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 class BranchController extends Controller
 {
     use ApiResponse;
+
     protected $branchService;
+
     public function __construct(BranchService $branchService)
     {
         $this->branchService = $branchService;
@@ -19,9 +21,9 @@ class BranchController extends Controller
     public function getBranches()
     {
         $result = $this->branchService->getBranches();
-        if(!$result['status']){
-            return $this->error($result['message'],400);
+        if (!$result['status']) {
+            return $this->error($result['message'], 400);
         }
-        return $this->paginated($result['data'], $result['message'],200);
+        return $this->paginated($result['data'], $result['message'], 200);
     }
 }

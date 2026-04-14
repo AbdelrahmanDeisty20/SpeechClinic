@@ -12,6 +12,7 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
+        Branch::truncate();
         Branch::factory(3)->create();
     }
 }

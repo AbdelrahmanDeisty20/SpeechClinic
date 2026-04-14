@@ -9,9 +9,16 @@ class Branch extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'name_ar',
+        'name_en',
         'lat',
         'lng',
         'address_link',
     ];
+
+    public function getNameAttribute(): string
+    {
+        return app()->getLocale() === 'ar' ? $this->name_ar : $this->name_en;
+    }
 }
+
