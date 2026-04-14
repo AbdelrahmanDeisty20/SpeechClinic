@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\API;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
 class SettingResource extends JsonResource
 {
@@ -14,11 +14,13 @@ class SettingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
+
         return [
-            'id'=>$this->id,
-            'key'=>$this->key,
-            'value'=>$this->value,
-            'type'=>$this->type,
+            'id'    => $this->id,
+            'key'   => $locale === 'ar' ? $this->key_ar   : $this->key_en,
+            'value' => $locale === 'ar' ? $this->value_ar : $this->value_en,
+            'type'  => $this->type,
         ];
     }
 }

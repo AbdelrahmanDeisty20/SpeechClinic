@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'key_ar',
         'key_en',
@@ -16,13 +17,6 @@ class Setting extends Model
         'type',
     ];
 
-    public function getValueAttribute(): string
-    {
-        return app()->getLocale() === 'ar' ? $this->value_ar : $this->value_en;
-    }
-
-    public function getKeyAttribute(): string
-    {
-        return app()->getLocale() === 'ar' ? $this->key_ar : $this->key_en;
-    }
+    // NOTE: لا تستخدم getKeyAttribute() هنا لأن 'key' محجوزة في Eloquent
+    // الـ localization يتم في SettingResource مباشرة
 }
