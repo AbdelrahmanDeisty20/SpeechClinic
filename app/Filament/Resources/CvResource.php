@@ -86,7 +86,6 @@ class CvResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->disk('public')
-                    ->directory('cvs')
                     ->circular()
                     ->size(60),
                 TextColumn::make('name_en')
