@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Banner extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'title_ar',
         'title_en',
@@ -30,11 +31,6 @@ class Banner extends Model
 
     public function getImageUrlAttribute()
     {
-        if (!$this->image) return null;
-
-        // Ensure we don't double up on the 'banners/' prefix if it's already in the database
-        $path = str_contains($this->image, '/') ? $this->image : 'banners/' . $this->image;
-
-        return asset('storage/' . $path);
+        return asset('storage/banners/' . $this->image);
     }
 }
