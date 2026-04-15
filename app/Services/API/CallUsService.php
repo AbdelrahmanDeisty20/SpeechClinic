@@ -18,13 +18,13 @@ class CallUsService
         $data = callUs::with('branch')->paginate(10);
         if ($data->isEmpty()) {
             return [
-                'status' => 404,
+                'status' => false,
                 'message' => __('messages.no_call_us_found'),
                 'data' => [],
             ];
         }
         return [
-            'status' => 200,
+            'status' => true,
             'message' => __('messages.call_us_fetched_successfully'),
             'data' => $data,
         ];
