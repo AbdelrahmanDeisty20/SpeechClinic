@@ -32,7 +32,7 @@ class ReviewService
 
     public function getAllReviews()
     {
-        $reviews = Review::where('is_active', true)->paginate(10);
+        $reviews = Review::with('user')->where('is_active', true)->paginate(10);
 
         if ($reviews->isEmpty()) {
             return [
