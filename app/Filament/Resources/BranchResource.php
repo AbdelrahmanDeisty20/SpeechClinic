@@ -28,7 +28,7 @@ class BranchResource extends Resource
                 \Filament\Schemas\Components\Section::make('Branch Identifiers')
                     ->description('Localized names for the branch.')
                     ->schema([
-                        Grid::make(2)
+                        Grid::make(3)
                             ->schema([
                                 TextInput::make('name_ar')
                                     ->required()
@@ -38,6 +38,9 @@ class BranchResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->label('Name (English)'),
+                                TextInput::make('phone')
+                                    ->tel()
+                                    ->label('Phone Number'),
                             ]),
                     ]),
 
@@ -77,6 +80,10 @@ class BranchResource extends Resource
                     ->label('Latitude'),
                 TextColumn::make('lng')
                     ->label('Longitude'),
+                TextColumn::make('phone')
+                    ->searchable()
+                    ->copyable()
+                    ->label('Phone'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
