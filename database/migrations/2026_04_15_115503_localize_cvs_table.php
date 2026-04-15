@@ -12,18 +12,36 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cvs', function (Blueprint $table) {
-            if (Schema::hasColumn('cvs', 'name')) {
+            // Check before renaming
+            if (Schema::hasColumn('cvs', 'name') && !Schema::hasColumn('cvs', 'name_ar')) {
                 $table->renameColumn('name', 'name_ar');
             }
             
-            $table->string('name_en')->nullable()->after('name_ar');
-            $table->string('title_ar')->nullable()->after('name_en');
-            $table->string('title_en')->nullable()->after('title_ar');
-            $table->text('description_ar')->nullable()->after('title_en');
-            $table->text('description_en')->nullable()->after('description_ar');
+            // Check before adding
+            if (!Schema::hasColumn('cvs', 'name_en')) {
+                $table->string('name_en')->nullable()->after(Schema::hasColumn('cvs', 'name_ar') ? 'name_ar' : 'id');
+            }
+            if (!Schema::hasColumn('cvs', 'title_ar')) {
+                $table->string('title_ar')->nullable()->after('name_en');
+            }
+            if (!Schema::hasColumn('cvs', 'title_en')) {
+                $table->string('title_en')->nullable()->after('title_ar');
+            }
+            if (!Schema::hasColumn('cvs', 'description_ar')) {
+                $table->text('description_ar')->nullable()->after('title_en');
+            }
+            if (!Schema::hasColumn('cvs', 'description_en')) {
+                $table->text('description_en')->nullable()->after('description_ar');
+            }
 
-            // Drop columns no longer needed
-            $table->dropColumn(['email', 'phone', 'cv']);
+            // Drop columns only if they exist
+            $columnsToDrop = array_filter(['email', 'phone', 'cv'], function($column) {
+                return Schema::hasColumn('cvs', $column);
+            });
+            
+            if (!empty($columnsToDrop)) {
+                $table->dropColumn($columnsToDrop);
+            }
         });
     }
 
@@ -33,22 +51,34 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('cvs', function (Blueprint $table) {
-            if (Schema::hasColumn('cvs', 'name_ar')) {
+            if (Schema::hasColumn('cvs', 'name_ar') && !Schema::hasColumn('cvs', 'name')) {
                 $table->renameColumn('name_ar', 'name');
             }
             
-            $table->dropColumn([
+            $columnsToDrop = array_filter([
                 'name_en',
                 'title_ar',
                 'title_en',
                 'description_ar',
                 'description_en',
-            ]);
+            ], function($column) {
+                return Schema::hasColumn('cvs', $column);
+            });
 
-            // Restore dropped columns
-            $table->string('email')->after('name');
-            $table->string('phone')->after('email');
-            $table->text('cv')->after('phone');
+            if (!empty($columnsToDrop)) {
+                $table->dropColumn($columnsToDrop);
+            }
+
+            // Restore dropped columns only if they don't exist
+            if (!Schema::hasColumn('cvs', 'email')) {
+                $table->string('email')->after(Schema::hasColumn('cvs', 'name') ? 'name' : 'id');
+            }
+            if (!Schema::hasColumn('cvs', 'phone')) {
+                $table->string('phone')->after('email');
+            }
+            if (!Schema::hasColumn('cvs', 'cv')) {
+                $table->text('cv')->after('phone');
+            }
         });
     }
 };
