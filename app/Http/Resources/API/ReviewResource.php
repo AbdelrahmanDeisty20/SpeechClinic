@@ -16,9 +16,9 @@ class ReviewResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
             'comment' => $this->comment,
             'rate' => $this->rate,
+            'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }
