@@ -25,8 +25,9 @@ class ReviewController extends Controller
         $result = $this->reviewService->createReview($request->validated());
         if (!$result['status']) {
             return $this->error($result['message'], 404);
-        } 
-        return $this->success($result['message'], $result['data']);
+        }
+
+        return $this->success($result['data'], $result['message']);
     }
 
     public function index()
