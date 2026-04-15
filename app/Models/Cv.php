@@ -20,7 +20,12 @@ class Cv extends Model
 
     public function getImageUrlAttribute()
     {
-        return asset('storage/cvs/' . $this->image);
+        if (!$this->image) return null;
+
+        // Ensure we don't double up on the 'cvs/' prefix if it's already in the database
+        $path = str_contains($this->image, '/') ? $this->image : 'cvs/' . $this->image;
+
+        return asset('storage/' . $path);
     }
     public function getNameAttribute($value)
     {

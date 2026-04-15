@@ -39,8 +39,6 @@ class CvResource extends Resource
                                     ->image()
                                     ->directory('cvs')
                                     ->disk('public')
-                                    ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "cvs/{$state}" : $state)
-                                    ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                                     ->required()
                                     ->imageEditor()
                                     ->columnSpanFull(),
