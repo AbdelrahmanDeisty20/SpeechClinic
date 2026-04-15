@@ -26,5 +26,10 @@ class Branch extends Model
     {
         return $this->hasMany(callUs::class);
     }
+
+    public function days()
+    {
+        return $this->hasMany(Day::class);
+    }
 }
 
