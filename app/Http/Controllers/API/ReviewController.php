@@ -17,7 +17,7 @@ class ReviewController extends Controller
     {
         $this->reviewService = $reviewService;
     }
-    public function createReview(ReviewRequest $data)
+    public function store(ReviewRequest $data)
     {
         $result = $this->reviewService->createReview($data->all());
         if (!$result['status']) {
@@ -26,7 +26,7 @@ class ReviewController extends Controller
             return $this->success($result['message'], $result['data']);
         }
     }
-    public function getAllReviews()
+    public function index()
     {
         $result = $this->reviewService->getAllReviews();
         if (!$result['status']) {
