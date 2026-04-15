@@ -33,7 +33,11 @@ class BannerResource extends Resource
                     ->schema([
                         FileUpload::make('image')
                             ->image()
+                            ->disk('public')
                             ->directory('banners')
+                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "banners/{$state}" : $state)
+                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
+                            ->nullable()
                             ->imageEditor()
                             ->required()
                             ->maxSize(5120)
