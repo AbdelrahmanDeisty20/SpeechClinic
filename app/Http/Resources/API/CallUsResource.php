@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\API;
 
-use App\Filament\Resources\BranchResource;
+use App\Http\Resources\BranchResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 
@@ -18,7 +18,7 @@ class CallUsResource extends JsonResource
         return [
             'id' => $this->id,
             'phone' => $this->phone,
-            'branch' => BranchResource::class::make($this->whenLoaded('branch')),
+            'branch' => BranchResource::make($this->whenLoaded('branch')),
         ];
     }
 }
