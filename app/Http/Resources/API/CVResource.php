@@ -19,7 +19,7 @@ class CVResource extends JsonResource
             'name' => $this->name,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image,
+            'image' => $this->image_url,
         ];
     }
 }
