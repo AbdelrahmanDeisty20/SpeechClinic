@@ -17,9 +17,8 @@ class CVResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'cv' => $this->cv,
+            'title' => $this->title,
+            'description' => $this->description,
             'image' => $this->image,
         ];
     }
