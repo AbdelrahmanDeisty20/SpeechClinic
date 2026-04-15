@@ -71,8 +71,8 @@ return [
     'reviews_notfound' => 'No reviews found',
     'reviews_successfully' => 'Reviews fetched successfully',
     'name_min' => 'Name must be at least 3 characters',
-    'message_min' => 'Message must be at least 8 characters',
-    'rating_in' => 'Rating must be between 1 and 5',
+    'comment_min' => 'Comment must be at least 8 characters',
+    'rate_in' => 'Rate must be between 1 and 5',
     'review_created_successfully' => 'Review created successfully',
-    'rating_required' => 'Rating is required',
+    'rate_required' => 'Rate is required',
 ];

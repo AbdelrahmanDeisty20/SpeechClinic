@@ -33,10 +33,10 @@ class ReviewRequest extends FormRequest
         return [
             'name.required' => __('messages.name_required'),
             'name.min' => __('messages.name_min'),
-            'message.required' => __('messages.message_required'),
-            'message.min' => __('messages.message_min'),
-            'rating.required' => __('messages.rating_required'),
-            'rating.in' => __('messages.rating_in'),
+            'comment.required' => __('messages.comment_required'),
+            'comment.min' => __('messages.comment_min'),
+            'rate.required' => __('messages.rate_required'),
+            'rate.in' => __('messages.rate_in'),
         ];
     }
 }
