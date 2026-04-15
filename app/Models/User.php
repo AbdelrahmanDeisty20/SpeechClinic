@@ -12,13 +12,14 @@ use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['first_name', 'last_name', 'phone', 'age', 'gender_id', 'nationality_id', 'email', 'password', 'image', 'is_active', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable,HasApiTokens, HasRoles;
 
     /**
      * Get the attributes that should be cast.
