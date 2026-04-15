@@ -12,20 +12,23 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     use ApiResponse;
+
     protected $reviewService;
+
     public function __construct(ReviewService $reviewService)
     {
         $this->reviewService = $reviewService;
     }
-    public function store(ReviewRequest $data)
+
+    public function store(ReviewRequest $request)
     {
-        $result = $this->reviewService->createReview($data->all());
+        $result = $this->reviewService->createReview($request->validated());
         if (!$result['status']) {
             return $this->error($result['message'], 404);
-        } else {
-            return $this->success($result['message'], $result['data']);
-        }
+        } 
+        return $this->success($result['message'], $result['data']);
     }
+
     public function index()
     {
         $result = $this->reviewService->getAllReviews();
