@@ -76,6 +76,7 @@ class BannerResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
+                    ->disk('public')
                     ->square()
                     ->size(100),
                 TextColumn::make('title_en')
