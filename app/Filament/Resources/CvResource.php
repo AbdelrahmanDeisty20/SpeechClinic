@@ -4,17 +4,17 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CvResource\Pages;
 use App\Models\Cv;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class CvResource extends Resource
 {
@@ -38,6 +38,9 @@ class CvResource extends Resource
                                 FileUpload::make('image')
                                     ->image()
                                     ->directory('cvs')
+                                    ->disk('public')
+                                    ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "banners/{$state}" : $state)
+                                    ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                                     ->required()
                                     ->imageEditor()
                                     ->columnSpanFull(),
@@ -52,8 +55,8 @@ class CvResource extends Resource
                                             ->maxLength(255)
                                             ->label('Name (English)'),
                                     ]),
-                            ])->columnSpan(2),
-
+                            ])
+                            ->columnSpan(2),
                         Section::make('Professional Focus')
                             ->description('Localized titles and descriptions.')
                             ->schema([
@@ -71,7 +74,8 @@ class CvResource extends Resource
                                 Textarea::make('description_en')
                                     ->rows(4)
                                     ->label('Biography (English)'),
-                            ])->columnSpan(1),
+                            ])
+                            ->columnSpan(1),
                     ]),
             ]);
     }
@@ -87,12 +91,12 @@ class CvResource extends Resource
                     ->label('Candidate (EN)')
                     ->searchable()
                     ->sortable()
-                    ->description(fn (Cv $record): string => $record->title_en ?? ''),
+                    ->description(fn(Cv $record): string => $record->title_en ?? ''),
                 TextColumn::make('name_ar')
                     ->label('Candidate (AR)')
                     ->searchable()
                     ->sortable()
-                    ->description(fn (Cv $record): string => $record->title_ar ?? ''),
+                    ->description(fn(Cv $record): string => $record->title_ar ?? ''),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
