@@ -14,8 +14,17 @@ class ReviewService
      */
     public function createReview(array $data)
     {
-        $review = Review::create($data);
-        return $review;
+        $review = Review::create([
+            'name' => $data['name'],
+            'comment' => $data['comment'],
+            'rate' => $data['rate'],
+            'is_active' => true,
+        ]);
+        return [
+            'status'=> true,
+            'message'=> __('messages.review_created_successfully'),
+            'data'=> new ReviewResource($review)
+        ];
     }
     public function getAllReviews()
     {

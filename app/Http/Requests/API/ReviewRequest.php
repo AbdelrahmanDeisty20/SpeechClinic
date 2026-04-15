@@ -24,8 +24,8 @@ class ReviewRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:255',
-            'message' => 'required|string|min:8|max:255',
-            'rating' => 'required|in:1,2,3,4,5',
+            'comment' => 'required|string|min:8|max:255',
+            'rate' => 'required|in:1,2,3,4,5',
         ];
     }
     public function messages()
