@@ -75,6 +75,6 @@ class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true; // For now, allowing all users to access the panel. You can add role checks here later.
+        return $this->hasRole(config('filament-shield.super_admin.name', 'super_admin'));
     }
 }
