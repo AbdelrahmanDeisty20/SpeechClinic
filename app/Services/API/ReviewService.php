@@ -20,11 +20,6 @@ class ReviewService
             'rate' => $data['rate'],
             'is_active' => true,
         ]);
-        return [
-            'status'=> true,
-            'message'=> __('messages.review_created_successfully'),
-            'data'=> new ReviewResource($review)
-        ];
     }
     public function getAllReviews()
     {
