@@ -14,8 +14,8 @@ class CallUsService
      */
     public function getAll()
     {
-        $callUs = callUs::with('branch')->paginate(10);
-        if ($callUs->isEmpty()) {
+        $data = callUs::with('branch')->paginate(10);
+        if ($data->isEmpty()) {
             return [
                 'status' => 404,
                 'message' => __('messages.no_call_us_found'),
@@ -25,7 +25,7 @@ class CallUsService
         return [
             'status' => 200,
             'message' => __('messages.call_us_fetched_successfully'),
-            'data' => $callUs,
+            'data' => $data,
         ];
     }
 }
