@@ -35,7 +35,6 @@ class BannerResource extends Resource
                             ->image()
                             ->disk('public')
                             ->directory('banners')
-                            ->nullable()
                             ->imageEditor()
                             ->required()
                             ->columnSpanFull(),
