@@ -88,4 +88,5 @@ return [
     'message_min' => 'الرسالة يجب أن تكون 8 أحرف على الأقل',
     'rating_in' => 'التقييم يجب أن يكون بين 1 و 5',
     'review_created_successfully' => 'تم إنشاء التقييم بنجاح',
+    'rating_required' => 'التقييم مطلوب',
 ];

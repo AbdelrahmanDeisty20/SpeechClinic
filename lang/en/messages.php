@@ -74,4 +74,5 @@ return [
     'message_min' => 'Message must be at least 8 characters',
     'rating_in' => 'Rating must be between 1 and 5',
     'review_created_successfully' => 'Review created successfully',
+    'rating_required' => 'Rating is required',
 ];
