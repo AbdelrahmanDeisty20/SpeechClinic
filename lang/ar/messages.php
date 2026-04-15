@@ -80,4 +80,6 @@ return [
     'cv_successfully' => 'تم جلب السيرة الذاتية بنجاح',
     'branches_not_found' => 'لا يوجد فروع',
     'branches_retrieved_successfully' => 'تم جلب الفروع بنجاح',
+    'no_call_us_found' => 'لا يوجد مكالمات',
+    'call_us_fetched_successfully' => 'تم جلب المكالمات بنجاح',
 ];

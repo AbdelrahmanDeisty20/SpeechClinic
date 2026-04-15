@@ -66,4 +66,6 @@ return [
     'cv_successfully' => 'CV fetched successfully',
     'branches_not_found' => 'No branches found',
     'branches_retrieved_successfully' => 'Branches retrieved successfully',
+    'no_call_us_found' => 'No call us found',
+    'call_us_fetched_successfully' => 'Call us fetched successfully',
 ];

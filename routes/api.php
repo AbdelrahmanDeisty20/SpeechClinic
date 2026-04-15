@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AUTH\AuthController;
 use App\Http\Controllers\API\AUTH\ForgetPasswordController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\BranchController;
+use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\CVProfileController;
 use App\Http\Controllers\API\PageController;
@@ -41,6 +42,8 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('settings', [SettingController::class, 'index']);
     // Branch Routes
     Route::get('branches', [BranchController::class, 'getBranches']);
+    // Call Us Routes
+    Route::get('call-us', [callUsController::class, 'index']);
     // Auth Sanctum Routes
     Route::group(['middleware' => 'auth:sanctum'], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);
