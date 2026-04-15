@@ -17,4 +17,9 @@ class Day extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+
+    public function availableTimes()
+    {
+        return $this->hasMany(AvailableTime::class);
+    }
 }
