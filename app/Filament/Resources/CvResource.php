@@ -84,6 +84,7 @@ class CvResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->circular()
+                    ->disk('public')
                     ->size(60),
                 TextColumn::make('name_en')
                     ->label('Candidate (EN)')
