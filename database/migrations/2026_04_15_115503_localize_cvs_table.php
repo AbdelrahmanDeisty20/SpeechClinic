@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('title_en')->nullable()->after('title_ar');
             $table->text('description_ar')->nullable()->after('title_en');
             $table->text('description_en')->nullable()->after('description_ar');
+
+            // Drop columns no longer needed
+            $table->dropColumn(['email', 'phone', 'cv']);
         });
     }
 
@@ -41,6 +44,11 @@ return new class extends Migration
                 'description_ar',
                 'description_en',
             ]);
+
+            // Restore dropped columns
+            $table->string('email')->after('name');
+            $table->string('phone')->after('email');
+            $table->text('cv')->after('phone');
         });
     }
 };
