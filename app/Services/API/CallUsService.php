@@ -9,6 +9,7 @@ use App\Traits\ApiResponse;
 class CallUsService
 {
     use ApiResponse;
+
     /**
      * Create a new class instance.
      */

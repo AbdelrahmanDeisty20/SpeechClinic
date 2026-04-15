@@ -23,7 +23,7 @@ class callUsController extends Controller
     {
         $result = $this->callUsService->getAll();
         if (!$result['status']) {
-            return $this->error($result['message'], 400);
+            return $this->error($result['message'], 404);
         } else {
             return $this->paginated(CallUsResource::class, $result['data'], $result['message']);
         }
