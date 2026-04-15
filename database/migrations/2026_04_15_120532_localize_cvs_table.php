@@ -11,16 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('cvs', function (Blueprint $table) {
-            // Check before renaming
-            if (Schema::hasColumn('cvs', 'name') && !Schema::hasColumn('cvs', 'name_ar')) {
+        // 1. Handle renaming 'name' to 'name_ar' first to ensure subsequent 'after' clauses work
+        if (Schema::hasColumn('cvs', 'name') && !Schema::hasColumn('cvs', 'name_ar')) {
+            Schema::table('cvs', function (Blueprint $table) {
                 $table->renameColumn('name', 'name_ar');
-            }
-            
-            // Check before adding
-            if (!Schema::hasColumn('cvs', 'name_en')) {
+            });
+        }
+
+        // 2. Add 'name_en' column if it doesn't exist
+        if (!Schema::hasColumn('cvs', 'name_en')) {
+            Schema::table('cvs', function (Blueprint $table) {
                 $table->string('name_en')->nullable()->after(Schema::hasColumn('cvs', 'name_ar') ? 'name_ar' : 'id');
-            }
+            });
+        }
+
+        // 3. Add other localized columns if they don't exist
+        Schema::table('cvs', function (Blueprint $table) {
             if (!Schema::hasColumn('cvs', 'title_ar')) {
                 $table->string('title_ar')->nullable()->after('name_en');
             }
@@ -33,16 +39,18 @@ return new class extends Migration
             if (!Schema::hasColumn('cvs', 'description_en')) {
                 $table->text('description_en')->nullable()->after('description_ar');
             }
-
-            // Drop columns only if they exist
-            $columnsToDrop = array_filter(['email', 'phone', 'cv'], function($column) {
-                return Schema::hasColumn('cvs', $column);
-            });
-            
-            if (!empty($columnsToDrop)) {
-                $table->dropColumn($columnsToDrop);
-            }
         });
+
+        // 4. Drop old columns only if they exist
+        $columnsToDrop = array_filter(['email', 'phone', 'cv'], function($column) {
+            return Schema::hasColumn('cvs', $column);
+        });
+
+        if (!empty($columnsToDrop)) {
+            Schema::table('cvs', function (Blueprint $table) use ($columnsToDrop) {
+                $table->dropColumn($columnsToDrop);
+            });
+        }
     }
 
     /**
@@ -51,10 +59,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('cvs', function (Blueprint $table) {
+            // Restore 'name' from 'name_ar' if possible
             if (Schema::hasColumn('cvs', 'name_ar') && !Schema::hasColumn('cvs', 'name')) {
                 $table->renameColumn('name_ar', 'name');
             }
-            
+
+            // Drop localized columns only if they exist
             $columnsToDrop = array_filter([
                 'name_en',
                 'title_ar',
