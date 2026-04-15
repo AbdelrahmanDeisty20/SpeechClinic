@@ -8,6 +8,7 @@ use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\CVProfileController;
 use App\Http\Controllers\API\PageController;
+use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SettingController;
 use App\Http\Middleware\setLang;
 use Illuminate\Http\Request;
@@ -44,6 +45,9 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('branches', [BranchController::class, 'getBranches']);
     // Call Us Routes
     Route::get('call-us', [callUsController::class, 'index']);
+    // Review Routes
+    Route::get('reviews', [ReviewController::class, 'index']);
+    Route::post('reviews', [ReviewController::class, 'store'])->middleware('auth:sanctum');
     // Auth Sanctum Routes
     Route::group(['middleware' => 'auth:sanctum'], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);

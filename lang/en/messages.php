@@ -68,4 +68,10 @@ return [
     'branches_retrieved_successfully' => 'Branches retrieved successfully',
     'no_call_us_found' => 'No call us found',
     'call_us_fetched_successfully' => 'Call us fetched successfully',
+    'reviews_notfound' => 'No reviews found',
+    'reviews_successfully' => 'Reviews fetched successfully',
+    'name_min' => 'Name must be at least 3 characters',
+    'message_min' => 'Message must be at least 8 characters',
+    'rating_in' => 'Rating must be between 1 and 5',
+    'review_created_successfully' => 'Review created successfully',
 ];

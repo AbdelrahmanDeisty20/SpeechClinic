@@ -82,4 +82,10 @@ return [
     'branches_retrieved_successfully' => 'تم جلب الفروع بنجاح',
     'no_call_us_found' => 'لا يوجد مكالمات',
     'call_us_fetched_successfully' => 'تم جلب المكالمات بنجاح',
+    'reviews_notfound' => 'لا يوجد تقييمات',
+    'reviews_successfully' => 'تم جلب التقييمات بنجاح',
+    'name_min' => 'الاسم يجب أن يكون 3 أحرف على الأقل',
+    'message_min' => 'الرسالة يجب أن تكون 8 أحرف على الأقل',
+    'rating_in' => 'التقييم يجب أن يكون بين 1 و 5',
+    'review_created_successfully' => 'تم إنشاء التقييم بنجاح',
 ];

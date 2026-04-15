@@ -72,6 +72,10 @@ class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
     {
         return $this->hasMany(RefreshToken::class);
     }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
