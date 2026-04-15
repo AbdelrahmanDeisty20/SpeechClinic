@@ -47,7 +47,7 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('call-us', [callUsController::class, 'index']);
     // Review Routes
     Route::get('reviews', [ReviewController::class, 'index']);
-    Route::post('reviews', [ReviewController::class, 'store'])->middleware('auth:sanctum');
+    Route::post('create review', [ReviewController::class, 'store'])->middleware('auth:sanctum');
     // Auth Sanctum Routes
     Route::group(['middleware' => 'auth:sanctum'], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);
