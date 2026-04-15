@@ -39,6 +39,8 @@ class CvResource extends Resource
                                     ->image()
                                     ->directory('cvs')
                                     ->disk('public')
+                                    ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "cvs/{$state}" : $state)
+                                    ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                                     ->required()
                                     ->imageEditor()
                                     ->columnSpanFull(),
@@ -84,7 +86,6 @@ class CvResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->circular()
-                    ->disk('public')
                     ->size(60),
                 TextColumn::make('name_en')
                     ->label('Candidate (EN)')

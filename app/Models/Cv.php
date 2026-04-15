@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cv extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name_ar',
         'name_en',
@@ -20,21 +21,19 @@ class Cv extends Model
 
     public function getImageUrlAttribute()
     {
-        if (!$this->image) return null;
-
-        // Ensure we don't double up on the 'cvs/' prefix if it's already in the database
-        $path = str_contains($this->image, '/') ? $this->image : 'cvs/' . $this->image;
-
-        return asset('storage/' . $path);
+        return asset('storage/cvs/' . $this->image);
     }
+
     public function getNameAttribute($value)
     {
         return app()->getLocale() == 'ar' ? $this->name_ar : $this->name_en;
     }
+
     public function getTitleAttribute($value)
     {
         return app()->getLocale() == 'ar' ? $this->title_ar : $this->title_en;
     }
+
     public function getDescriptionAttribute($value)
     {
         return app()->getLocale() == 'ar' ? $this->description_ar : $this->description_en;
