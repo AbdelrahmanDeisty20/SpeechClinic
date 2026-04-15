@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['first_name', 'last_name', 'phone', 'age', 'gender_id', 'nationality_id', 'email', 'password', 'image', 'is_active', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable,HasApiTokens, HasRoles;
@@ -57,6 +59,14 @@ class User extends Authenticatable implements FilamentUser
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+    public function getFilamentName(): string
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->image ? asset('storage/users/' . $this->image) : null;
     }
     public function refreshTokens()
     {
