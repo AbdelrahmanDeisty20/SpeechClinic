@@ -18,9 +18,9 @@ class Cv extends Model
         'image',
     ];
 
-    public function getImageAttribute($value)
+    public function getImageUrlAttribute()
     {
-        return asset('storage/cvs/' . $value);
+        return asset('storage/cvs/' . $this->image);
     }
     public function getNameAttribute($value)
     {
