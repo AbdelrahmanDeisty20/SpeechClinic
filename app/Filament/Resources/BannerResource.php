@@ -35,6 +35,8 @@ class BannerResource extends Resource
                             ->image()
                             ->disk('public')
                             ->directory('banners')
+                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "categories/{$state}" : $state)
+                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                             ->imageEditor()
                             ->required()
                             ->columnSpanFull(),
