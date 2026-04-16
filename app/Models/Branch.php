@@ -31,5 +31,10 @@ class Branch extends Model
     {
         return $this->hasMany(Day::class);
     }
+
+    public function cost()
+    {
+        return $this->hasOne(Cost::class);
+    }
 }
 

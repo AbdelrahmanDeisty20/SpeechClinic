@@ -79,4 +79,6 @@ return [
     'days_successfully' => 'Days fetched successfully',
     'available_times_notfound' => 'No available times found',
     'available_times_successfully' => 'Available times fetched successfully',
+    'costs_not_found' => 'No costs found',
+    'costs_successfully' => 'Costs fetched successfully',
 ];

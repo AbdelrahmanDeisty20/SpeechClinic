@@ -93,4 +93,6 @@ return [
     'days_successfully' => 'تم جلب الأيام بنجاح',
     'available_times_notfound' => 'لا يوجد أوقات متاحة',
     'available_times_successfully' => 'تم جلب الأوقات المتاحة بنجاح',
+    'costs_not_found' => 'لا يوجد تكاليف',
+    'costs_successfully' => 'تم جلب التكاليف بنجاح',
 ];
