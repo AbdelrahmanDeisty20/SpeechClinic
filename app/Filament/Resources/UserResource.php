@@ -68,16 +68,6 @@ class UserResource extends Resource
                                     ->multiple()
                                     ->preload()
                                     ->searchable(),
-                                Select::make('gender_id')
-                                    ->relationship('gender', 'name_en')
-                                    ->searchable()
-                                    ->preload(),
-                                Select::make('nationality_id')
-                                    ->relationship('nationality', 'name_en')
-                                    ->searchable()
-                                    ->preload(),
-                                TextInput::make('age')
-                                    ->numeric(),
                                 TextInput::make('password')
                                     ->password()
                                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
@@ -118,6 +108,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
@@ -140,6 +131,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }

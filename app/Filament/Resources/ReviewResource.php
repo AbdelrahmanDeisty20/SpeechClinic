@@ -78,6 +78,7 @@ class ReviewResource extends Resource
                 //
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
@@ -100,6 +101,7 @@ class ReviewResource extends Resource
         return [
             'index' => Pages\ListReviews::route('/'),
             'create' => Pages\CreateReview::route('/create'),
+            'view' => Pages\ViewReview::route('/{record}'),
             'edit' => Pages\EditReview::route('/{record}/edit'),
         ];
     }

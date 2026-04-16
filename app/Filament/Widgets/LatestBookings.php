@@ -20,9 +20,8 @@ class LatestBookings extends BaseWidget
             ->query(
                 BookingResource::getEloquentQuery()
                     ->latest()
-                    ->limit(10)
             )
-            ->defaultPaginationPageOption(5)
+            ->defaultPaginationPageOption(10)
             ->columns([
                 Tables\Columns\TextColumn::make('booking_number')
                     ->label('ID')
@@ -46,6 +45,19 @@ class LatestBookings extends BaseWidget
                     ->label('Date')
                     ->dateTime()
                     ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('type')
+                    ->options([
+                        'assessment' => 'Assessment',
+                        'monthly' => 'Monthly',
+                    ]),
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'confirmed' => 'Confirmed',
+                        'cancelled' => 'Cancelled',
+                    ]),
             ]);
     }
 }

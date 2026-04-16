@@ -61,6 +61,7 @@ class CallUsResource extends Resource
                 //
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
@@ -83,6 +84,7 @@ class CallUsResource extends Resource
         return [
             'index' => Pages\ListCallUs::route('/'),
             'create' => Pages\CreateCallUs::route('/create'),
+            'view' => Pages\ViewCallUs::route('/{record}'),
             'edit' => Pages\EditCallUs::route('/{record}/edit'),
         ];
     }

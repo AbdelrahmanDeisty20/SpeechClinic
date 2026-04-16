@@ -75,6 +75,7 @@ class CostResource extends Resource
                     ]),
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
@@ -97,6 +98,7 @@ class CostResource extends Resource
         return [
             'index' => Pages\ListCosts::route('/'),
             'create' => Pages\CreateCost::route('/create'),
+            'view' => Pages\ViewCost::route('/{record}'),
             'edit' => Pages\EditCost::route('/{record}/edit'),
         ];
     }

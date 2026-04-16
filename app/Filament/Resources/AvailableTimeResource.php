@@ -72,6 +72,7 @@ class AvailableTimeResource extends Resource
                 //
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
@@ -94,6 +95,7 @@ class AvailableTimeResource extends Resource
         return [
             'index' => Pages\ListAvailableTimes::route('/'),
             'create' => Pages\CreateAvailableTime::route('/create'),
+            'view' => Pages\ViewAvailableTime::route('/{record}'),
             'edit' => Pages\EditAvailableTime::route('/{record}/edit'),
         ];
     }
