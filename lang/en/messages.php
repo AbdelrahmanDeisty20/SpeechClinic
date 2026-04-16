@@ -75,4 +75,8 @@ return [
     'rate_in' => 'Rate must be between 1 and 5',
     'review_created_successfully' => 'Review created successfully',
     'rate_required' => 'Rate is required',
+    'days_notfound' => 'No days found',
+    'days_successfully' => 'Days fetched successfully',
+    'available_times_notfound' => 'No available times found',
+    'available_times_successfully' => 'Available times fetched successfully',
 ];

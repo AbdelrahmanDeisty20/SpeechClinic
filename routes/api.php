@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\API\AUTH\AuthController;
 use App\Http\Controllers\API\AUTH\ForgetPasswordController;
+use App\Http\Controllers\API\AvaliableController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\CVProfileController;
+use App\Http\Controllers\API\DayController;
 use App\Http\Controllers\API\PageController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SettingController;
@@ -48,6 +50,10 @@ Route::group(['middleware' => setLang::class], function () {
     // Review Routes
     Route::get('reviews', [ReviewController::class, 'index']);
     Route::post('create review', [ReviewController::class, 'store'])->middleware('auth:sanctum');
+    // Day Routes
+    Route::get('days', [DayController::class, 'index']);
+    // Available Time Routes
+    Route::get('available-times', [AvaliableController::class, 'index']);
     // Auth Sanctum Routes
     Route::group(['middleware' => 'auth:sanctum'], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);

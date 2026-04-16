@@ -89,4 +89,8 @@ return [
     'rate_in' => 'التقييم يجب أن يكون بين 1 و 5',
     'review_created_successfully' => 'تم إنشاء التقييم بنجاح',
     'rate_required' => 'التقييم مطلوب',
+    'days_notfound' => 'لا يوجد أيام',
+    'days_successfully' => 'تم جلب الأيام بنجاح',
+    'available_times_notfound' => 'لا يوجد أوقات متاحة',
+    'available_times_successfully' => 'تم جلب الأوقات المتاحة بنجاح',
 ];
