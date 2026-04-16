@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\BookingMonthlyRequest;
 use App\Http\Requests\API\BookingRequest;
 use App\Http\Resources\API\BookingResource;
 use App\Services\API\BookingService;
@@ -36,7 +37,7 @@ class BookingController extends Controller
         }
         return $this->success(BookingResource::make($result['data']), $result['message']);
     }
-    public function storeMonthly(BookingRequest $request)
+    public function storeMonthly(BookingMonthlyRequest $request)
     {
         $result = $this->bookingService->bookingMonthly($request->validated());
         if (!$result['status']) {

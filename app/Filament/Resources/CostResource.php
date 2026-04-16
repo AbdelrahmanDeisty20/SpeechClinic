@@ -31,6 +31,12 @@ class CostResource extends Resource
                             ->numeric()
                             ->required()
                             ->prefix('$'),
+                        Select::make('type')
+                            ->options([
+                                'assessment' => 'Assessment',
+                                'monthly' => 'Monthly',
+                            ])
+                            ->required(),
                         Select::make('branch_id')
                             ->relationship('branch', 'name_en')
                             ->searchable()
@@ -48,6 +54,12 @@ class CostResource extends Resource
                     ->label('Branch')
                     ->badge()
                     ->color('primary'),
+                TextColumn::make('type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'assessment' => 'info',
+                        'monthly' => 'success',
+                    }),
                 TextColumn::make('price')
                     ->money('USD')
                     ->sortable(),
@@ -56,7 +68,11 @@ class CostResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                \Filament\Tables\Filters\SelectFilter::make('type')
+                    ->options([
+                        'assessment' => 'Assessment',
+                        'monthly' => 'Monthly',
+                    ]),
             ])
             ->actions([
                 Actions\EditAction::make(),

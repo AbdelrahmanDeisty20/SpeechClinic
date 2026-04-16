@@ -36,7 +36,7 @@ class ReviewResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Select::make('user_id')
-                            ->relationship('user', 'first_name')
+                            ->relationship('user', 'email')
                             ->searchable()
                             ->preload()
                             ->label('Related User'),

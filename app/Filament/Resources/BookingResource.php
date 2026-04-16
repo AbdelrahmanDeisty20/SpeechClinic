@@ -51,19 +51,24 @@ class BookingResource extends Resource
                                     ->disabled()
                                     ->dehydrated(false)
                                     ->placeholder('Auto-generated'),
+                                TextInput::make('assessment_number')
+                                    ->label('Ref. Assessment #')
+                                    ->placeholder('N/A')
+                                    ->disabled(),
                             ])->columnSpan(2),
 
                         Section::make('Booking Details')
                             ->description('Service and status details.')
                             ->schema([
                                 Select::make('user_id')
-                                    ->relationship('user', 'first_name')
+                                    ->relationship('user', 'email')
                                     ->searchable()
                                     ->preload()
                                     ->required()
                                     ->label('Parent/User'),
                                 Select::make('available_time_id')
-                                    ->relationship('availableTime', 'id') // We might need a better label here
+                                    ->relationship('availableTime', 'id')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => "Slot #{$record->id} ({$record->day?->name_en}: {$record->start_time} - {$record->end_time})")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -106,6 +111,10 @@ class BookingResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->label('ID'),
+                TextColumn::make('assessment_number')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Ref.'),
                 ImageColumn::make('child_photo')
                     ->circular()
                     ->label('Photo'),

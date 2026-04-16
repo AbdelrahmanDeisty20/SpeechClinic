@@ -118,4 +118,10 @@ return [
     'problem_description_string' => 'وصف المشكلة يجب أن يكون نص',
     'problem_description_min' => 'وصف المشكلة يجب أن يكون 10 أحرف على الأقل',
     'first_booking_assessment_must_be_booked_first' => 'يجب حجز التقييم أولاً',
+    'type_required' => 'نوع الحجز مطلوب',
+    'type_invalid' => 'نوع الحجز غير صحيح',
+    'booking_number_required' => 'رقم الحجز مطلوب',
+    'booking_number_string' => 'رقم الحجز يجب أن يكون نص',
+    'booking_number_max' => 'رقم الحجز يجب أن يكون 255 حرف على الأكثر',
+    'booking_number_not_found' => 'رقم الحجز غير صحيح',
 ];

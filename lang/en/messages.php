@@ -104,4 +104,10 @@ return [
     'problem_description_string' => 'Problem description must be a string',
     'problem_description_min' => 'Problem description must be at least 10 characters',
     'first_booking_assessment_must_be_booked_first' => 'First booking assessment must be booked first',
+    'type_required' => 'Type is required',
+    'type_invalid' => 'Invalid type',
+    'booking_number_required' => 'Booking number is required',
+    'booking_number_string' => 'Booking number must be a string',
+    'booking_number_max' => 'Booking number must be at most 255 characters',
+    'booking_number_not_found' => 'Booking number not found',
 ];

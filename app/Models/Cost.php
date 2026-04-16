@@ -8,6 +8,7 @@ class Cost extends Model
 {
     protected $fillable = [
         'price',
+        'type',
         'branch_id',
     ];
 
