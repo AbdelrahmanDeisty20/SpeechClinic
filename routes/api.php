@@ -58,7 +58,7 @@ Route::group(['middleware' => setLang::class], function () {
     // Booking Routes
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('bookings', [BookingController::class, 'index']);
-        Route::post('bookings', [BookingController::class, 'store']);
+        Route::post('make-bookings', [BookingController::class, 'store']);
     });
 
     // Auth Sanctum Routes
