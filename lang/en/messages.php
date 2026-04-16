@@ -81,4 +81,9 @@ return [
     'available_times_successfully' => 'Available times fetched successfully',
     'costs_not_found' => 'No costs found',
     'costs_successfully' => 'Costs fetched successfully',
+    'booking_success' => 'Booking completed successfully',
+    'insufficient_limit' => 'Sorry, no available spots left for this time',
+    'branch_cost_not_found' => 'Sorry, cost not found for this branch',
+    'no_bookings_found' => 'No bookings found',
+    'bookings_fetched_successfully' => 'Bookings fetched successfully',
 ];

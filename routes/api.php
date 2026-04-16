@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AUTH\AuthController;
 use App\Http\Controllers\API\AUTH\ForgetPasswordController;
 use App\Http\Controllers\API\AvaliableController;
 use App\Http\Controllers\API\BannerController;
+use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
@@ -54,6 +55,12 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('days', [DayController::class, 'index']);
     // Available Time Routes
     Route::get('available-times', [AvaliableController::class, 'index']);
+    // Booking Routes
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::get('bookings', [BookingController::class, 'index']);
+        Route::post('bookings', [BookingController::class, 'store']);
+    });
+
     // Auth Sanctum Routes
     Route::group(['middleware' => 'auth:sanctum'], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);

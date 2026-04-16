@@ -95,4 +95,9 @@ return [
     'available_times_successfully' => 'تم جلب الأوقات المتاحة بنجاح',
     'costs_not_found' => 'لا يوجد تكاليف',
     'costs_successfully' => 'تم جلب التكاليف بنجاح',
+    'booking_success' => 'تم الحجز بنجاح',
+    'insufficient_limit' => 'عفواً، لا يوجد أماكن متاحة في هذا الموعد',
+    'branch_cost_not_found' => 'عفواً، لم يتم العثور على سعر لهذا الفرع',
+    'no_bookings_found' => 'لا يوجد حجوزات سابقة',
+    'bookings_fetched_successfully' => 'تم جلب الحجوزات بنجاح',
 ];
