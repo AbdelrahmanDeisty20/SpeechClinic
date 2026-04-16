@@ -13,7 +13,7 @@ class DayService
      */
     public function getAllDays()
     {
-        $days = Day::with('availableTimes')->get();
+        $days = Day::with('availableTimes')->paginate(10);
 
         if ($days->isEmpty()) {
             return [
