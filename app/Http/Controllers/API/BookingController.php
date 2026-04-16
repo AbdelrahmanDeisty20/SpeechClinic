@@ -36,6 +36,14 @@ class BookingController extends Controller
         }
         return $this->success(BookingResource::make($result['data']), $result['message']);
     }
+    public function storeMonthly(BookingRequest $request)
+    {
+        $result = $this->bookingService->bookingMonthly($request->validated());
+        if (!$result['status']) {
+            return $this->error($result['message'], 422);
+        }
+        return $this->success(BookingResource::make($result['data']), $result['message']);
+    }
     public function getAllBookings()
     {
         $result = $this->bookingService->getAllBookings();

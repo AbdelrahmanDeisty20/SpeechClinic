@@ -117,4 +117,5 @@ return [
     'problem_description_required' => 'وصف المشكلة مطلوب',
     'problem_description_string' => 'وصف المشكلة يجب أن يكون نص',
     'problem_description_min' => 'وصف المشكلة يجب أن يكون 10 أحرف على الأقل',
+    'first_booking_assessment_must_be_booked_first' => 'يجب حجز التقييم أولاً',
 ];

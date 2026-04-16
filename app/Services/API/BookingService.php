@@ -87,7 +87,52 @@ class BookingService
             ];
         }
     }
-
+    public function bookingMonthly(array $data)
+    {
+        $availableTime = AvailableTime::with('day.branch.cost')
+            ->where('type', 'monthly')
+            ->findOrFail($data['available_time_id']);
+            if(!$availableTime){
+                return [
+                    'status' => false,
+                    'message' => __('messages.available_time_not_found'),
+                    'data' => null
+                ];
+            }
+            if($availableTime->booking_number==null){
+                return [
+                    'status' => false,
+                    'message' => __('messages.first_booking_assessment_must_be_booked_first'),
+                    'data' => null
+                ];
+            }
+            $branch = $availableTime->day->branch;
+            $cost = $branch->cost;
+            if(!$cost){
+                return [
+                    'status' => false,
+                    'message' => __('messages.branch_cost_not_found'),
+                    'data' => null
+                ];
+            }
+            $booking = Booking::create([
+                'user_id' => auth()->id(),
+                'available_time_id' => $data['available_time_id'],
+                'booking_number' => rand(100000, 999999),
+                'child_name' => $data['child_name'],
+                'child_age' => $data['child_age'],
+                'child_photo' => $data['child_photo'],
+                'problem_description' => $data['problem_description'],
+                'type' => 'monthly',
+                'price' => $cost->price,
+                'status' => 'pending',
+            ]);
+            return [
+                'status' => true,
+                'message' => __('messages.booking_success'),
+                'data' => $booking
+            ];
+    }
     /**
      * Get user bookings.
      */

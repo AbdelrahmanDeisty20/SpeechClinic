@@ -59,6 +59,7 @@ Route::group(['middleware' => setLang::class], function () {
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('bookings', [BookingController::class, 'index']);
         Route::post('make-bookings', [BookingController::class, 'store']);
+        Route::post('make-bookings-monthly', [BookingController::class, 'storeMonthly']);
     });
     Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
 

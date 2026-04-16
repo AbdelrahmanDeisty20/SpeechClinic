@@ -103,4 +103,5 @@ return [
     'problem_description_required' => 'Problem description is required',
     'problem_description_string' => 'Problem description must be a string',
     'problem_description_min' => 'Problem description must be at least 10 characters',
+    'first_booking_assessment_must_be_booked_first' => 'First booking assessment must be booked first',
 ];
