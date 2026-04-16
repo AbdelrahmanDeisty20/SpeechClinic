@@ -36,4 +36,12 @@ class BookingController extends Controller
         }
         return $this->success(BookingResource::make($result['data']), $result['message']);
     }
+    public function getAllBookings()
+    {
+        $result = $this->bookingService->getAllBookings();
+        if (!$result['status']) {
+            return $this->error($result['message'], 404);
+        }
+        return $this->paginated(BookingResource::class, $result['data'], $result['message']);
+    }
 }
