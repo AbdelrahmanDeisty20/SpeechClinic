@@ -54,10 +54,14 @@ class BookingService
                     $photoPath = basename($originalPath);
                 }
 
+                // Generate booking number
+                $bookingNumber = $this->generateBookingNumber();
+
                 // 4. Create the booking
                 $booking = Booking::create([
                     'user_id' => auth()->id(),
                     'available_time_id' => $data['available_time_id'],
+                    'booking_number' => $bookingNumber,
                     'child_name' => $data['child_name'],
                     'child_age' => $data['child_age'],
                     'child_photo' => $photoPath,
