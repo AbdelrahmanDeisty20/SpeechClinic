@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers\API;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\BookingRequest;
 use App\Http\Resources\API\BookingResource;
