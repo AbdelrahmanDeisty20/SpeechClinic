@@ -56,11 +56,11 @@ Route::group(['middleware' => setLang::class], function () {
     // Available Time Routes
     Route::get('available-times', [AvaliableController::class, 'index']);
     // Booking Routes
-            Route::get('bookings', [BookingController::class, 'index']);
-
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::get('bookings', [BookingController::class, 'index']);
         Route::post('make-bookings', [BookingController::class, 'store']);
     });
+    Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
 
     // Auth Sanctum Routes
     Route::group(['middleware' => 'auth:sanctum'], function () { 

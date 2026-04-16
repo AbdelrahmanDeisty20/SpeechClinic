@@ -2,6 +2,7 @@
 
 namespace App\Services\API;
 
+use App\Http\Resources\API\BookingResource;
 use App\Models\AvailableTime;
 use App\Models\Booking;
 use App\Traits\ApiResponse;
@@ -105,7 +106,27 @@ class BookingService
         return [
             'status' => true,
             'message' => __('messages.bookings_fetched_successfully'),
-            'data' => $bookings
+            'data' => BookingResource::collection($bookings)
+        ];
+    }
+    public function getAllBookings()
+    {
+        $bookings = Booking::with('availableTime.day.branch')
+            ->latest()
+            ->paginate(10);
+
+        if ($bookings->isEmpty()) {
+            return [
+                'status' => false,
+                'message' => __('messages.no_bookings_found'),
+                'data' => []
+            ];
+        }
+
+        return [
+            'status' => true,
+            'message' => __('messages.bookings_fetched_successfully'),
+            'data' => BookingResource::collection($bookings)
         ];
     }
 }
