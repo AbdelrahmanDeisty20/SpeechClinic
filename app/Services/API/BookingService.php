@@ -55,8 +55,7 @@ class BookingService
                 }
 
                 // Generate booking number
-                $bookingNumber = $this->generateBookingNumber();
-
+                $bookingNumber = rand(100000, 999999);
                 // 4. Create the booking
                 $booking = Booking::create([
                     'user_id' => auth()->id(),
