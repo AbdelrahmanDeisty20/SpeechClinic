@@ -22,4 +22,8 @@ class Day extends Model
     {
         return $this->hasMany(AvailableTime::class);
     }
+    public function getNameAttribute()
+    {
+        return app()->getLocale() === 'ar' ? $this->name_ar : $this->name_en;
+    }
 }
