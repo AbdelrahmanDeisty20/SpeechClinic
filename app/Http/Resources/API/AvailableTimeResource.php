@@ -19,6 +19,7 @@ class AvailableTimeResource extends JsonResource
             'day_id' => $this->day_id,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
+            'limit' => (int) $this->limit,
             'day' => DayResource::make($this->whenLoaded('day')),
         ];
     }

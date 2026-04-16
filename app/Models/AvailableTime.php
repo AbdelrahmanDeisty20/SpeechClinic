@@ -9,6 +9,7 @@ class AvailableTime extends Model
     protected $fillable = [
         'start_time',
         'end_time',
+        'limit',
         'day_id',
     ];
 
