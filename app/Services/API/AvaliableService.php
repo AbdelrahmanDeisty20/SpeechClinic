@@ -2,6 +2,7 @@
 
 namespace App\Services\API;
 
+use App\Http\Resources\API\AvailableTimeResource;
 use App\Models\AvailableTime;
 use App\Traits\ApiResponse;
 
@@ -26,7 +27,7 @@ class AvaliableService
         return [
             'status' => true,
             'message' => __('messages.available_times_successfully'),
-            'data' => $availableTimes
+            'data' => AvailableTimeResource::collection($availableTimes)
         ];
     }
 }
