@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\API;
 
-use App\Http\Resources\BranchResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 

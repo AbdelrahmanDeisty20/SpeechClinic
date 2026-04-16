@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BranchResource;
+use App\Http\Resources\API\BranchResource;
 use App\Services\API\BranchService;
 use App\Traits\ApiResponse;
 
