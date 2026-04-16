@@ -28,7 +28,7 @@ class BookingMonthlyRequest extends FormRequest
             'child_age' => 'required|integer|min:0|max:18',
             'type' => 'required|in:monthly',
             'booking_number' => 'required|string|exists:bookings,booking_number,type,assessment',
-            'child_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'child_photo' => 'required|image',
             'problem_description' => 'required|string|min:10',
         ];
     }
@@ -52,8 +52,6 @@ class BookingMonthlyRequest extends FormRequest
             'booking_number.max' => __('messages.booking_number_max'),
             'child_photo.required' => __('messages.child_photo_required'),
             'child_photo.image' => __('messages.child_photo_image'),
-            'child_photo.mimes' => __('messages.child_photo_mimes'),
-            'child_photo.max' => __('messages.child_photo_max'),
             'problem_description.required' => __('messages.problem_description_required'),
             'problem_description.string' => __('messages.problem_description_string'),
             'problem_description.min' => __('messages.problem_description_min'),
