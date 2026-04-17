@@ -149,7 +149,7 @@ class BookingResource extends Resource
                                 // Column 1: Child Details
                                 Grid::make(1)
                                     ->schema([
-                                        Placeholder::make('photo_label')
+                                        Placeholder::make('photo_title')
                                             ->label('')
                                             ->content(__('Child Photo'))
                                             ->extraAttributes(['class' => 'font-bold']),
