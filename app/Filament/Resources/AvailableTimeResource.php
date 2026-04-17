@@ -26,7 +26,7 @@ class AvailableTimeResource extends Resource
     {
         return __('Booking Management');
     }
-
+//ماشي اولا  عايزك تعمل  امر  تشيل  حقل bookin_numbe دا  من bookings تمام  وكمان 
     public static function getNavigationLabel(): string
     {
         return __('Available Times');

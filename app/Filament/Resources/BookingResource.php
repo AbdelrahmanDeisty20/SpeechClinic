@@ -66,12 +66,7 @@ class BookingResource extends Resource
                             ->label(__('Child Age'))
                             ->numeric()
                             ->required(),
-                        TextInput::make('booking_number')
-                            ->label(__('Booking Number'))
-                            ->disabled()
-                            ->dehydrated(false)
-                            ->placeholder(__('ID'))
-                            ->columnSpanFull(),
+
                     ])
                     ->columns(2),
 
@@ -171,9 +166,7 @@ class BookingResource extends Resource
                                         Placeholder::make('user_phone')
                                             ->label(__('Phone'))
                                             ->content(fn ($record) => $record?->user?->phone),
-                                        Placeholder::make('booking_number')
-                                            ->label(__('Booking ID'))
-                                            ->content(fn ($record) => $record?->booking_number),
+
                                         Placeholder::make('price')
                                             ->label(__('Price'))
                                             ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('ج.م')),
@@ -217,11 +210,7 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('booking_number')
-                    ->searchable()
-                    ->sortable()
-                    ->copyable()
-                    ->label(__('ID')),
+
                 ImageColumn::make('child_photo')
                     ->disk('public')
                     ->getStateUsing(fn($record) => $record->child_photo ? "children/{$record->child_photo}" : null)

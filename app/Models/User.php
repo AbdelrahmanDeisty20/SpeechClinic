@@ -16,12 +16,17 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['first_name', 'last_name', 'phone', 'age', 'gender_id', 'nationality_id', 'email', 'password', 'image', 'is_active', 'email_verified_at'])]
+#[Fillable(['first_name', 'last_name', 'phone', 'age', 'gender_id', 'nationality_id', 'email', 'password', 'image', 'is_active', 'email_verified_at', 'type'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable,HasApiTokens, HasRoles;
+
+    public function isSpecialist(): bool
+    {
+        return $this->type === 'specialist';
+    }
 
     /**
      * Get the attributes that should be cast.
