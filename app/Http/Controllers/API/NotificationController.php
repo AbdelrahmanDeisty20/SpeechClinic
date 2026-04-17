@@ -53,12 +53,22 @@ class NotificationController extends Controller
     }
     public function sendNotificationToGuests(Request $request)
     {
-        $result = $this->notificationService->sendNotificationToGuests($request->title, $request->body, $request->data);
+        $request->validate([
+            'title' => 'required|string',
+            'body' => 'required|string',
+            'data' => 'nullable|array',
+        ]);
+
+        $result = $this->notificationService->sendNotificationToGuests(
+            (string) $request->title,
+            (string) $request->body,
+            (array) ($request->data ?? [])
+        );
 
         if (!$result['status']) {
             return $this->error($result['message'], 400);
         }
 
-        return $this->success($result['data'], $result['message']);
+        return $this->success($result['data'] ?? [], $result['message']);
     }
 }
