@@ -59,6 +59,7 @@ Route::group(['middleware' => setLang::class], function () {
     //fcm Tokens
     Route::post('fcm-token', [NotificationController::class, 'sendToken']);
     Route::post('fcm-token-user', [NotificationController::class, 'sendToken'])->middleware('auth:sanctum');
+    Route::post('send-notification-to-guests', [NotificationController::class, 'sendNotificationToGuests']);
     // Booking Routes
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('bookings', [BookingController::class, 'index']);
