@@ -142,65 +142,69 @@ class BookingResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                Section::make(__('Child Information'))
+                Section::make(__('Booking Summary'))
                     ->schema([
                         Grid::make(3)
                             ->schema([
-                                Image::make(fn ($record) => $record->child_photo_url, __('Photo')),
-                                Placeholder::make('child_name')
-                                    ->label(__('Child Name'))
-                                    ->content(fn ($record) => $record?->child_name),
-                                Placeholder::make('child_age')
-                                    ->label(__('Child Age'))
-                                    ->content(fn ($record) => ($record?->child_age ?? '0') . ' ' . __('Years')),
+                                // Column 1: Child Details
+                                Grid::make(1)
+                                    ->schema([
+                                        Image::make(fn ($record) => $record->child_photo_url, __('Photo')),
+                                        Placeholder::make('child_name')
+                                            ->label(__('Child Name'))
+                                            ->content(fn ($record) => $record?->child_name),
+                                        Placeholder::make('child_age')
+                                            ->label(__('Child Age'))
+                                            ->content(fn ($record) => ($record?->child_age ?? '0') . ' ' . __('Years')),
+                                    ])->columnSpan(1),
+
+                                // Column 2: Parent Details
+                                Grid::make(1)
+                                    ->schema([
+                                        Placeholder::make('user_name')
+                                            ->label(__('Parent Name'))
+                                            ->content(fn ($record) => $record?->user?->full_name),
+                                        Placeholder::make('user_phone')
+                                            ->label(__('Phone'))
+                                            ->content(fn ($record) => $record?->user?->phone),
+                                        Placeholder::make('booking_number')
+                                            ->label(__('Booking ID'))
+                                            ->content(fn ($record) => $record?->booking_number),
+                                        Placeholder::make('price')
+                                            ->label(__('Price'))
+                                            ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('جم')),
+                                    ])->columnSpan(1),
+
+                                // Column 3: Appointment Details
+                                Grid::make(1)
+                                    ->schema([
+                                        Placeholder::make('status')
+                                            ->label(__('Status'))
+                                            ->content(fn ($record) => match ($record?->status) {
+                                                'pending' => __('Pending'),
+                                                'confirmed' => __('Confirmed'),
+                                                'cancelled' => __('Cancelled'),
+                                                'completed' => __('Completed'),
+                                                default => $record?->status,
+                                            }),
+                                        Placeholder::make('type')
+                                            ->label(__('Type'))
+                                            ->content(fn ($record) => __($record?->type === 'assessment' ? 'Assessment' : 'Monthly')),
+                                        Placeholder::make('branch_name')
+                                            ->label(__('Branch'))
+                                            ->content(fn ($record) => $record?->availableTime?->day?->branch?->name),
+                                        Placeholder::make('appointment')
+                                            ->label(__('Appointment'))
+                                            ->content(function ($record) {
+                                                $day = $record?->availableTime?->day?->name;
+                                                $state = $record?->availableTime;
+                                                if (!$state) return $day ?? '-';
+                                                $start = \Carbon\Carbon::parse($state->start_time)->format('h:i A');
+                                                $end = \Carbon\Carbon::parse($state->end_time)->format('h:i A');
+                                                return "{$day} ({$start} - {$end})";
+                                            }),
+                                    ])->columnSpan(1),
                             ]),
-                    ]),
-
-                Grid::make(2)
-                    ->schema([
-                        Section::make(__('Booking Details'))
-                            ->schema([
-                                Placeholder::make('booking_number')
-                                    ->label(__('Booking ID'))
-                                    ->content(fn ($record) => $record?->booking_number),
-                                Placeholder::make('user_name')
-                                    ->label(__('Parent Name'))
-                                    ->content(fn ($record) => $record?->user?->name),
-                                Placeholder::make('status')
-                                    ->label(__('Status'))
-                                    ->content(fn ($record) => match ($record?->status) {
-                                        'pending' => __('Pending'),
-                                        'confirmed' => __('Confirmed'),
-                                        'cancelled' => __('Cancelled'),
-                                        'completed' => __('Completed'),
-                                        default => $record?->status,
-                                    }),
-                                Placeholder::make('price')
-                                    ->label(__('Price'))
-                                    ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('جم')),
-                                Placeholder::make('type')
-                                    ->label(__('Type'))
-                                    ->content(fn ($record) => __($record?->type === 'assessment' ? 'Assessment' : 'Monthly')),
-                            ])->columnSpan(1),
-
-                        Section::make(__('Appointment & Location'))
-                            ->schema([
-                                Placeholder::make('branch_name')
-                                    ->label(__('Branch'))
-                                    ->content(fn ($record) => $record?->availableTime?->day?->branch?->name),
-                                Placeholder::make('day_name')
-                                    ->label(__('Day'))
-                                    ->content(fn ($record) => $record?->availableTime?->day?->name),
-                                Placeholder::make('time_slot')
-                                    ->label(__('Time Slot'))
-                                    ->content(function ($record) {
-                                        $state = $record?->availableTime;
-                                        if (!$state) return '-';
-                                        $start = \Carbon\Carbon::parse($state->start_time)->format('h:i A');
-                                        $end = \Carbon\Carbon::parse($state->end_time)->format('h:i A');
-                                        return "{$start} - {$end}";
-                                    }),
-                            ])->columnSpan(1),
                     ]),
             ]);
     }
