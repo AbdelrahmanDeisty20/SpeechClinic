@@ -137,8 +137,7 @@ class BookingResource extends Resource
                     ->schema([
                         Grid::make(3)
                             ->schema([
-                                Image::make(fn ($record) => $record->child_photo_url, __('Photo'))
-                                    ->circular(),
+                                Image::make(fn ($record) => $record->child_photo_url, __('Photo')),
                                 Text::make(fn ($record) => $record->child_name)
                                     ->label(__('Child Name'))
                                     ->size('lg')
