@@ -135,4 +135,6 @@ return [
     'fcm_token_deleted_successfully' => 'تم حذف التوكن بنجاح',
     'fcm_token_required' => 'التوكن مطلوب',
     'fcm_token_string' => 'التوكن يجب أن يكون نص',
+    'test_notification_user_title' => 'إشعار تجريبي',
+    'test_notification_user_body' => 'هذا إشعار تجريبي مرسل لجميع المستخدمين',
 ];

@@ -121,4 +121,6 @@ return [
     'fcm_token_deleted_successfully' => 'FCM token deleted successfully',
     'fcm_token_required' => 'FCM token is required',
     'fcm_token_string' => 'FCM token must be a string',
+    'test_notification_user_title' => 'Test Notification',
+    'test_notification_user_body' => 'This is a test notification sent to all users',
 ];

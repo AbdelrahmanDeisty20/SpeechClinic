@@ -71,4 +71,14 @@ class NotificationController extends Controller
 
         return $this->success($result['data'] ?? [], $result['message']);
     }
+     public function sendTestNotificationToUsers(Request $request)
+    {
+        $title = $request->title ?? __('messages.test_notification_user_title');
+        $body = $request->body ?? __('messages.test_notification_user_body');
+        $data = $request->data ?? ['type' => 'test_user'];
+
+        $result = $this->notificationService->sendNotificationToUsers($title, $body, $data);
+
+        return $this->success($result, $result['message']);
+    }
 }
