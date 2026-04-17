@@ -97,7 +97,7 @@ class BannerResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->disk('public')
-                    ->directory('banners')
+                    ->getStateUsing(fn($record) => $record->image ? "banners/{$record->image}" : null)
                     ->square()
                     ->size(100),
                 TextColumn::make('title_en')

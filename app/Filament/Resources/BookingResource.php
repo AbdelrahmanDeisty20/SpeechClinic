@@ -224,7 +224,7 @@ class BookingResource extends Resource
                     ->label(__('ID')),
                 ImageColumn::make('child_photo')
                     ->disk('public')
-                    ->directory('children')
+                    ->getStateUsing(fn($record) => $record->child_photo ? "children/{$record->child_photo}" : null)
                     ->circular()
                     ->label(__('Photo')),
                 TextColumn::make('child_name')

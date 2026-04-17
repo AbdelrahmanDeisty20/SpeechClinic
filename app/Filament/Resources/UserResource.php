@@ -52,12 +52,6 @@ class UserResource extends Resource
                         Section::make(__('Profile Information'))
                             ->description(__('Basic user profile details.'))
                             ->schema([
-                                FileUpload::make('image')
-                                    ->image()
-                                    ->avatar()
-                                    ->directory('users')
-                                    ->maxSize(2048)
-                                    ->columnSpanFull(),
                                 TextInput::make('first_name')
                                     ->label(__('First Name'))
                                     ->required()
@@ -107,11 +101,6 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')
-                    ->label(__('Avatar'))
-                    ->disk('public')
-                    ->directory('users')
-                    ->circular(),
                 TextColumn::make('full_name')
                     ->label(__('Full Name'))
                     ->searchable(['first_name', 'last_name'])
