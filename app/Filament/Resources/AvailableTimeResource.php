@@ -4,15 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AvailableTimeResource\Pages;
 use App\Models\AvailableTime;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class AvailableTimeResource extends Resource
 {
@@ -41,7 +41,9 @@ class AvailableTimeResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make(__('Time Slot Details'))
+                Section::make(__('Slot Configuration'))
+                    ->description(__('Define the day and service type.'))
+                    ->columns(2)
                     ->schema([
                         Select::make('day_id')
                             ->label(__('Day of Week'))
@@ -49,6 +51,20 @@ class AvailableTimeResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
+                        Select::make('type')
+                            ->label(__('Type'))
+                            ->options([
+                                'assessment' => __('Assessment'),
+                                'monthly' => __('Monthly'),
+                            ])
+                            ->default('assessment')
+                            ->required(),
+                    ]),
+
+                Section::make(__('Timing & Capacity'))
+                    ->description(__('Set the time window and max bookings.'))
+                    ->columns(3)
+                    ->schema([
                         TimePicker::make('start_time')
                             ->label(__('Start Time'))
                             ->required(),
@@ -59,14 +75,6 @@ class AvailableTimeResource extends Resource
                             ->label(__('Max Bookings per Slot'))
                             ->numeric()
                             ->default(1)
-                            ->required(),
-                        Select::make('type')
-                            ->label(__('Type'))
-                            ->options([
-                                'assessment' => __('Assessment'),
-                                'monthly' => __('Monthly'),
-                            ])
-                            ->default('assessment')
                             ->required(),
                     ]),
             ]);
@@ -93,11 +101,11 @@ class AvailableTimeResource extends Resource
                 TextColumn::make('type')
                     ->label(__('Type'))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
                     })
-                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
+                    ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('created_at')
                     ->label(__('Created At'))
                     ->dateTime()

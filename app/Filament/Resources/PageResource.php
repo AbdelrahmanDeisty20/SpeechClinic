@@ -57,17 +57,27 @@ class PageResource extends Resource
                             ]),
                     ]),
 
-                Section::make(__('Page Content'))
-                    ->description(__('The main body of the page.'))
+                Grid::make(2)
                     ->schema([
-                        RichEditor::make('content_ar')
-                            ->label(__('Content (Arabic)'))
-                            ->required()
-                            ->columnSpanFull(),
-                        RichEditor::make('content_en')
-                            ->label(__('Content (English)'))
-                            ->required()
-                            ->columnSpanFull(),
+                        Section::make(__('Arabic Content'))
+                            ->description(__('Content displayed in Arabic.'))
+                            ->schema([
+                                RichEditor::make('content_ar')
+                                    ->label(__('Content (Arabic)'))
+                                    ->required()
+                                    ->columnSpanFull(),
+                            ])
+                            ->columnSpan(1),
+
+                        Section::make(__('English Content'))
+                            ->description(__('Content displayed in English.'))
+                            ->schema([
+                                RichEditor::make('content_en')
+                                    ->label(__('Content (English)'))
+                                    ->required()
+                                    ->columnSpanFull(),
+                            ])
+                            ->columnSpan(1),
                     ]),
             ]);
     }

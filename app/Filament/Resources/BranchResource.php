@@ -4,14 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BranchResource\Pages;
 use App\Models\Branch;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class BranchResource extends Resource
 {
@@ -40,7 +40,9 @@ class BranchResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make(__('Branch Details'))
+                Section::make(__('Branch Identity'))
+                    ->description(__('Define localized branch names.'))
+                    ->columns(2)
                     ->schema([
                         TextInput::make('name_ar')
                             ->label(__('Name AR'))
@@ -50,6 +52,12 @@ class BranchResource extends Resource
                             ->label(__('Name EN'))
                             ->required()
                             ->maxLength(255),
+                    ]),
+
+                Section::make(__('Contact & Location'))
+                    ->description(__('Branch contact information and address.'))
+                    ->columns(3)
+                    ->schema([
                         TextInput::make('address_ar')
                             ->label(__('Address AR'))
                             ->required()

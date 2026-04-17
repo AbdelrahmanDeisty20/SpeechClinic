@@ -4,19 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BannerResource\Pages;
 use App\Models\Banner;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Grid;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class BannerResource extends Resource
 {
@@ -61,7 +61,6 @@ class BannerResource extends Resource
                             ->label(__('Is Active'))
                             ->default(true),
                     ]),
-
                 Grid::make(2)
                     ->schema([
                         Section::make('Arabic Content')
@@ -74,8 +73,8 @@ class BannerResource extends Resource
                                 Textarea::make('description_ar')
                                     ->rows(3)
                                     ->label('Description (Arabic)'),
-                            ])->columnSpan(1),
-
+                            ])
+                            ->columnSpan(1),
                         Section::make('English Content')
                             ->description('Content displayed in English.')
                             ->schema([
@@ -86,7 +85,8 @@ class BannerResource extends Resource
                                 Textarea::make('description_en')
                                     ->rows(3)
                                     ->label('Description (English)'),
-                            ])->columnSpan(1),
+                            ])
+                            ->columnSpan(1),
                     ]),
             ]);
     }

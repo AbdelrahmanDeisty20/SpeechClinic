@@ -4,15 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SettingResource\Pages;
 use App\Models\Setting;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class SettingResource extends Resource
 {
@@ -41,10 +41,10 @@ class SettingResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make(__('Setting Key'))
-                    ->description(__('Define the localized key for this setting.'))
+                Section::make(__('Setting Metadata'))
+                    ->description(__('Define the localized key and type.'))
                     ->schema([
-                        Grid::make(2)
+                        Grid::make(3)
                             ->schema([
                                 TextInput::make('key_ar')
                                     ->label(__('Key (Arabic)'))
@@ -52,22 +52,6 @@ class SettingResource extends Resource
                                     ->maxLength(255),
                                 TextInput::make('key_en')
                                     ->label(__('Key (English)'))
-                                    ->required()
-                                    ->maxLength(255),
-                            ]),
-                    ]),
-
-                Section::make(__('Configuration Value'))
-                    ->description(__('Define the localized value and type.'))
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('value_ar')
-                                    ->label(__('Value (Arabic)'))
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('value_en')
-                                    ->label(__('Value (English)'))
                                     ->required()
                                     ->maxLength(255),
                                 Select::make('type')
@@ -81,6 +65,27 @@ class SettingResource extends Resource
                                     ->required()
                                     ->default('text'),
                             ]),
+                    ]),
+
+                Grid::make(2)
+                    ->schema([
+                        Section::make(__('Value (Arabic)'))
+                            ->schema([
+                                TextInput::make('value_ar')
+                                    ->label(__('Value (Arabic)'))
+                                    ->required()
+                                    ->maxLength(255),
+                            ])
+                            ->columnSpan(1),
+
+                        Section::make(__('Value (English)'))
+                            ->schema([
+                                TextInput::make('value_en')
+                                    ->label(__('Value (English)'))
+                                    ->required()
+                                    ->maxLength(255),
+                            ])
+                            ->columnSpan(1),
                     ]),
             ]);
     }

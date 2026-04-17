@@ -4,14 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CostResource\Pages;
 use App\Models\Cost;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class CostResource extends Resource
 {
@@ -41,6 +41,7 @@ class CostResource extends Resource
         return $schema
             ->schema([
                 Section::make(__('Pricing Details'))
+                    ->columns(3)
                     ->schema([
                         TextInput::make('price')
                             ->label(__('Price'))
@@ -75,11 +76,11 @@ class CostResource extends Resource
                 TextColumn::make('type')
                     ->label(__('Type'))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
                     })
-                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
+                    ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('price')
                     ->label(__('Price'))
                     ->money('USD')

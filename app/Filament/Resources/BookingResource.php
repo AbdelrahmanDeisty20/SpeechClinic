@@ -4,20 +4,20 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookingResource\Pages;
 use App\Models\Booking;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Actions;
-use Filament\Tables\Table;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Grid;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class BookingResource extends Resource
 {
@@ -46,32 +46,34 @@ class BookingResource extends Resource
     {
         return $schema
             ->schema([
-                Grid::make(3)
+                Section::make(__('Child Information'))
+                    ->description(__('Basic details of the child.'))
                     ->schema([
-                        Section::make(__('Child Information'))
-                            ->description(__('Basic details of the child.'))
-                            ->schema([
-                                FileUpload::make('child_photo')
-                                    ->label(__('Photo'))
-                                    ->image()
-                                    ->avatar()
-                                    ->directory('children')
-                                    ->columnSpanFull(),
-                                TextInput::make('child_name')
-                                    ->label(__('Child Name'))
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('child_age')
-                                    ->label(__('Child Age'))
-                                    ->numeric()
-                                    ->required(),
-                                TextInput::make('booking_number')
-                                    ->label(__('Booking Number'))
-                                    ->disabled()
-                                    ->dehydrated(false)
-                                    ->placeholder(__('ID')),
-                            ])->columnSpan(2),
+                        FileUpload::make('child_photo')
+                            ->label(__('Photo'))
+                            ->image()
+                            ->avatar()
+                            ->directory('children')
+                            ->columnSpanFull(),
+                        TextInput::make('child_name')
+                            ->label(__('Child Name'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('child_age')
+                            ->label(__('Child Age'))
+                            ->numeric()
+                            ->required(),
+                        TextInput::make('booking_number')
+                            ->label(__('Booking Number'))
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->placeholder(__('ID'))
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
 
+                Grid::make(2)
+                    ->schema([
                         Section::make(__('Booking Details'))
                             ->description(__('Service and status details.'))
                             ->schema([
@@ -109,16 +111,18 @@ class BookingResource extends Resource
                                     ->numeric()
                                     ->prefix('$')
                                     ->required(),
-                            ])->columnSpan(1),
+                            ])
+                            ->columnSpan(1),
 
                         Section::make(__('Problem Description'))
                             ->schema([
                                 Textarea::make('problem_description')
                                     ->label(__('Problem Description'))
                                     ->required()
-                                    ->rows(4)
+                                    ->rows(12)
                                     ->columnSpanFull(),
-                            ])->columnSpanFull(),
+                            ])
+                            ->columnSpan(1),
                     ]),
             ]);
     }
@@ -142,21 +146,21 @@ class BookingResource extends Resource
                 TextColumn::make('type')
                     ->label(__('Type'))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
                     })
-                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
+                    ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
                         'completed' => 'gray',
                     })
-                    ->formatStateUsing(fn (string $state): string => match($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'pending' => __('Pending'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
