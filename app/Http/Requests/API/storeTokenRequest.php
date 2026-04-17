@@ -23,7 +23,7 @@ class storeTokenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fcm_token' => 'required|string',
+            'token' => 'required|string',
             'device_id' => 'nullable|string',
             'user_id' => 'nullable|exists:users,id',
         ];
