@@ -149,6 +149,10 @@ class BookingResource extends Resource
                                 // Column 1: Child Details
                                 Grid::make(1)
                                     ->schema([
+                                        Placeholder::make('photo_label')
+                                            ->label('')
+                                            ->content(__('Child Photo'))
+                                            ->extraAttributes(['class' => 'font-bold']),
                                         Image::make(fn ($record) => $record->child_photo_url, __('Photo')),
                                         Placeholder::make('child_name')
                                             ->label(__('Child Name'))
@@ -172,7 +176,7 @@ class BookingResource extends Resource
                                             ->content(fn ($record) => $record?->booking_number),
                                         Placeholder::make('price')
                                             ->label(__('Price'))
-                                            ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('جم')),
+                                            ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('ج.م')),
                                     ])->columnSpan(1),
 
                                 // Column 3: Appointment Details
