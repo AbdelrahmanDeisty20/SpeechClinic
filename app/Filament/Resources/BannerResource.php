@@ -13,8 +13,10 @@ use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\ToggleColumn;
 
 class BannerResource extends Resource
 {
@@ -105,6 +107,8 @@ class BannerResource extends Resource
                     ->label('Title (AR)')
                     ->searchable()
                     ->sortable(),
+                ToggleColumn::make('is_active')
+                    ->label('Active'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
