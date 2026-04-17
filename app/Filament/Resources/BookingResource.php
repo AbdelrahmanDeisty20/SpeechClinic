@@ -138,7 +138,7 @@ class BookingResource extends Resource
                     ->schema([
                         Placeholder::make('problem_description')
                             ->label(__('Description'))
-                            ->content(fn ($record) => $record?->problem_description)
+                            ->content(fn ($record) => $record??->problem_description)
                             ->columnSpanFull(),
                     ]),
 
@@ -152,7 +152,7 @@ class BookingResource extends Resource
                                         Placeholder::make('photo_title')
                                             ->label('')
                                             ->content(__('Child Photo'))
-                                            ->extraAttributes(['class' => 'font-bold']),
+                                            ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
                                         Image::make(fn ($record) => $record->child_photo_url, __('Photo')),
                                         Placeholder::make('child_name')
                                             ->label(__('Child Name'))

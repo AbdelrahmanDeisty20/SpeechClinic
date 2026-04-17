@@ -47,7 +47,7 @@ class CostResource extends Resource
                             ->label(__('Price'))
                             ->numeric()
                             ->required()
-                            ->prefix(__('EGP')),
+                            ->prefix(__('ج.م')),
                         Select::make('type')
                             ->label(__('Type'))
                             ->options([
