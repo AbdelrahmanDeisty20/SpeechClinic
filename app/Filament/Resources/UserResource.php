@@ -53,7 +53,6 @@ class UserResource extends Resource
                             ->description(__('Basic user profile details.'))
                             ->schema([
                                 FileUpload::make('image')
-                                    ->label(__('Avatar'))
                                     ->image()
                                     ->avatar()
                                     ->directory('users')
@@ -110,6 +109,8 @@ class UserResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label(__('Avatar'))
+                    ->disk('public')
+                    ->directory('users')
                     ->circular(),
                 TextColumn::make('full_name')
                     ->label(__('Full Name'))

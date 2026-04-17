@@ -97,6 +97,7 @@ class BannerResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->disk('public')
+                    ->directory('banners')
                     ->square()
                     ->size(100),
                 TextColumn::make('title_en')

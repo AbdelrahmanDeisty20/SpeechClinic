@@ -223,6 +223,8 @@ class BookingResource extends Resource
                     ->copyable()
                     ->label(__('ID')),
                 ImageColumn::make('child_photo')
+                    ->disk('public')
+                    ->directory('children')
                     ->circular()
                     ->label(__('Photo')),
                 TextColumn::make('child_name')

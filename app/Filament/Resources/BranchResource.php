@@ -87,7 +87,7 @@ class BranchResource extends Resource
                     ->sortable(),
                 TextColumn::make('address_link')
                     ->label(__('Address Link'))
-                    ->url()
+                    ->url(fn ($record) => $record->address_link)
                     ->openUrlInNewTab()
                     ->limit(30),
                 TextColumn::make('phone')
