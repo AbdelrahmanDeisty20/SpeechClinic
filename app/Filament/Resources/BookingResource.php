@@ -86,7 +86,7 @@ class BookingResource extends Resource
                                 Select::make('available_time_id')
                                     ->label(__('Available Time'))
                                     ->relationship('availableTime', 'id')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => "Day: {$record->day?->name_en} - Slot: {$record->start_time} - {$record->end_time} ({$record->day?->branch?->name_en})")
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => __('Day') . ": {$record->day?->name} - " . __('Time') . ": " . \Carbon\Carbon::parse($record->start_time)->format('h:i A') . " - " . \Carbon\Carbon::parse($record->end_time)->format('h:i A') . " ({$record->day?->branch?->name})")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -145,15 +145,21 @@ class BookingResource extends Resource
                     ->sortable(),
                 TextColumn::make('availableTime.day.branch.name_en')
                     ->label(__('Branch'))
+                    ->getStateUsing(fn ($record) => $record->availableTime?->day?->branch?->name)
                     ->badge()
                     ->color('primary')
                     ->sortable(),
                 TextColumn::make('availableTime.day.name_en')
                     ->label(__('Day'))
+                    ->getStateUsing(fn ($record) => $record->availableTime?->day?->name)
                     ->sortable(),
                 TextColumn::make('availableTime.start_time')
-                    ->label(__('Slot'))
-                    ->formatStateUsing(fn ($record) => "{$record->availableTime?->start_time} - {$record->availableTime?->end_time}")
+                    ->label(__('Time Slot'))
+                    ->formatStateUsing(function ($record) {
+                        $start = \Carbon\Carbon::parse($record->availableTime?->start_time)->format('h:i A');
+                        $end = \Carbon\Carbon::parse($record->availableTime?->end_time)->format('h:i A');
+                        return "{$start} - {$end}";
+                    })
                     ->sortable(),
                 TextColumn::make('type')
                     ->label(__('Type'))

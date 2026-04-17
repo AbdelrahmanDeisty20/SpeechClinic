@@ -41,14 +41,14 @@ class AvailableTimeResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make(__('Slot Configuration'))
+                Section::make(__('Time Configuration'))
                     ->description(__('Define the day and service type.'))
                     ->columns(2)
                     ->schema([
                         Select::make('day_id')
                             ->label(__('Day of Week'))
                             ->relationship('day', 'name_en')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name_en} ({$record->branch?->name_en})")
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} ({$record->branch?->name})")
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -73,7 +73,7 @@ class AvailableTimeResource extends Resource
                             ->label(__('End Time'))
                             ->required(),
                         TextInput::make('limit')
-                            ->label(__('Max Bookings per Slot'))
+                            ->label(__('Max Bookings per Period'))
                             ->numeric()
                             ->default(1)
                             ->required(),
@@ -87,19 +87,21 @@ class AvailableTimeResource extends Resource
             ->columns([
                 TextColumn::make('day.branch.name_en')
                     ->label(__('Branch'))
+                    ->getStateUsing(fn ($record) => $record->day?->branch?->name)
                     ->badge()
                     ->color('primary')
                     ->sortable(),
                 TextColumn::make('day.name_en')
                     ->label(__('Day'))
+                    ->getStateUsing(fn ($record) => $record->day?->name)
                     ->sortable(),
                 TextColumn::make('start_time')
                     ->label(__('Start Time'))
-                    ->time()
+                    ->time('h:i A')
                     ->sortable(),
                 TextColumn::make('end_time')
                     ->label(__('End Time'))
-                    ->time()
+                    ->time('h:i A')
                     ->sortable(),
                 TextColumn::make('limit')
                     ->label(__('Limit'))
