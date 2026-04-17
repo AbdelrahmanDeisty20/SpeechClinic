@@ -56,7 +56,7 @@ class NotificationService
 
     public function sendNotificationToUsers($title, $body, $data = [])
     {
-        $tokens = UserFcmToken::whereNotNull('user_id')->pluck('fcm_token')->toArray();
+        $tokens = UserFcmToken::whereNotNull('user_id')->pluck('token')->toArray();
 
         $results = [];
         foreach ($tokens as $token) {
@@ -73,7 +73,7 @@ class NotificationService
 
     public function broadcastNotification($title, $body, $data = [])
     {
-        $tokens = UserFcmToken::pluck('fcm_token')->toArray();
+        $tokens = UserFcmToken::pluck('token')->toArray();
 
         $results = [];
         foreach ($tokens as $token) {
@@ -90,7 +90,7 @@ class NotificationService
 
     public function sendToUser($userId, $title, $body, $data = [])
     {
-        $tokens = UserFcmToken::where('user_id', $userId)->pluck('fcm_token')->toArray();
+        $tokens = UserFcmToken::where('user_id', $userId)->pluck('token')->toArray();
 
         $results = [];
         foreach ($tokens as $token) {
