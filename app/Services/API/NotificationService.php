@@ -39,7 +39,7 @@ class NotificationService
 
     public function sendNotificationToGuests($title, $body, $data = [])
     {
-        $tokens = UserFcmToken::whereNull('user_id')->pluck('fcm_token')->toArray();
+        $tokens = UserFcmToken::whereNull('user_id')->pluck('token')->toArray();
 
         $results = [];
         foreach ($tokens as $token) {
