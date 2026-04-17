@@ -48,6 +48,7 @@ class AvailableTimeResource extends Resource
                         Select::make('day_id')
                             ->label(__('Day of Week'))
                             ->relationship('day', 'name_en')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name_en} ({$record->branch?->name_en})")
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -84,6 +85,11 @@ class AvailableTimeResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('day.branch.name_en')
+                    ->label(__('Branch'))
+                    ->badge()
+                    ->color('primary')
+                    ->sortable(),
                 TextColumn::make('day.name_en')
                     ->label(__('Day'))
                     ->sortable(),

@@ -86,7 +86,7 @@ class BookingResource extends Resource
                                 Select::make('available_time_id')
                                     ->label(__('Available Time'))
                                     ->relationship('availableTime', 'id')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => "Slot #{$record->id} ({$record->day?->name_en}: {$record->start_time} - {$record->end_time})")
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => "Day: {$record->day?->name_en} - Slot: {$record->start_time} - {$record->end_time} ({$record->day?->branch?->name_en})")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -142,6 +142,18 @@ class BookingResource extends Resource
                 TextColumn::make('child_name')
                     ->label(__('Child Name'))
                     ->searchable()
+                    ->sortable(),
+                TextColumn::make('availableTime.day.branch.name_en')
+                    ->label(__('Branch'))
+                    ->badge()
+                    ->color('primary')
+                    ->sortable(),
+                TextColumn::make('availableTime.day.name_en')
+                    ->label(__('Day'))
+                    ->sortable(),
+                TextColumn::make('availableTime.start_time')
+                    ->label(__('Slot'))
+                    ->formatStateUsing(fn ($record) => "{$record->availableTime?->start_time} - {$record->availableTime?->end_time}")
                     ->sortable(),
                 TextColumn::make('type')
                     ->label(__('Type'))
