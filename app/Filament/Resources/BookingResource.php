@@ -37,12 +37,12 @@ class BookingResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Booking Management');
+        return __('Assessment Bookings');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Booking Management');
+        return __('Assessment Bookings');
     }
 
     public static function form(Schema $schema): Schema

@@ -20,11 +20,11 @@ class AvailableTimeResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Booking Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Available Times Management';
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Booking Management');
+        return __('Available Times Management');
     }
     public static function getNavigationLabel(): string
     {
@@ -147,7 +147,20 @@ class AvailableTimeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                \Filament\Tables\Filters\SelectFilter::make('branch_id')
+                    ->label(__('Branch'))
+                    ->relationship('day.branch', 'name_en')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name),
+                \Filament\Tables\Filters\SelectFilter::make('day_id')
+                    ->label(__('Day'))
+                    ->relationship('day', 'name_en')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} ({$record->branch?->name})"),
+                \Filament\Tables\Filters\SelectFilter::make('type')
+                    ->label(__('Type'))
+                    ->options([
+                        'assessment' => __('Assessment'),
+                        'monthly' => __('Monthly'),
+                    ]),
             ])
             ->actions([
                 Actions\ViewAction::make(),
