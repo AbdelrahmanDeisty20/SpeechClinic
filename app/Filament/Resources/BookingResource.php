@@ -70,10 +70,6 @@ class BookingResource extends Resource
                                     ->disabled()
                                     ->dehydrated(false)
                                     ->placeholder(__('ID')),
-                                TextInput::make('assessment_number')
-                                    ->label(__('Ref. Assessment #'))
-                                    ->placeholder('N/A')
-                                    ->disabled(),
                             ])->columnSpan(2),
 
                         Section::make(__('Booking Details'))
@@ -105,6 +101,7 @@ class BookingResource extends Resource
                                         'pending' => __('Pending'),
                                         'confirmed' => __('Confirmed'),
                                         'cancelled' => __('Cancelled'),
+                                        'completed' => __('Completed'),
                                     ])
                                     ->required(),
                                 TextInput::make('price')
@@ -135,10 +132,6 @@ class BookingResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->label(__('ID')),
-                TextColumn::make('assessment_number')
-                    ->searchable()
-                    ->sortable()
-                    ->label(__('Ref.')),
                 ImageColumn::make('child_photo')
                     ->circular()
                     ->label(__('Photo')),
@@ -161,11 +154,13 @@ class BookingResource extends Resource
                         'pending' => 'warning',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
+                        'completed' => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match($state) {
                         'pending' => __('Pending'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
+                        'completed' => __('Completed'),
                     }),
                 TextColumn::make('price')
                     ->label(__('Price'))
@@ -190,6 +185,7 @@ class BookingResource extends Resource
                         'pending' => __('Pending'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
+                        'completed' => __('Completed'),
                     ]),
             ])
             ->actions([

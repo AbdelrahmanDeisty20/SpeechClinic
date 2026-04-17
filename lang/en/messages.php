@@ -123,4 +123,5 @@ return [
     'fcm_token_string' => 'FCM token must be a string',
     'test_notification_user_title' => 'Test Notification',
     'test_notification_user_body' => 'This is a test notification sent to all users',
+    'Completed' => 'Completed',
 ];
