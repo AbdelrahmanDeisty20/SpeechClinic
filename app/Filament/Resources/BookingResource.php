@@ -138,7 +138,7 @@ class BookingResource extends Resource
                     ->schema([
                         Placeholder::make('problem_description')
                             ->label(__('Description'))
-                            ->content(fn ($record) => $record??->problem_description)
+                            ->content(fn ($record) => $record?->problem_description)
                             ->columnSpanFull(),
                     ]),
 

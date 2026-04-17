@@ -56,16 +56,14 @@ class BranchResource extends Resource
 
                 Section::make(__('Contact & Location'))
                     ->description(__('Branch contact information and address.'))
-                    ->columns(3)
+                    ->columns(2)
                     ->schema([
-                        TextInput::make('address_ar')
-                            ->label(__('Address AR'))
+                        TextInput::make('address_link')
+                            ->label(__('Address Link'))
+                            ->url()
                             ->required()
-                            ->maxLength(255),
-                        TextInput::make('address_en')
-                            ->label(__('Address EN'))
-                            ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpanFull(),
                         TextInput::make('phone')
                             ->label(__('Phone'))
                             ->tel()
@@ -87,8 +85,11 @@ class BranchResource extends Resource
                     ->label(__('Name EN'))
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('address_ar')
-                    ->label(__('Address AR')),
+                TextColumn::make('address_link')
+                    ->label(__('Address Link'))
+                    ->url()
+                    ->openUrlInNewTab()
+                    ->limit(30),
                 TextColumn::make('phone')
                     ->label(__('Phone'))
                     ->searchable(),
