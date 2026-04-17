@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255', 'regex:/^(\+20|0)?1[0125][0-9]{8}$/'],
+            'phone' => ['required', 'string', 'max:20', 'regex:/^(\+|0)[0-9]{7,15}$/', 'unique:users,phone'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
@@ -38,6 +38,7 @@ class RegisterRequest extends FormRequest
             'last_name.required' => __('messages.last_name_required'),
             'phone.required' => __('messages.phone_required'),
             'phone.regex' => __('messages.phone_invalid'),
+            'phone.unique' => __('messages.phone_exists'),
             'email.required' => __('messages.email_required'),
             'email.email' => __('messages.email_invalid'),
             'email.unique' => __('messages.email_exists'),
