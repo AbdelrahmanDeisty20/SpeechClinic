@@ -47,7 +47,7 @@ class CostResource extends Resource
                             ->label(__('Price'))
                             ->numeric()
                             ->required()
-                            ->prefix('$'),
+                            ->prefix(__('EGP')),
                         Select::make('type')
                             ->label(__('Type'))
                             ->options([
@@ -85,7 +85,7 @@ class CostResource extends Resource
                     ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('price')
                     ->label(__('Price'))
-                    ->money('USD')
+                    ->money('EGP', locale: 'ar_EG')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Created At'))

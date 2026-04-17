@@ -111,7 +111,7 @@ class BookingResource extends Resource
                                 TextInput::make('price')
                                     ->label(__('Price'))
                                     ->numeric()
-                                    ->prefix('$')
+                                    ->prefix(__('EGP'))
                                     ->required(),
                             ])
                             ->columnSpan(1),
@@ -138,13 +138,14 @@ class BookingResource extends Resource
                         Grid::make(3)
                             ->schema([
                                 Image::make(fn ($record) => $record->child_photo_url, __('Photo')),
-                                Text::make(fn ($record) => $record->child_name)
+                                TextInput::make('child_name')
                                     ->label(__('Child Name'))
-                                    ->size('lg')
-                                    ->weight('bold'),
-                                Text::make(fn ($record) => $record->child_age)
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => $record->child_name),
+                                TextInput::make('child_age')
                                     ->label(__('Child Age'))
-                                    ->suffix(' ' . __('Years')),
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => $record->child_age . ' ' . __('Years')),
                             ]),
                     ]),
 
@@ -152,40 +153,49 @@ class BookingResource extends Resource
                     ->schema([
                         Section::make(__('Booking Details'))
                             ->schema([
-                                Text::make(fn ($record) => $record->booking_number)
+                                TextInput::make('booking_number')
                                     ->label(__('Booking ID'))
-                                    ->copyable(),
-                                Text::make(fn ($record) => $record->user?->name)
-                                    ->label(__('Parent Name')),
-                                Text::make(fn ($record) => $record->status)
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => $record->booking_number),
+                                TextInput::make('user_name')
+                                    ->label(__('Parent Name'))
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => $record->user?->name),
+                                TextInput::make('status')
                                     ->label(__('Status'))
-                                    ->badge()
-                                    ->color(fn(string $state): string => match ($state) {
-                                        'pending' => 'warning',
-                                        'confirmed' => 'success',
-                                        'cancelled' => 'danger',
-                                        'completed' => 'gray',
-                                        default => 'gray',
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => match ($record->status) {
+                                        'pending' => __('Pending'),
+                                        'confirmed' => __('Confirmed'),
+                                        'cancelled' => __('Cancelled'),
+                                        'completed' => __('Completed'),
+                                        default => $record->status,
                                     }),
-                                Text::make(fn ($record) => $record->price)
+                                TextInput::make('price')
                                     ->label(__('Price'))
-                                    ->money('USD'),
-                                Text::make(fn ($record) => $record->type)
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => number_format($record->price, 2) . ' ' . __('EGP')),
+                                TextInput::make('type')
                                     ->label(__('Type'))
-                                    ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => __($record->type === 'assessment' ? 'Assessment' : 'Monthly')),
                             ])->columnSpan(1),
 
                         Section::make(__('Appointment & Location'))
                             ->schema([
-                                Text::make(fn ($record) => $record->availableTime?->day?->branch?->name)
+                                TextInput::make('branch_name')
                                     ->label(__('Branch'))
-                                    ->badge()
-                                    ->color('primary'),
-                                Text::make(fn ($record) => $record->availableTime?->day?->name)
-                                    ->label(__('Day')),
-                                Text::make(fn ($record) => $record->availableTime)
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => $record->availableTime?->day?->branch?->name),
+                                TextInput::make('day_name')
+                                    ->label(__('Day'))
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($record) => $record->availableTime?->day?->name),
+                                TextInput::make('time_slot')
                                     ->label(__('Time Slot'))
-                                    ->formatStateUsing(function ($state) {
+                                    ->disabled()
+                                    ->formatStateUsing(function ($record) {
+                                        $state = $record->availableTime;
                                         if (!$state) return '-';
                                         $start = \Carbon\Carbon::parse($state->start_time)->format('h:i A');
                                         $end = \Carbon\Carbon::parse($state->end_time)->format('h:i A');
@@ -196,8 +206,10 @@ class BookingResource extends Resource
 
                 Section::make(__('Problem Description'))
                     ->schema([
-                        Text::make(fn ($record) => $record->problem_description)
+                        Textarea::make('problem_description')
                             ->label(__('Description'))
+                            ->disabled()
+                            ->formatStateUsing(fn ($record) => $record->problem_description)
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -244,7 +256,7 @@ class BookingResource extends Resource
                     }),
                 TextColumn::make('price')
                     ->label(__('Price'))
-                    ->money('USD')
+                    ->money('EGP', locale: 'ar_EG')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Date'))

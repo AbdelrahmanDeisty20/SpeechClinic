@@ -50,6 +50,7 @@ class CallUsResource extends Resource
                         Select::make('branch_id')
                             ->label(__('Branch'))
                             ->relationship('branch', 'name_en')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -67,6 +68,7 @@ class CallUsResource extends Resource
                     ->sortable(),
                 TextColumn::make('branch.name_en')
                     ->label(__('Branch'))
+                    ->getStateUsing(fn ($record) => $record->branch?->name)
                     ->badge()
                     ->color('info'),
                 TextColumn::make('created_at')
