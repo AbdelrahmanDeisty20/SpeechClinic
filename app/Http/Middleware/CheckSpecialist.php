@@ -20,7 +20,7 @@ class CheckSpecialist
         }
 
         return response()->json([
-            'message' => 'Access denied. Specialists only.',
+            'message' => __('messages.access_denied_specialist'),
         ], 403);
     }
 }

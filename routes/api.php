@@ -14,6 +14,7 @@ use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PageController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SettingController;
+use App\Http\Middleware\CheckSpecialist;
 use App\Http\Middleware\setLang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,18 +52,18 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('call-us', [callUsController::class, 'index']);
     // Review Routes
     Route::get('reviews', [ReviewController::class, 'index']);
-    Route::post('create review', [ReviewController::class, 'store'])->middleware('auth:sanctum');
+    Route::post('create review', [ReviewController::class, 'store'])->middleware(['auth:sanctum',CheckSpecialist::class]);
     // Day Routes
     Route::get('days', [DayController::class, 'index']);
     // Available Time Routes
     Route::get('available-times', [AvaliableController::class, 'index']);
     //fcm Tokens
     Route::post('fcm-token', [NotificationController::class, 'sendToken']);
-    Route::post('fcm-token-user', [NotificationController::class, 'sendToken'])->middleware('auth:sanctum');
+    Route::post('fcm-token-user', [NotificationController::class, 'sendToken'])->middleware('auth:sanctum',CheckSpecialist::class);
     Route::post('send-notification-to-guests', [NotificationController::class, 'sendNotificationToGuests']);
     Route::post('send-test-notification-to-users', [NotificationController::class, 'sendTestNotificationToUsers']);
     // Booking Routes
-    Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::group(['middleware' => ['auth:sanctum',CheckSpecialist::class]], function () {
         Route::get('bookings', [BookingController::class, 'index']);
         Route::post('make-bookings', [BookingController::class, 'store']);
         Route::post('make-bookings-monthly', [BookingController::class, 'storeMonthly']);
@@ -70,7 +71,7 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
 
     // Auth Sanctum Routes
-    Route::group(['middleware' => 'auth:sanctum'], function () { 
+    Route::group(['middleware' => ['auth:sanctum',CheckSpecialist::class]], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);
         Route::put('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('logout', [AuthController::class, 'logout']);
