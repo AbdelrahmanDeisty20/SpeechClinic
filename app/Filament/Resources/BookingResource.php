@@ -137,14 +137,13 @@ class BookingResource extends Resource
                     ->schema([
                         Grid::make(3)
                             ->schema([
-                                Image::make('child_photo')
-                                    ->label(__('Photo'))
+                                Image::make(fn ($record) => $record->child_photo_url, __('Photo'))
                                     ->circular(),
-                                Text::make('child_name')
+                                Text::make(fn ($record) => $record->child_name)
                                     ->label(__('Child Name'))
                                     ->size('lg')
                                     ->weight('bold'),
-                                Text::make('child_age')
+                                Text::make(fn ($record) => $record->child_age)
                                     ->label(__('Child Age'))
                                     ->suffix(' ' . __('Years')),
                             ]),
@@ -154,12 +153,12 @@ class BookingResource extends Resource
                     ->schema([
                         Section::make(__('Booking Details'))
                             ->schema([
-                                Text::make('booking_number')
+                                Text::make(fn ($record) => $record->booking_number)
                                     ->label(__('Booking ID'))
                                     ->copyable(),
-                                Text::make('user.name')
+                                Text::make(fn ($record) => $record->user?->name)
                                     ->label(__('Parent Name')),
-                                Text::make('status')
+                                Text::make(fn ($record) => $record->status)
                                     ->label(__('Status'))
                                     ->badge()
                                     ->color(fn(string $state): string => match ($state) {
@@ -167,28 +166,30 @@ class BookingResource extends Resource
                                         'confirmed' => 'success',
                                         'cancelled' => 'danger',
                                         'completed' => 'gray',
+                                        default => 'gray',
                                     }),
-                                Text::make('price')
+                                Text::make(fn ($record) => $record->price)
                                     ->label(__('Price'))
                                     ->money('USD'),
-                                Text::make('type')
+                                Text::make(fn ($record) => $record->type)
                                     ->label(__('Type'))
                                     ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                             ])->columnSpan(1),
 
                         Section::make(__('Appointment & Location'))
                             ->schema([
-                                Text::make('availableTime.day.branch.name')
+                                Text::make(fn ($record) => $record->availableTime?->day?->branch?->name)
                                     ->label(__('Branch'))
                                     ->badge()
                                     ->color('primary'),
-                                Text::make('availableTime.day.name')
+                                Text::make(fn ($record) => $record->availableTime?->day?->name)
                                     ->label(__('Day')),
-                                Text::make('availableTime.start_time')
+                                Text::make(fn ($record) => $record->availableTime)
                                     ->label(__('Time Slot'))
-                                    ->formatStateUsing(function ($record) {
-                                        $start = \Carbon\Carbon::parse($record->availableTime?->start_time)->format('h:i A');
-                                        $end = \Carbon\Carbon::parse($record->availableTime?->end_time)->format('h:i A');
+                                    ->formatStateUsing(function ($state) {
+                                        if (!$state) return '-';
+                                        $start = \Carbon\Carbon::parse($state->start_time)->format('h:i A');
+                                        $end = \Carbon\Carbon::parse($state->end_time)->format('h:i A');
                                         return "{$start} - {$end}";
                                     }),
                             ])->columnSpan(1),
@@ -196,7 +197,7 @@ class BookingResource extends Resource
 
                 Section::make(__('Problem Description'))
                     ->schema([
-                        Text::make('problem_description')
+                        Text::make(fn ($record) => $record->problem_description)
                             ->label(__('Description'))
                             ->columnSpanFull(),
                     ]),
