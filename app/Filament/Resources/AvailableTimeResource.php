@@ -42,15 +42,33 @@ class AvailableTimeResource extends Resource
             ->schema([
                 Section::make(__('Time Configuration'))
                     ->description(__('Define the day and service type.'))
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
+                        Select::make('branch_id')
+                            ->label(__('Branch'))
+                            ->relationship('day.branch', 'name_en')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->dehydrated(false)
+                            ->afterStateHydrated(function (Select $component, $record) {
+                                if ($record?->day?->branch_id) {
+                                    $component->state($record->day->branch_id);
+                                }
+                            }),
                         Select::make('day_id')
                             ->label(__('Day of Week'))
-                            ->relationship('day', 'name_en')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} ({$record->branch?->name})")
+                            ->relationship(
+                                name: 'day',
+                                titleAttribute: 'name_en',
+                                modifyQueryUsing: fn ($query, $get) => $query->when($get('branch_id'), fn($q) => $q->where('branch_id', $get('branch_id')))
+                            )
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                             ->searchable()
                             ->preload()
                             ->required()
+                            ->disabled(fn ($get) => !$get('branch_id'))
                             ->createOptionForm([
                                 TextInput::make('name_ar')
                                     ->label(__('Name AR'))
@@ -58,14 +76,13 @@ class AvailableTimeResource extends Resource
                                 TextInput::make('name_en')
                                     ->label(__('Name EN'))
                                     ->required(),
-                                Select::make('branch_id')
-                                    ->label(__('Branch'))
-                                    ->relationship('branch', 'name_en')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
-                                    ->searchable()
-                                    ->preload()
-                                    ->required(),
-                            ]),
+                            ])
+                            ->createOptionUsing(function (array $data, \Filament\Schemas\Components\Utilities\Get $get) {
+                                $data['branch_id'] = $get('branch_id');
+                                $data['is_active'] = true;
+                                
+                                return \App\Models\Day::create($data)->id;
+                            }),
                         Select::make('type')
                             ->label(__('Type'))
                             ->options([
@@ -80,11 +97,8 @@ class AvailableTimeResource extends Resource
                     ->description(__('Set the time window and max bookings.'))
                     ->columns(3)
                     ->schema([
-                        TimePicker::make('start_time')
-                            ->label(__('Start Time'))
-                            ->required(),
-                        TimePicker::make('end_time')
-                            ->label(__('End Time'))
+                        TimePicker::make('time')
+                            ->label(__('Time'))
                             ->required(),
                         TextInput::make('limit')
                             ->label(__('Max Bookings per Period'))
@@ -109,13 +123,11 @@ class AvailableTimeResource extends Resource
                     ->label(__('Day'))
                     ->getStateUsing(fn ($record) => $record->day?->name)
                     ->sortable(),
-                TextColumn::make('start_time')
-                    ->label(__('Start Time'))
-                    ->time('h:i A')
-                    ->sortable(),
-                TextColumn::make('end_time')
-                    ->label(__('End Time'))
-                    ->time('h:i A')
+                TextColumn::make('time')
+                    ->label(__('Time'))
+                    ->formatStateUsing(function ($state) {
+                        return \Carbon\Carbon::parse($state)->isoFormat('hh:mm a');
+                    })
                     ->sortable(),
                 TextColumn::make('limit')
                     ->label(__('Limit'))

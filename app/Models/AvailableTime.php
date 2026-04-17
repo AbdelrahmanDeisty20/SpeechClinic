@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AvailableTime extends Model
 {
     protected $fillable = [
-        'start_time',
-        'end_time',
+        'time',
         'limit',
         'type',
         'day_id',
