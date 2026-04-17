@@ -26,7 +26,6 @@ class AvailableTimeResource extends Resource
     {
         return __('Booking Management');
     }
-//ماشي اولا  عايزك تعمل  امر  تشيل  حقل bookin_numbe دا  من bookings تمام  وكمان 
     public static function getNavigationLabel(): string
     {
         return __('Available Times');
@@ -51,7 +50,22 @@ class AvailableTimeResource extends Resource
                             ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} ({$record->branch?->name})")
                             ->searchable()
                             ->preload()
-                            ->required(),
+                            ->required()
+                            ->createOptionForm([
+                                TextInput::make('name_ar')
+                                    ->label(__('Name AR'))
+                                    ->required(),
+                                TextInput::make('name_en')
+                                    ->label(__('Name EN'))
+                                    ->required(),
+                                Select::make('branch_id')
+                                    ->label(__('Branch'))
+                                    ->relationship('branch', 'name_en')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required(),
+                            ]),
                         Select::make('type')
                             ->label(__('Type'))
                             ->options([
