@@ -27,73 +27,97 @@ class BookingResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Booking Management';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Booking Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Booking Management');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Booking Management');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        Section::make('Child Information')
-                            ->description('Basic details of the child.')
+                        Section::make(__('Child Information'))
+                            ->description(__('Basic details of the child.'))
                             ->schema([
                                 FileUpload::make('child_photo')
+                                    ->label(__('Photo'))
                                     ->image()
                                     ->avatar()
                                     ->directory('children')
                                     ->columnSpanFull(),
                                 TextInput::make('child_name')
+                                    ->label(__('Child Name'))
                                     ->required()
                                     ->maxLength(255),
                                 TextInput::make('child_age')
+                                    ->label(__('Child Age'))
                                     ->numeric()
                                     ->required(),
                                 TextInput::make('booking_number')
+                                    ->label(__('Booking Number'))
                                     ->disabled()
                                     ->dehydrated(false)
-                                    ->placeholder('Auto-generated'),
+                                    ->placeholder(__('ID')),
                                 TextInput::make('assessment_number')
-                                    ->label('Ref. Assessment #')
+                                    ->label(__('Ref. Assessment #'))
                                     ->placeholder('N/A')
                                     ->disabled(),
                             ])->columnSpan(2),
 
-                        Section::make('Booking Details')
-                            ->description('Service and status details.')
+                        Section::make(__('Booking Details'))
+                            ->description(__('Service and status details.'))
                             ->schema([
                                 Select::make('user_id')
                                     ->relationship('user', 'email')
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->label('Parent/User'),
+                                    ->label(__('Parent/User')),
                                 Select::make('available_time_id')
+                                    ->label(__('Available Time'))
                                     ->relationship('availableTime', 'id')
                                     ->getOptionLabelFromRecordUsing(fn ($record) => "Slot #{$record->id} ({$record->day?->name_en}: {$record->start_time} - {$record->end_time})")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
                                 Select::make('type')
+                                    ->label(__('Type'))
                                     ->options([
-                                        'assessment' => 'Assessment',
-                                        'monthly' => 'Monthly',
+                                        'assessment' => __('Assessment'),
+                                        'monthly' => __('Monthly'),
                                     ])
                                     ->required(),
                                 Select::make('status')
+                                    ->label(__('Status'))
                                     ->options([
-                                        'pending' => 'Pending',
-                                        'confirmed' => 'Confirmed',
-                                        'cancelled' => 'Cancelled',
+                                        'pending' => __('Pending'),
+                                        'confirmed' => __('Confirmed'),
+                                        'cancelled' => __('Cancelled'),
                                     ])
                                     ->required(),
                                 TextInput::make('price')
+                                    ->label(__('Price'))
                                     ->numeric()
                                     ->prefix('$')
                                     ->required(),
                             ])->columnSpan(1),
 
-                        Section::make('Problem Description')
+                        Section::make(__('Problem Description'))
                             ->schema([
                                 Textarea::make('problem_description')
+                                    ->label(__('Problem Description'))
                                     ->required()
                                     ->rows(4)
                                     ->columnSpanFull(),
@@ -110,49 +134,62 @@ class BookingResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->copyable()
-                    ->label('ID'),
+                    ->label(__('ID')),
                 TextColumn::make('assessment_number')
                     ->searchable()
                     ->sortable()
-                    ->label('Ref.'),
+                    ->label(__('Ref.')),
                 ImageColumn::make('child_photo')
                     ->circular()
-                    ->label('Photo'),
+                    ->label(__('Photo')),
                 TextColumn::make('child_name')
+                    ->label(__('Child Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('type')
+                    ->label(__('Type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
-                    }),
+                    })
+                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('status')
+                    ->label(__('Status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match($state) {
+                        'pending' => __('Pending'),
+                        'confirmed' => __('Confirmed'),
+                        'cancelled' => __('Cancelled'),
                     }),
                 TextColumn::make('price')
+                    ->label(__('Price'))
                     ->money('USD')
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('Date'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('type')
+                    ->label(__('Type'))
                     ->options([
-                        'assessment' => 'Assessment',
-                        'monthly' => 'Monthly',
+                        'assessment' => __('Assessment'),
+                        'monthly' => __('Monthly'),
                     ]),
                 SelectFilter::make('status')
+                    ->label(__('Status'))
                     ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'cancelled' => 'Cancelled',
+                        'pending' => __('Pending'),
+                        'confirmed' => __('Confirmed'),
+                        'cancelled' => __('Cancelled'),
                     ]),
             ])
             ->actions([

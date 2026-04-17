@@ -22,36 +22,51 @@ class PageResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Systems Config');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Pages');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Pages');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Page Structure')
-                    ->description('Localized titles for the page.')
+                Section::make(__('Page Structure'))
+                    ->description(__('Localized titles for the page.'))
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('title_ar')
+                                    ->label(__('Title (Arabic)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Title (Arabic)'),
+                                    ->maxLength(255),
                                 TextInput::make('title_en')
+                                    ->label(__('Title (English)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Title (English)'),
+                                    ->maxLength(255),
                             ]),
                     ]),
 
-                Section::make('Rich Content')
-                    ->description('The main body of the page.')
+                Section::make(__('Page Content'))
+                    ->description(__('The main body of the page.'))
                     ->schema([
                         RichEditor::make('content_ar')
+                            ->label(__('Content (Arabic)'))
                             ->required()
-                            ->label('Content (Arabic)')
                             ->columnSpanFull(),
                         RichEditor::make('content_en')
+                            ->label(__('Content (English)'))
                             ->required()
-                            ->label('Content (English)')
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -62,14 +77,15 @@ class PageResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title_en')
-                    ->label('Title (EN)')
+                    ->label(__('Title (English)'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('title_ar')
-                    ->label('Title (AR)')
+                    ->label(__('Title (Arabic)'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

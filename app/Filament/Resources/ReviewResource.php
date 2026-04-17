@@ -25,33 +25,50 @@ class ReviewResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Content Management';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Content Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Reviews');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Reviews');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Review Details')
-                    ->description('Feedback from the client.')
+                Section::make(__('Review Details'))
+                    ->description(__('Feedback from the client.'))
                     ->schema([
                         TextInput::make('name')
+                            ->label(__('Name'))
                             ->required()
                             ->maxLength(255),
                         Select::make('user_id')
+                            ->label(__('Related User'))
                             ->relationship('user', 'email')
                             ->searchable()
-                            ->preload()
-                            ->label('Related User'),
+                            ->preload(),
                         TextInput::make('rate')
+                            ->label(__('Rating (1-5)'))
                             ->numeric()
                             ->required()
                             ->minValue(1)
-                            ->maxValue(5)
-                            ->label('Rating (1-5)'),
+                            ->maxValue(5),
                         Textarea::make('comment')
+                            ->label(__('Comment'))
                             ->required()
                             ->rows(4)
                             ->columnSpanFull(),
                         Toggle::make('is_active')
-                            ->label('Is Visible?')
+                            ->label(__('Is Active'))
                             ->default(true),
                     ]),
             ]);
@@ -62,15 +79,18 @@ class ReviewResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('rate')
+                    ->label(__('Rating'))
                     ->badge()
                     ->color('warning')
                     ->suffix(' / 5'),
                 ToggleColumn::make('is_active')
-                    ->label('Active'),
+                    ->label(__('Is Active')),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
             ])

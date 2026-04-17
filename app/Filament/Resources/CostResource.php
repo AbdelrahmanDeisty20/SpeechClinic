@@ -21,23 +21,41 @@ class CostResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Systems Config');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Costs');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Costs');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Costing Details')
+                Section::make(__('Pricing Details'))
                     ->schema([
                         TextInput::make('price')
+                            ->label(__('Price'))
                             ->numeric()
                             ->required()
                             ->prefix('$'),
                         Select::make('type')
+                            ->label(__('Type'))
                             ->options([
-                                'assessment' => 'Assessment',
-                                'monthly' => 'Monthly',
+                                'assessment' => __('Assessment'),
+                                'monthly' => __('Monthly'),
                             ])
                             ->required(),
                         Select::make('branch_id')
+                            ->label(__('Branch'))
                             ->relationship('branch', 'name_en')
                             ->searchable()
                             ->preload()
@@ -51,27 +69,32 @@ class CostResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('branch.name_en')
-                    ->label('Branch')
+                    ->label(__('Branch'))
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('type')
+                    ->label(__('Type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
-                    }),
+                    })
+                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('price')
+                    ->label(__('Price'))
                     ->money('USD')
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
                 \Filament\Tables\Filters\SelectFilter::make('type')
+                    ->label(__('Type'))
                     ->options([
-                        'assessment' => 'Assessment',
-                        'monthly' => 'Monthly',
+                        'assessment' => __('Assessment'),
+                        'monthly' => __('Monthly'),
                     ]),
             ])
             ->actions([

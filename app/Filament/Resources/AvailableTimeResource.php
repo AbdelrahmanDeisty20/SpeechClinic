@@ -22,27 +22,44 @@ class AvailableTimeResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Booking Management';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Booking Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Available Times');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Available Times');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Time Slot Details')
+                Section::make(__('Time Slot Details'))
                     ->schema([
                         Select::make('day_id')
+                            ->label(__('Day of Week'))
                             ->relationship('day', 'name_en')
                             ->searchable()
                             ->preload()
-                            ->required()
-                            ->label('Day of Week'),
+                            ->required(),
                         TimePicker::make('start_time')
+                            ->label(__('Start Time'))
                             ->required(),
                         TimePicker::make('end_time')
+                            ->label(__('End Time'))
                             ->required(),
                         TextInput::make('limit')
+                            ->label(__('Max Bookings per Slot'))
                             ->numeric()
                             ->default(1)
-                            ->required()
-                            ->label('Max Bookings per Slot'),
+                            ->required(),
                     ]),
             ]);
     }
@@ -52,18 +69,21 @@ class AvailableTimeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('day.name_en')
-                    ->label('Day')
+                    ->label(__('Day'))
                     ->sortable(),
                 TextColumn::make('start_time')
+                    ->label(__('Start Time'))
                     ->time()
                     ->sortable(),
                 TextColumn::make('end_time')
+                    ->label(__('End Time'))
                     ->time()
                     ->sortable(),
                 TextColumn::make('limit')
-                    ->numeric()
-                    ->label('Limit'),
+                    ->label(__('Limit'))
+                    ->numeric(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

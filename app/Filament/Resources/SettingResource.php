@@ -22,45 +22,61 @@ class SettingResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Systems Config');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Settings');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Settings');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('System Key')
-                    ->description('Define the localized key for this setting.')
+                Section::make(__('Setting Key'))
+                    ->description(__('Define the localized key for this setting.'))
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('key_ar')
+                                    ->label(__('Key (Arabic)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Key (Arabic)'),
+                                    ->maxLength(255),
                                 TextInput::make('key_en')
+                                    ->label(__('Key (English)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Key (English)'),
+                                    ->maxLength(255),
                             ]),
                     ]),
 
-                Section::make('Configuration Value')
-                    ->description('Define the localized value and type.')
+                Section::make(__('Configuration Value'))
+                    ->description(__('Define the localized value and type.'))
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('value_ar')
+                                    ->label(__('Value (Arabic)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Value (Arabic)'),
+                                    ->maxLength(255),
                                 TextInput::make('value_en')
+                                    ->label(__('Value (English)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Value (English)'),
+                                    ->maxLength(255),
                                 Select::make('type')
+                                    ->label(__('Type'))
                                     ->options([
-                                        'text' => 'Text',
-                                        'number' => 'Number',
-                                        'boolean' => 'Boolean',
-                                        'json' => 'JSON',
+                                        'text' => __('Text'),
+                                        'number' => __('Number'),
+                                        'boolean' => __('Boolean'),
+                                        'json' => __('JSON'),
                                     ])
                                     ->required()
                                     ->default('text'),
@@ -74,17 +90,19 @@ class SettingResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('key_en')
-                    ->label('Key (EN)')
+                    ->label(__('Key (English)'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('value_en')
-                    ->label('Value (EN)')
+                    ->label(__('Value (English)'))
                     ->searchable()
                     ->limit(50),
                 TextColumn::make('type')
+                    ->label(__('Type'))
                     ->badge()
                     ->color('info'),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

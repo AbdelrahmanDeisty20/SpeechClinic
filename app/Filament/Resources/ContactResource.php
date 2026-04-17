@@ -22,36 +22,56 @@ class ContactResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Systems Config');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Contacts');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Contacts');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Sender Particulars')
-                    ->description('Personal details of the sender.')
+                Section::make(__('Sender Particulars'))
+                    ->description(__('Personal details of the sender.'))
                     ->schema([
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('name')
+                                    ->label(__('Name'))
                                     ->required()
                                     ->maxLength(255),
                                 TextInput::make('email')
+                                    ->label(__('Email address'))
                                     ->email()
                                     ->required()
                                     ->maxLength(255),
                                 TextInput::make('phone')
+                                    ->label(__('Phone'))
                                     ->tel()
                                     ->required()
                                     ->maxLength(255),
                             ]),
                     ]),
 
-                Section::make('Message Insight')
-                    ->description('Details of the received inquiry.')
+                Section::make(__('Message Insight'))
+                    ->description(__('Details of the received inquiry.'))
                     ->schema([
                         TextInput::make('subject')
+                            ->label(__('Subject'))
                             ->required()
                             ->maxLength(255),
                         Textarea::make('message')
+                            ->label(__('Message'))
                             ->required()
                             ->rows(6)
                             ->columnSpanFull(),
@@ -64,15 +84,18 @@ class ContactResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label(__('Email address'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('subject')
+                    ->label(__('Subject'))
                     ->searchable(),
                 TextColumn::make('created_at')
-                    ->label('Received At')
+                    ->label(__('Received At'))
                     ->dateTime()
                     ->sortable(),
             ])

@@ -24,7 +24,27 @@ class CvResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'HR Management';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('HR Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Candidate CVs');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Candidate CVs');
+    }
+
     protected static ?string $modelLabel = 'Candidate CV';
+
+    public static function getModelLabel(): string
+    {
+        return __('Candidate CV');
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -32,10 +52,11 @@ class CvResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        Section::make('Candidate Profile')
-                            ->description('Visual and basic identity.')
+                        Section::make(__('Candidate Profile'))
+                            ->description(__('Visual and basic identity.'))
                             ->schema([
                                 FileUpload::make('image')
+                                    ->label(__('Photo'))
                                     ->image()
                                     ->directory('cvs')
                                     ->disk('public')
@@ -47,33 +68,33 @@ class CvResource extends Resource
                                 Grid::make(2)
                                     ->schema([
                                         TextInput::make('name_ar')
+                                            ->label(__('Name (Arabic)'))
                                             ->required()
-                                            ->maxLength(255)
-                                            ->label('Name (Arabic)'),
+                                            ->maxLength(255),
                                         TextInput::make('name_en')
+                                            ->label(__('Name (English)'))
                                             ->required()
-                                            ->maxLength(255)
-                                            ->label('Name (English)'),
+                                            ->maxLength(255),
                                     ]),
                             ])
                             ->columnSpan(2),
-                        Section::make('Professional Focus')
-                            ->description('Localized titles and descriptions.')
+                        Section::make(__('Professional Focus'))
+                            ->description(__('Localized titles and descriptions.'))
                             ->schema([
                                 TextInput::make('title_ar')
+                                    ->label(__('Job Title (Arabic)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Job Title (Arabic)'),
+                                    ->maxLength(255),
                                 TextInput::make('title_en')
+                                    ->label(__('Job Title (English)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label('Job Title (English)'),
+                                    ->maxLength(255),
                                 Textarea::make('description_ar')
-                                    ->rows(4)
-                                    ->label('Biography (Arabic)'),
+                                    ->label(__('Biography (Arabic)'))
+                                    ->rows(4),
                                 Textarea::make('description_en')
-                                    ->rows(4)
-                                    ->label('Biography (English)'),
+                                    ->label(__('Biography (English)'))
+                                    ->rows(4),
                             ])
                             ->columnSpan(1),
                     ]),
@@ -85,21 +106,23 @@ class CvResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->getStateUsing(fn($record) => $record->image ? "cvs/{$record->image}" : null)
                     ->circular()
                     ->size(60),
                 TextColumn::make('name_en')
-                    ->label('Candidate (EN)')
+                    ->label(__('Candidate (English)'))
                     ->searchable()
                     ->sortable()
                     ->description(fn(Cv $record): string => $record->title_en ?? ''),
                 TextColumn::make('name_ar')
-                    ->label('Candidate (AR)')
+                    ->label(__('Candidate (Arabic)'))
                     ->searchable()
                     ->sortable()
                     ->description(fn(Cv $record): string => $record->title_ar ?? ''),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

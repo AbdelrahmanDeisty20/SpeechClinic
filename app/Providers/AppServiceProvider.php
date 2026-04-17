@@ -23,5 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Role::class, RolePolicy::class);
+
+        \BezhanSalleh\LanguageSwitch\LanguageSwitch::configureUsing(function (\BezhanSalleh\LanguageSwitch\LanguageSwitch $switch) {
+            $switch->locales(['ar', 'en']);
+        });
     }
 }

@@ -9,7 +9,10 @@ use Flowframe\Trend\TrendValue;
 
 class BookingsChart extends ChartWidget
 {
-    protected ?string $heading = 'Bookings Over Time';
+    public function getHeading(): string
+    {
+        return __('Bookings count per month');
+    }
 
     protected static ?int $sort = 3;
 
@@ -28,7 +31,7 @@ class BookingsChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Bookings',
+                    'label' => __('Bookings'),
                     'data' => $data->map(fn ($value) => $value->aggregate),
                     'borderColor' => '#3b82f6',
                     'fill' => 'start',

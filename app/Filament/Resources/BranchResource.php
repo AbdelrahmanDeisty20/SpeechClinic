@@ -19,47 +19,50 @@ class BranchResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Main Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Clinic Management';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Clinic Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Branches');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Branches');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                \Filament\Schemas\Components\Section::make('Branch Identifiers')
-                    ->description('Localized names for the branch.')
+                Section::make(__('Branch Details'))
                     ->schema([
-                        Grid::make(3)
-                            ->schema([
-                                TextInput::make('name_ar')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->label('Name (Arabic)'),
-                                TextInput::make('name_en')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->label('Name (English)'),
-                                TextInput::make('phone')
-                                    ->tel()
-                                    ->label('Phone Number'),
-                            ]),
-                    ]),
-
-                Section::make('Geographical Location')
-                    ->description('Coordinates and map link.')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('lat')
-                                    ->label('Latitude')
-                                    ->numeric(),
-                                TextInput::make('lng')
-                                    ->label('Longitude')
-                                    ->numeric(),
-                                TextInput::make('address_link')
-                                    ->label('Google Maps Link')
-                                    ->url()
-                                    ->columnSpanFull(),
-                            ]),
+                        TextInput::make('name_ar')
+                            ->label(__('Name AR'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('name_en')
+                            ->label(__('Name EN'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('address_ar')
+                            ->label(__('Address AR'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('address_en')
+                            ->label(__('Address EN'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('phone')
+                            ->label(__('Phone'))
+                            ->tel()
+                            ->required()
+                            ->maxLength(255),
                     ]),
             ]);
     }
@@ -68,23 +71,21 @@ class BranchResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name_en')
-                    ->label('Name (EN)')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('name_ar')
-                    ->label('Name (AR)')
+                    ->label(__('Name AR'))
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('lat')
-                    ->label('Latitude'),
-                TextColumn::make('lng')
-                    ->label('Longitude'),
-                TextColumn::make('phone')
+                TextColumn::make('name_en')
+                    ->label(__('Name EN'))
                     ->searchable()
-                    ->copyable()
-                    ->label('Phone'),
+                    ->sortable(),
+                TextColumn::make('address_ar')
+                    ->label(__('Address AR')),
+                TextColumn::make('phone')
+                    ->label(__('Phone'))
+                    ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -93,6 +94,7 @@ class BranchResource extends Resource
                 //
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
@@ -115,6 +117,7 @@ class BranchResource extends Resource
         return [
             'index' => Pages\ListBranches::route('/'),
             'create' => Pages\CreateBranch::route('/create'),
+            'view' => Pages\ViewBranch::route('/{record}'),
             'edit' => Pages\EditBranch::route('/{record}/edit'),
         ];
     }

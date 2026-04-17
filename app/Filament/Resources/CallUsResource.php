@@ -21,19 +21,34 @@ class CallUsResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
 
-    protected static ?string $navigationLabel = 'Call Us Requests';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Systems Config');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Call Us Requests');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Call Us Requests');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Call Request Details')
+                Section::make(__('Call Request Details'))
                     ->schema([
                         TextInput::make('phone')
+                            ->label(__('Phone'))
                             ->tel()
                             ->required()
                             ->maxLength(255),
                         Select::make('branch_id')
+                            ->label(__('Branch'))
                             ->relationship('branch', 'name_en')
                             ->searchable()
                             ->preload()
@@ -47,13 +62,15 @@ class CallUsResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('phone')
+                    ->label(__('Phone'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('branch.name_en')
-                    ->label('Branch')
+                    ->label(__('Branch'))
                     ->badge()
                     ->color('info'),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
             ])

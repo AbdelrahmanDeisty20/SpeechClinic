@@ -22,16 +22,31 @@ class BannerResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-photo';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Content Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Banners Management';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Banners Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Banners');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Banners');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                \Filament\Schemas\Components\Section::make('Banner Visual')
-                    ->description('Upload the high-quality banner image.')
+                Section::make(__('Banner Details'))
                     ->schema([
                         FileUpload::make('image')
+                            ->label(__('Photo'))
                             ->image()
                             ->disk('public')
                             ->directory('banners')
@@ -40,6 +55,9 @@ class BannerResource extends Resource
                             ->imageEditor()
                             ->required()
                             ->columnSpanFull(),
+                        Toggle::make('is_active')
+                            ->label(__('Is Active'))
+                            ->default(true),
                     ]),
 
                 Grid::make(2)

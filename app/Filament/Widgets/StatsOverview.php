@@ -15,23 +15,30 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Assessment Bookings', Booking::where('type', 'assessment')->count())
-                ->description('Initial evaluations')
-                ->descriptionIcon('heroicon-m-calendar-days')
-                ->color('info'),
-            Stat::make('Monthly Bookings', Booking::where('type', 'monthly')->count())
-                ->description('Ongoing sessions')
-                ->descriptionIcon('heroicon-m-calendar-date-range')
-                ->color('success'),
-            Stat::make('Pending Bookings', Booking::where('status', 'pending')->count())
-                ->description('Awaiting confirmation')
+            Stat::make(__('Total Bookings'), Booking::count())
+                ->description(__('Total number of bookings'))
+                ->descriptionIcon('heroicon-m-calendar')
+                ->color('primary'),
+            Stat::make(__('Pending Bookings'), Booking::where('status', 'pending')->count())
+                ->description(__('New bookings awaiting confirmation'))
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('warning'),
-            Stat::make('Total Users', User::count())
-                ->description('Registered staff & clients')
-                ->descriptionIcon('heroicon-m-user-group')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
+            Stat::make(__('Total Users'), User::count())
+                ->description(__('Registered users on the platform'))
+                ->descriptionIcon('heroicon-m-users')
+                ->color('success'),
+            Stat::make(__('Total Revenue'), '$' . Booking::where('status', 'confirmed')->sum('price'))
+                ->description(__('Revenue from confirmed bookings'))
+                ->descriptionIcon('heroicon-m-banknotes')
+                ->color('info'),
+            Stat::make(__('Call Requests'), \App\Models\callUs::count())
+                ->description(__('Total call back requests'))
+                ->descriptionIcon('heroicon-m-phone')
                 ->color('primary'),
+            Stat::make(__('Average Rating'), \App\Models\Review::avg('rate') ? number_format(\App\Models\Review::avg('rate'), 1) : '0')
+                ->description(__('User feedback score'))
+                ->descriptionIcon('heroicon-m-star')
+                ->color('warning'),
         ];
     }
 }

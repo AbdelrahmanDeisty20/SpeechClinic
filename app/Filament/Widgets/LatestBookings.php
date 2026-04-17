@@ -14,6 +14,11 @@ class LatestBookings extends BaseWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    public function getHeading(): string
+    {
+        return __('Latest Bookings');
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -24,40 +29,51 @@ class LatestBookings extends BaseWidget
             ->defaultPaginationPageOption(10)
             ->columns([
                 Tables\Columns\TextColumn::make('booking_number')
-                    ->label('ID')
+                    ->label(__('ID'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('child_name')
-                    ->label('Child'),
+                    ->label(__('Child Name')),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('Type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
-                    }),
+                    })
+                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('Status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match($state) {
+                        'pending' => __('Pending'),
+                        'confirmed' => __('Confirmed'),
+                        'cancelled' => __('Cancelled'),
                     }),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Date')
+                    ->label(__('Date'))
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
+                    ->label(__('Type'))
                     ->options([
-                        'assessment' => 'Assessment',
-                        'monthly' => 'Monthly',
+                        'assessment' => __('Assessment'),
+                        'monthly' => __('Monthly'),
                     ]),
                 Tables\Filters\SelectFilter::make('status')
+                    ->label(__('Status'))
                     ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'cancelled' => 'Cancelled',
+                        'pending' => __('Pending'),
+                        'confirmed' => __('Confirmed'),
+                        'cancelled' => __('Cancelled'),
                     ]),
-            ]);
+            ])
+            ->emptyStateHeading(__('No bookings found'));
     }
 }
