@@ -63,28 +63,28 @@ class BannerResource extends Resource
                     ]),
                 Grid::make(2)
                     ->schema([
-                        Section::make('Arabic Content')
-                            ->description('Content displayed in Arabic.')
+                        Section::make(__('Arabic Content'))
+                            ->description(__('Content displayed in Arabic.'))
                             ->schema([
                                 TextInput::make('title_ar')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Title (Arabic)'),
+                                    ->label(__('Title (Arabic)')),
                                 Textarea::make('description_ar')
                                     ->rows(3)
-                                    ->label('Description (Arabic)'),
+                                    ->label(__('Description (Arabic)')),
                             ])
                             ->columnSpan(1),
-                        Section::make('English Content')
-                            ->description('Content displayed in English.')
+                        Section::make(__('English Content'))
+                            ->description(__('Content displayed in English.'))
                             ->schema([
                                 TextInput::make('title_en')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Title (English)'),
+                                    ->label(__('Title (English)')),
                                 Textarea::make('description_en')
                                     ->rows(3)
-                                    ->label('Description (English)'),
+                                    ->label(__('Description (English)')),
                             ])
                             ->columnSpan(1),
                     ]),
@@ -100,15 +100,15 @@ class BannerResource extends Resource
                     ->square()
                     ->size(100),
                 TextColumn::make('title_en')
-                    ->label('Title (EN)')
+                    ->label(__('Title (English)'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('title_ar')
-                    ->label('Title (AR)')
+                    ->label(__('Title (Arabic)'))
                     ->searchable()
                     ->sortable(),
                 ToggleColumn::make('is_active')
-                    ->label('Active'),
+                    ->label(__('Is Active')),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

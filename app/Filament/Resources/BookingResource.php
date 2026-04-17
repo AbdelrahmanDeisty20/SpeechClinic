@@ -11,6 +11,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
+use Filament\Schemas\Components\Image;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -127,6 +129,80 @@ class BookingResource extends Resource
             ]);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->schema([
+                Section::make(__('Child Information'))
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                Image::make('child_photo')
+                                    ->label(__('Photo'))
+                                    ->circular(),
+                                Text::make('child_name')
+                                    ->label(__('Child Name'))
+                                    ->size('lg')
+                                    ->weight('bold'),
+                                Text::make('child_age')
+                                    ->label(__('Child Age'))
+                                    ->suffix(' ' . __('Years')),
+                            ]),
+                    ]),
+
+                Grid::make(2)
+                    ->schema([
+                        Section::make(__('Booking Details'))
+                            ->schema([
+                                Text::make('booking_number')
+                                    ->label(__('Booking ID'))
+                                    ->copyable(),
+                                Text::make('user.name')
+                                    ->label(__('Parent Name')),
+                                Text::make('status')
+                                    ->label(__('Status'))
+                                    ->badge()
+                                    ->color(fn(string $state): string => match ($state) {
+                                        'pending' => 'warning',
+                                        'confirmed' => 'success',
+                                        'cancelled' => 'danger',
+                                        'completed' => 'gray',
+                                    }),
+                                Text::make('price')
+                                    ->label(__('Price'))
+                                    ->money('USD'),
+                                Text::make('type')
+                                    ->label(__('Type'))
+                                    ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
+                            ])->columnSpan(1),
+
+                        Section::make(__('Appointment & Location'))
+                            ->schema([
+                                Text::make('availableTime.day.branch.name')
+                                    ->label(__('Branch'))
+                                    ->badge()
+                                    ->color('primary'),
+                                Text::make('availableTime.day.name')
+                                    ->label(__('Day')),
+                                Text::make('availableTime.start_time')
+                                    ->label(__('Time Slot'))
+                                    ->formatStateUsing(function ($record) {
+                                        $start = \Carbon\Carbon::parse($record->availableTime?->start_time)->format('h:i A');
+                                        $end = \Carbon\Carbon::parse($record->availableTime?->end_time)->format('h:i A');
+                                        return "{$start} - {$end}";
+                                    }),
+                            ])->columnSpan(1),
+                    ]),
+
+                Section::make(__('Problem Description'))
+                    ->schema([
+                        Text::make('problem_description')
+                            ->label(__('Description'))
+                            ->columnSpanFull(),
+                    ]),
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -142,24 +218,6 @@ class BookingResource extends Resource
                 TextColumn::make('child_name')
                     ->label(__('Child Name'))
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('availableTime.day.branch.name_en')
-                    ->label(__('Branch'))
-                    ->getStateUsing(fn ($record) => $record->availableTime?->day?->branch?->name)
-                    ->badge()
-                    ->color('primary')
-                    ->sortable(),
-                TextColumn::make('availableTime.day.name_en')
-                    ->label(__('Day'))
-                    ->getStateUsing(fn ($record) => $record->availableTime?->day?->name)
-                    ->sortable(),
-                TextColumn::make('availableTime.start_time')
-                    ->label(__('Time Slot'))
-                    ->formatStateUsing(function ($record) {
-                        $start = \Carbon\Carbon::parse($record->availableTime?->start_time)->format('h:i A');
-                        $end = \Carbon\Carbon::parse($record->availableTime?->end_time)->format('h:i A');
-                        return "{$start} - {$end}";
-                    })
                     ->sortable(),
                 TextColumn::make('type')
                     ->label(__('Type'))

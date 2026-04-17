@@ -58,6 +58,7 @@ class CostResource extends Resource
                         Select::make('branch_id')
                             ->label(__('Branch'))
                             ->relationship('branch', 'name_en')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -71,6 +72,7 @@ class CostResource extends Resource
             ->columns([
                 TextColumn::make('branch.name_en')
                     ->label(__('Branch'))
+                    ->getStateUsing(fn ($record) => $record->branch?->name)
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('type')

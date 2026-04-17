@@ -26,14 +26,25 @@ class CvResource extends Resource
 
     protected static ?string $modelLabel = 'Candidate CV';
 
+    public static function getModelLabel(): string
+    {
+        return __('Candidate CV');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Candidate CVs');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Candidate Profile')
-                    ->description('Visual and basic identity.')
+                Section::make(__('Candidate Profile'))
+                    ->description(__('Visual and basic identity.'))
                     ->schema([
                         FileUpload::make('image')
+                            ->label(__('Photo'))
                             ->image()
                             ->directory('cvs')
                             ->disk('public')
@@ -47,39 +58,39 @@ class CvResource extends Resource
                                 TextInput::make('name_ar')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Name (Arabic)'),
+                                    ->label(__('Name (Arabic)')),
                                 TextInput::make('name_en')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Name (English)'),
+                                    ->label(__('Name (English)')),
                             ]),
                     ]),
 
                 Grid::make(2)
                     ->schema([
-                        Section::make('Arabic Content')
-                            ->description('Localized titles and descriptions.')
+                        Section::make(__('Arabic Content'))
+                            ->description(__('Localized titles and descriptions.'))
                             ->schema([
                                 TextInput::make('title_ar')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Job Title (Arabic)'),
+                                    ->label(__('Job Title (Arabic)')),
                                 Textarea::make('description_ar')
                                     ->rows(6)
-                                    ->label('Biography (Arabic)'),
+                                    ->label(__('Biography (Arabic)')),
                             ])
                             ->columnSpan(1),
 
-                        Section::make('English Content')
-                            ->description('Localized titles and descriptions.')
+                        Section::make(__('English Content'))
+                            ->description(__('Localized titles and descriptions.'))
                             ->schema([
                                 TextInput::make('title_en')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Job Title (English)'),
+                                    ->label(__('Job Title (English)')),
                                 Textarea::make('description_en')
                                     ->rows(6)
-                                    ->label('Biography (English)'),
+                                    ->label(__('Biography (English)')),
                             ])
                             ->columnSpan(1),
                     ]),
@@ -96,12 +107,12 @@ class CvResource extends Resource
                     ->circular()
                     ->size(60),
                 TextColumn::make('name_en')
-                    ->label('Candidate (EN)')
+                    ->label(__('Candidate (English)'))
                     ->searchable()
                     ->sortable()
                     ->description(fn(Cv $record): string => $record->title_en ?? ''),
                 TextColumn::make('name_ar')
-                    ->label('Candidate (AR)')
+                    ->label(__('Candidate (Arabic)'))
                     ->searchable()
                     ->sortable()
                     ->description(fn(Cv $record): string => $record->title_ar ?? ''),
