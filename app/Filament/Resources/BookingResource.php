@@ -231,6 +231,16 @@ class BookingResource extends Resource
                     ->label(__('Child Name'))
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('availableTime.day.branch.name_en')
+                    ->label(__('Branch'))
+                    ->getStateUsing(fn($record) => $record->availableTime?->day?->branch?->name)
+                    ->badge()
+                    ->color('primary'),
+                TextColumn::make('availableTime.day.name_en')
+                    ->label(__('Day'))
+                    ->getStateUsing(fn($record) => $record->availableTime?->day?->name)
+                    ->badge()
+                    ->color('info'),
                 TextColumn::make('type')
                     ->label(__('Type'))
                     ->badge()
