@@ -16,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['first_name', 'last_name', 'phone', 'age', 'gender_id', 'nationality_id', 'email', 'password', 'image', 'is_active', 'email_verified_at', 'type'])]
+#[Fillable(['first_name', 'last_name', 'phone', 'email', 'password', 'image', 'is_active', 'email_verified_at', 'type'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
 {
@@ -42,15 +42,7 @@ class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
         ];
     }
 
-    public function nationality()
-    {
-        return $this->belongsTo(Nationality::class);
-    }
 
-    public function gender()
-    {
-        return $this->belongsTo(Gender::class);
-    }
 
     public function fcmTokens()
     {
