@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\storeTokenRequest;
-use App\Services\NotificationService;
+use App\Services\API\NotificationService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 

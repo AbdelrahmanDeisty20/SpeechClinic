@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\API;
 
+use App\Http\Resources\API\NotificationResource;
+use App\Models\AppNotification;
 use App\Models\UserFcmToken;
-use App\Services\FirebaseNotificationService;
+use App\Services\API\FirebaseNotificationService;
 
 class NotificationService
 {
@@ -114,13 +116,13 @@ class NotificationService
         if ($notifications->isEmpty()) {
             return [
                 'status' => false,
-                'message' => __('messages.no_notifications'),
+                'message' => __('messages.no_notifications_found'),
             ];
         }
 
         return [
             'status' => true,
-            'message' => __('messages.notifications_retrieved_successfully'),
+            'message' => __('messages.notifications_fetched_successfully'),
             'data' => NotificationResource::collection($notifications),
         ];
     }
@@ -147,7 +149,7 @@ class NotificationService
 
         return [
             'status' => true,
-            'message' => __('messages.notification_marked_as_read'),
+            'message' => __('messages.notification_marked_as_read_successfully'),
             'data' => new NotificationResource($notification),
         ];
     }

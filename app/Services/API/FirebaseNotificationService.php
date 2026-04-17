@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\API;
 
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Http;
