@@ -23,6 +23,7 @@ class BookingService
             return DB::transaction(function () use ($data) {
                 // Lock the available time for update to prevent race conditions
                 $availableTime = AvailableTime::with('day.branch.cost')
+                    ->where('type', 'assessment')
                     ->lockForUpdate()
                     ->findOrFail($data['available_time_id']);
 
@@ -37,7 +38,8 @@ class BookingService
 
                 // 2. Fetch price from branch cost
                 $branch = $availableTime->day->branch;
-                $cost = $branch->cost()
+                $cost = $branch
+                    ->cost()
                     ->where('type', 'assessment')
                     ->first();
 
@@ -89,14 +91,15 @@ class BookingService
             ];
         }
     }
+
     public function bookingMonthly(array $data)
     {
         try {
             return DB::transaction(function () use ($data) {
-                // 1. Verify assessment booking exists and is for the same child/parent? 
+                // 1. Verify assessment booking exists and is for the same child/parent?
                 // We'll rely on the assessment booking number.
                 $assessment = Booking::where('booking_number', $data['booking_number'])
-                    ->where('user_id', auth()->id()) // Ensure they own it
+                    ->where('user_id', auth()->id())  // Ensure they own it
                     ->where('type', 'assessment')
                     ->first();
 
@@ -123,7 +126,8 @@ class BookingService
 
                 // 3. Fetch monthly price
                 $branch = $availableTime->day->branch;
-                $cost = $branch->cost()
+                $cost = $branch
+                    ->cost()
                     ->where('type', 'monthly')
                     ->first();
 
@@ -136,7 +140,7 @@ class BookingService
                 }
 
                 // 4. Handle child photo (monthly might use the same or a new one)
-                $photoPath = $assessment->child_photo; // Default to assessment photo
+                $photoPath = $assessment->child_photo;  // Default to assessment photo
                 if (isset($data['child_photo']) && $data['child_photo'] instanceof \Illuminate\Http\UploadedFile) {
                     $originalPath = $data['child_photo']->store('children', 'public');
                     $photoPath = basename($originalPath);
@@ -172,6 +176,7 @@ class BookingService
             ];
         }
     }
+
     /**
      * Get user bookings.
      */
@@ -196,6 +201,7 @@ class BookingService
             'data' => BookingResource::collection($bookings)
         ];
     }
+
     public function getAllBookings()
     {
         $bookings = Booking::with('availableTime.day.branch')
