@@ -60,6 +60,14 @@ class AvailableTimeResource extends Resource
                             ->numeric()
                             ->default(1)
                             ->required(),
+                        Select::make('type')
+                            ->label(__('Type'))
+                            ->options([
+                                'assessment' => __('Assessment'),
+                                'monthly' => __('Monthly'),
+                            ])
+                            ->default('assessment')
+                            ->required(),
                     ]),
             ]);
     }
@@ -82,6 +90,14 @@ class AvailableTimeResource extends Resource
                 TextColumn::make('limit')
                     ->label(__('Limit'))
                     ->numeric(),
+                TextColumn::make('type')
+                    ->label(__('Type'))
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'assessment' => 'info',
+                        'monthly' => 'success',
+                    })
+                    ->formatStateUsing(fn (string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
                 TextColumn::make('created_at')
                     ->label(__('Created At'))
                     ->dateTime()

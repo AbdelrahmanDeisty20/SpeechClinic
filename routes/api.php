@@ -10,6 +10,7 @@ use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\CVProfileController;
 use App\Http\Controllers\API\DayController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PageController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SettingController;
@@ -55,6 +56,9 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('days', [DayController::class, 'index']);
     // Available Time Routes
     Route::get('available-times', [AvaliableController::class, 'index']);
+    //fcm Tokens
+    Route::post('fcm-token', [NotificationController::class, 'sendToken']);
+    Route::post('fcm-token-user', [NotificationController::class, 'sendToken'])->middleware('auth:sanctum');
     // Booking Routes
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('bookings', [BookingController::class, 'index']);

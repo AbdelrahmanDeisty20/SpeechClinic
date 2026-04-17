@@ -146,8 +146,6 @@ class BookingService
                 $booking = Booking::create([
                     'user_id' => auth()->id(),
                     'available_time_id' => $data['available_time_id'],
-                    'booking_number' => rand(100000, 999999),
-                    'assessment_number' => $data['booking_number'], // Store the reference
                     'child_name' => $data['child_name'],
                     'child_age' => $data['child_age'],
                     'child_photo' => $photoPath,

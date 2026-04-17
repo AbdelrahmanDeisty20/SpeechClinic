@@ -28,6 +28,7 @@ class BookingRequest extends FormRequest
             'child_age' => 'required|integer|min:0|max:18',
             'child_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'problem_description' => 'required|string|min:10',
+            'type' => 'required|in:assessment,monthly',
         ];
     }
     public function messages(): array
@@ -50,6 +51,8 @@ class BookingRequest extends FormRequest
             'problem_description.required' => __('messages.problem_description_required'),
             'problem_description.string' => __('messages.problem_description_string'),
             'problem_description.min' => __('messages.problem_description_min'),
+            'type.required' => __('messages.type_required'),
+            'type.in' => __('messages.type_invalid'),
         ];
     }
 }

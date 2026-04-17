@@ -10,6 +10,7 @@ class AvailableTime extends Model
         'start_time',
         'end_time',
         'limit',
+        'type',
         'day_id',
     ];
 
