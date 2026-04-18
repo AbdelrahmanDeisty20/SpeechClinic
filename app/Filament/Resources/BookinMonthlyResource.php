@@ -56,7 +56,18 @@ class BookinMonthlyResource extends Resource
                     ->label(__('Assessment Booking'))
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->live(),
+                TextInput::make('booking_number')
+                    ->label(__('Booking Number'))
+                    ->placeholder(__('Enter Booking Number'))
+                    ->maxLength(255)
+                    ->afterStateHydrated(function (TextInput $component, $record) {
+                        $component->state($record?->booking?->booking_number);
+                    })
+                    ->saveRelationshipsUsing(function ($record, $state) {
+                        $record->booking()->update(['booking_number' => $state]);
+                    }),
                 TextInput::make('price')
                     ->label(__('Price'))
                     ->numeric()
@@ -83,7 +94,6 @@ class BookinMonthlyResource extends Resource
         return $schema
             ->schema([
                 Section::make(__('Linked Assessment Details'))
-                    ->description(__('Information from the initial assessment booking.'))
                     ->schema([
                         Grid::make(3)
                             ->schema([
@@ -116,7 +126,7 @@ class BookinMonthlyResource extends Resource
 
                 Section::make(__('Payment & Status'))
                     ->schema([
-                        Grid::make(2)
+                        Grid::make(3)
                             ->schema([
                                 Placeholder::make('price')
                                     ->label(__('Total Price'))
@@ -124,6 +134,9 @@ class BookinMonthlyResource extends Resource
                                 Placeholder::make('status')
                                     ->label(__('Payment Status'))
                                     ->content(fn ($record) => __($record?->status)),
+                                Placeholder::make('created_at')
+                                    ->label(__('Date'))
+                                    ->content(fn ($record) => $record?->created_at?->format('Y-m-d H:i')),
                                 
                                 Image::make(fn ($record) => $record->image ? asset('storage/monthlies/' . $record->image) : '', __('Receipt Image'))
                                     ->columnSpanFull(),
@@ -131,14 +144,10 @@ class BookinMonthlyResource extends Resource
                     ]),
 
                 Section::make(__('Sessions/Appointments'))
-                    ->description(__('Sessions scheduled for this monthly package.'))
                     ->schema([
                         Placeholder::make('sessions_count')
                             ->label(__('Total Sessions'))
                             ->content(fn ($record) => $record->appointments()->count() . ' ' . __('Sessions')),
-                        
-                        // If we want to list appointments, we can use a Placeholder with HTML if needed
-                        // But for now, showing the count is a good start as requested.
                     ]),
             ]);
     }
@@ -153,6 +162,9 @@ class BookinMonthlyResource extends Resource
                     ->sortable(),
                 TextColumn::make('booking.child_name')
                     ->label(__('Child Name'))
+                    ->searchable(),
+                TextColumn::make('booking.user.phone')
+                    ->label(__('Phone'))
                     ->searchable(),
                 TextColumn::make('price')
                     ->label(__('Price'))
