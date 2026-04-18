@@ -288,19 +288,15 @@ class BookinMonthlyResource extends Resource
                                     ->schema([
                                         Placeholder::make('day')
                                             ->label(__('Day'))
-                                            ->prefixIcon('heroicon-o-calendar-days')
                                             ->content(fn ($record) => $record?->day?->name),
                                         Placeholder::make('date')
                                             ->label(__('Date'))
-                                            ->prefixIcon('heroicon-o-calendar')
                                             ->content(fn ($record) => $record?->date),
                                         Placeholder::make('time')
                                             ->label(__('Time'))
-                                            ->prefixIcon('heroicon-o-clock')
                                             ->content(fn ($record) => $record?->time ? \Carbon\Carbon::parse($record->time)->format('h:i A') : '-'),
                                         Placeholder::make('specialist')
                                             ->label(__('Specialist'))
-                                            ->prefixIcon('heroicon-o-user')
                                             ->content(fn ($record) => $record?->specialist?->full_name),
                                     ]),
                             ])
