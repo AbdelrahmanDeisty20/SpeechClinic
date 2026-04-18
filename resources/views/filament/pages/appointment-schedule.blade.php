@@ -24,8 +24,8 @@
                         <table class="w-full border-collapse text-center text-sm min-w-[1200px]">
                             <thead>
                                 <tr class="bg-[#d37332] text-white">
-                                    {{-- Ultra Slim Time Header --}}
-                                    <th class="w-8 min-w-[40px] bg-[#d37332] text-white p-1 font-black text-[10px] border border-white">
+                                    {{-- Ultra Thin Time Header --}}
+                                    <th class="w-5 min-w-[28px] bg-[#d37332] text-white p-0 font-black text-[9px] border border-white">
                                         {{ __('T') }}
                                     </th>
                                     
@@ -39,8 +39,8 @@
                             <tbody>
                                 @foreach($times as $time)
                                     <tr class="hover:bg-orange-50/50 transition-colors">
-                                        {{-- Ultra Slim Time Label --}}
-                                        <td class="bg-[#d37332] text-white p-1 font-black text-sm border border-white w-8 min-w-[40px]">
+                                        {{-- Ultra Thin Time Label --}}
+                                        <td class="bg-[#d37332] text-white p-0 font-black text-xs border border-white w-5 min-w-[28px]">
                                             {{ \Carbon\Carbon::parse($time)->format('g') }}
                                         </td>
 
