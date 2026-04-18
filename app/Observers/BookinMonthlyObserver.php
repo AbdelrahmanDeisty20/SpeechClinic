@@ -23,7 +23,18 @@ class BookinMonthlyObserver
      */
     public function updated(BookinMonthly $bookinMonthly): void
     {
-        //
+        if ($bookinMonthly->isDirty('status')) {
+            $newStatus = $bookinMonthly->status;
+            
+            // Only notify if status is one of the target states
+            if (in_array($newStatus, ['accepted', 'confirmed', 'cancelled'])) {
+                // Monthly booking belongs to a user through the main booking
+                $user = $bookinMonthly->booking?->user;
+                if ($user) {
+                    $user->notify(new \App\Notifications\BookingStatusNotification($bookinMonthly, $newStatus));
+                }
+            }
+        }
     }
 
     /**

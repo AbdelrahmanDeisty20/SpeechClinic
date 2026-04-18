@@ -42,10 +42,14 @@ class BookingStatusNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $isMonthly = $this->booking instanceof \App\Models\BookinMonthly;
+        $bookingNumber = $isMonthly ? $this->booking->booking?->booking_number : $this->booking->booking_number;
+        $bookingType = $isMonthly ? 'الشهري' : 'التقييمي';
+
         $messages = [
-            'accepted' => 'تم قبول حجزك بنجاح. سنقوم بالتواصل معك قريباً لتأكيد الموعد.',
-            'confirmed' => "تم تأكيد حجزك بنجاح. رقم الحجز الخاص بك هو: {$this->booking->booking_number}",
-            'cancelled' => 'نعتذر، لقد تم إلغاء حجزك.',
+            'accepted' => "تم قبول حجزك {$bookingType} بنجاح. سنقوم بالتواصل معك قريباً لتأكيد الموعد.",
+            'confirmed' => "تم تأكيد حجزك {$bookingType} بنجاح. رقم الحجز الخاص بك هو: {$bookingNumber}",
+            'cancelled' => "نعتذر، لقد تم إلغاء حجزك {$bookingType}.",
         ];
 
         $title = 'تحديث حالة الحجز';
@@ -55,15 +59,15 @@ class BookingStatusNotification extends Notification
         $fcmService = app(\App\Services\API\FirebaseNotificationService::class);
         foreach ($notifiable->fcmTokens as $token) {
             $fcmService->sendToToken($token->token, $title, $body, [
-                'booking_id' => (string) $this->booking->id,
+                'booking_id' => (string) ($isMonthly ? $this->booking->booking_id : $this->booking->id),
                 'status' => $this->status,
                 'type' => 'booking_status_update'
             ]);
         }
 
-        $url = $this->booking->type === 'assessment' 
+        $url = (!$isMonthly && $this->booking->type === 'assessment') 
             ? BookingResource::getUrl('view', ['record' => $this->booking->id])
-            : BookinMonthlyResource::getUrl('view', ['record' => $this->booking->id]);
+            : BookinMonthlyResource::getUrl('view', ['record' => ($isMonthly ? $this->booking->id : $this->booking->monthlyBooking?->id)]);
 
         return FilamentNotification::make()
             ->title($title)
