@@ -281,6 +281,32 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make(),
+                \Filament\Tables\Actions\Action::make('setMonthlyPackage')
+                    ->label(__('Prepare Monthly Package'))
+                    ->icon('heroicon-o-currency-dollar')
+                    ->color('success')
+                    ->visible(fn ($record) => $record->type === 'assessment' && $record->status === 'confirmed')
+                    ->form([
+                        TextInput::make('price')
+                            ->label(__('Monthly Price'))
+                            ->numeric()
+                            ->required()
+                            ->default(fn ($record) => $record->availableTime?->day?->branch?->cost?->where('type', 'monthly')->first()?->price ?? 0),
+                    ])
+                    ->action(function ($record, array $data) {
+                        \App\Models\BookinMonthly::updateOrCreate(
+                            ['booking_id' => $record->id],
+                            [
+                                'price' => $data['price'],
+                                'status' => 'pending',
+                            ]
+                        );
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('Monthly package prepared successfully'))
+                            ->success()
+                            ->send();
+                    }),
                 Actions\EditAction::make(),
             ])
             ->bulkActions([

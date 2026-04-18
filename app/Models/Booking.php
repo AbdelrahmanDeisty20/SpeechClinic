@@ -32,6 +32,11 @@ class Booking extends Model
         return $this->belongsTo(AvailableTime::class);
     }
 
+    public function monthlyBooking()
+    {
+        return $this->hasOne(BookinMonthly::class, 'booking_id');
+    }
+
     public function getChildPhotoUrlAttribute()
     {
         if (!$this->child_photo) return null;

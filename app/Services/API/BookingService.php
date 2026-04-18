@@ -104,7 +104,7 @@ class BookingService
                     return [
                         'status' => false,
                         'message' => __('messages.booking_number_not_found'),
-                        'data' => null
+                        'data' => []
                     ];
                 }
 
@@ -115,13 +115,14 @@ class BookingService
                     $photoPath = basename($originalPath);
                 }
 
-                // 3. Create the monthly booking record (Price and appointments will be set by admin)
-                $bookingMonthly = \App\Models\BookinMonthly::create([
-                    'booking_id' => $assessment->id,
-                    'image' => $photoPath,
-                    'price' => null,
-                    'status' => 'pending',
-                ]);
+                // 3. Update or Create the monthly booking record (Price set by admin in dashboard)
+                $bookingMonthly = \App\Models\BookinMonthly::updateOrCreate(
+                    ['booking_id' => $assessment->id],
+                    [
+                        'image' => $photoPath,
+                        'status' => 'pending',
+                    ]
+                );
 
                 return [
                     'status' => true,
