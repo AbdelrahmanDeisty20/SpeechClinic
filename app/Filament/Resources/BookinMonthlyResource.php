@@ -184,7 +184,7 @@ class BookinMonthlyResource extends Resource
                                 \Filament\Forms\Components\Hidden::make('user_id')
                                     ->default(fn () => auth()->id()),
                             ])
-                            ->columns(4)
+                            ->columns(2)
                             ->defaultItems(0)
                             ->columnSpanFull()
                             ->itemLabel(fn (array $state): ?string => ($state['date'] ?? '') . ' ' . ($state['time'] ?? '')),
