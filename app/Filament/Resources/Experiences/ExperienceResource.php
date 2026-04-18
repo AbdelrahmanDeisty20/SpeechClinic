@@ -20,6 +20,14 @@ class ExperienceResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
+    protected static ?int $navigationSort = 50;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('المحتوى والإحصائيات');
+    }
+
     protected static ?string $navigationLabel = 'إحصائيات الخبرة';
 
     protected static ?string $pluralLabel = 'إحصائيات الخبرة';

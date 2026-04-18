@@ -26,21 +26,27 @@ class UserResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Main Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'إدارة الموظفين والعملاء';
+    protected static ?int $navigationSort = 80;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Main Management');
+        return __('إدارة الموظفين والعملاء');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Users');
+        return __('المستخدمين');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Users');
+        return __('المستخدمين');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('مستخدم');
     }
 
     public static function form(Schema $schema): Schema

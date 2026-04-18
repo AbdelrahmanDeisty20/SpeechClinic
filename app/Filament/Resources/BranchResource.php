@@ -19,21 +19,27 @@ class BranchResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Clinic Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'بيانات العيادة';
+    protected static ?int $navigationSort = 40;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Clinic Management');
+        return __('بيانات العيادة');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Branches');
+        return __('الفروع');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Branches');
+        return __('الفروع');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('فرع');
     }
 
     public static function form(Schema $schema): Schema

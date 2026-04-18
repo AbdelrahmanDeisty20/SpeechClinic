@@ -20,22 +20,27 @@ class AvailableTimeResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Available Times Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'حجوزات المواعيد';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 30;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Available Times Management');
+        return __('حجوزات المواعيد');
     }
     public static function getNavigationLabel(): string
     {
-        return __('Available Times');
+        return __('مواعيد اليوم');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Available Times');
+        return __('مواعيد اليوم');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('موعد');
     }
 
     public static function form(Schema $schema): Schema

@@ -20,21 +20,27 @@ class SettingResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
+    protected static string|\UnitEnum|null $navigationGroup = 'إعدادات التطبيق';
+    protected static ?int $navigationSort = 90;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Systems Config');
+        return __('إعدادات التطبيق');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Settings');
+        return __('إعدادات عامة');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Settings');
+        return __('إعدادات عامة');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('إعداد');
     }
 
     public static function form(Schema $schema): Schema

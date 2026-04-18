@@ -23,21 +23,27 @@ class ReviewResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-star';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Content Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
+    protected static ?int $navigationSort = 53;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Content Management');
+        return __('المحتوى والإحصائيات');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Reviews');
+        return __('تقييمات العملاء');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Reviews');
+        return __('تقييمات العملاء');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('تقييم');
     }
 
     public static function form(Schema $schema): Schema

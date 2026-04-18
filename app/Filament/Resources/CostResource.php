@@ -19,21 +19,27 @@ class CostResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
+    protected static string|\UnitEnum|null $navigationGroup = 'بيانات العيادة';
+    protected static ?int $navigationSort = 46;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Systems Config');
+        return __('بيانات العيادة');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Costs');
+        return __('التكاليف والأسعار');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Costs');
+        return __('التكاليف والأسعار');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('سعر');
     }
 
     public static function form(Schema $schema): Schema

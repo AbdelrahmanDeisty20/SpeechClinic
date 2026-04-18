@@ -20,6 +20,14 @@ class TransferNumberResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-phone';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'بيانات العيادة';
+    protected static ?int $navigationSort = 45;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('بيانات العيادة');
+    }
+
     protected static ?string $navigationLabel = 'أرقام التحويل';
 
     protected static ?string $pluralLabel = 'أرقام التحويل';

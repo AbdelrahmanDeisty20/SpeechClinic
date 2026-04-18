@@ -19,21 +19,27 @@ class CallUsResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-phone-arrow-up-right';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
+    protected static string|\UnitEnum|null $navigationGroup = 'التواصل والرسائل';
+    protected static ?int $navigationSort = 61;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Systems Config');
+        return __('التواصل والرسائل');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Call Us Requests');
+        return __('طلبات "اتصل بنا"');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Call Us Requests');
+        return __('طلبات "اتصل بنا"');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('طلب اتصال');
     }
 
     public static function form(Schema $schema): Schema

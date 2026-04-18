@@ -24,21 +24,27 @@ class BannerResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-photo';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Banners Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
+    protected static ?int $navigationSort = 51;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Banners Management');
+        return __('المحتوى والإحصائيات');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Banners');
+        return __('البنرات الإعلانية');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Banners');
+        return __('البنرات الإعلانية');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('بنر');
     }
 
     public static function form(Schema $schema): Schema

@@ -32,23 +32,28 @@ class BookinMonthlyResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Booking Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'حجوزات المواعيد';
     
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 20;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Booking Management');
+        return __('حجوزات المواعيد');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Monthly Bookings');
+        return __('الحجوزات الشهرية');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Monthly Bookings');
+        return __('الحجوزات الشهرية');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('حجز شهري');
     }
 
     public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema

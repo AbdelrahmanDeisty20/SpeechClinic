@@ -20,21 +20,27 @@ class PageResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-duplicate';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
+    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
+    protected static ?int $navigationSort = 54;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Systems Config');
+        return __('المحتوى والإحصائيات');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Pages');
+        return __('الصفحات الثابتة');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Pages');
+        return __('الصفحات الثابتة');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('صفحة');
     }
 
     public static function form(Schema $schema): Schema

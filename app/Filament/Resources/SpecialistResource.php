@@ -27,21 +27,27 @@ class SpecialistResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Main Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'إدارة الموظفين والعملاء';
+    protected static ?int $navigationSort = 81;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Main Management');
+        return __('إدارة الموظفين والعملاء');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Specialists');
+        return __('الأخصائيين');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Specialists');
+        return __('الأخصائيين');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('أخصائي');
     }
 
     public static function getEloquentQuery(): Builder

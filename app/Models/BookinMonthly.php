@@ -22,4 +22,11 @@ class BookinMonthly extends Model
     {
         return $this->hasMany(Appointment::class, 'bookin_monthly_id');
     }
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) return null;
+        return asset('storage/monthlies/' . $this->image);
+    }
 }
+

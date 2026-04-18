@@ -20,21 +20,27 @@ class ContactResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Systems Config';
+    protected static string|\UnitEnum|null $navigationGroup = 'التواصل والرسائل';
+    protected static ?int $navigationSort = 60;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Systems Config');
+        return __('التواصل والرسائل');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Contacts');
+        return __('رسائل التواصل');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('Contacts');
+        return __('رسائل التواصل');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('رسالة');
     }
 
     public static function form(Schema $schema): Schema

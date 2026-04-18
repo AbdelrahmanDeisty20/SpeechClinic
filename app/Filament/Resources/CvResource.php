@@ -22,9 +22,28 @@ class CvResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'HR Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
+    protected static ?int $navigationSort = 52;
 
-    protected static ?string $modelLabel = 'Candidate CV';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('المحتوى والإحصائيات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('السير الذاتية');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('السير الذاتية');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('سيرة ذاتية');
+    }
 
     public static function getModelLabel(): string
     {
