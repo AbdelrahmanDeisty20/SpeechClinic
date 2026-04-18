@@ -25,18 +25,19 @@ class AttendanceService
             // 1. Verify branch exists
             $branch = Branch::findOrFail($data['branch_id']);
 
-            // 2. Check distance (If lat/lng provided)
-            if (isset($data['lat']) && isset($data['lng'])) {
-                $distance = $this->calculateDistance($data['lat'], $data['lng'], $branch->lat, $branch->lng);
-                
-                // Allow a 100-meter radius (0.1 km)
-                if ($distance > 0.1) {
-                    return [
-                        'status' => false,
-                        'message' => __('messages.too_far_from_branch'),
-                        'data' => ['distance' => round($distance * 1000, 2) . ' meters']
-                    ];
-                }
+            // 2. Check distance (Mandatory Check)
+            $distance = $this->calculateDistance($data['lat'], $data['lng'], $branch->lat, $branch->lng);
+            
+            // Allow a 100-meter radius (0.1 km)
+            if ($distance > 0.1) {
+                return [
+                    'status' => false,
+                    'message' => __('messages.too_far_from_branch'),
+                    'data' => [
+                        'distance_meters' => round($distance * 1000, 2),
+                        'max_allowed_meters' => 100
+                    ]
+                ];
             }
 
             // 3. Check for existing record

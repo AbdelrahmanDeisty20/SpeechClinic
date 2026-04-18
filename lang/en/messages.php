@@ -136,4 +136,6 @@ return [
     'check_in_successful' => 'Check-in successful, have a great shift!',
     'no_active_check_in_found' => 'Sorry, no active check-in found for today to perform check-out',
     'check_out_successful' => 'Check-out successful, see you next time!',
+    'branch_id_required' => 'The branch must be selected first to record attendance',
+    'branch_not_found' => 'The selected branch does not exist in our records',
 ];

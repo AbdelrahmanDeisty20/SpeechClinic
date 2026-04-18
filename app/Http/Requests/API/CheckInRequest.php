@@ -21,8 +21,8 @@ class CheckInRequest extends FormRequest
     {
         return [
             'branch_id' => 'required|exists:branches,id',
-            'lat' => 'nullable|string',
-            'lng' => 'nullable|string',
+            'lat' => 'required|string',
+            'lng' => 'required|string',
         ];
     }
 
