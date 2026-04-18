@@ -9,6 +9,7 @@ use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\API\BookingMonthlyController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\TransferController;
+use App\Http\Controllers\API\ExperienceController;
 use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\CVProfileController;
@@ -63,6 +64,7 @@ Route::group(['middleware' => setLang::class], function () {
 
         Route::get('vodafone-cash', [TransferController::class, 'getVodafoneCash']);
         Route::get('instapay', [TransferController::class, 'getInstaPay']);
+        Route::get('experience', [ExperienceController::class, 'index']);
 
     // Day Routes
     Route::get('days', [DayController::class, 'index']);
