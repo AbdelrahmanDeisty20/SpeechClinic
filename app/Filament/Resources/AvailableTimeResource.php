@@ -22,6 +22,8 @@ class AvailableTimeResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Available Times Management';
 
+    protected static ?int $navigationSort = 10;
+
     public static function getNavigationGroup(): ?string
     {
         return __('Available Times Management');

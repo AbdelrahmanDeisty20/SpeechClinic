@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    <div class="space-y-8">
+    <div class="space-y-6">
         {{-- Filter Section --}}
         <div class="p-4 bg-white rounded-xl shadow-sm border-2 border-[#d37332] dark:bg-gray-800">
             <form wire:submit.prevent="submit">
@@ -24,9 +24,9 @@
                         <table class="w-full border-collapse text-center text-sm min-w-[1200px]">
                             <thead>
                                 <tr class="bg-[#d37332] text-white">
-                                    {{-- Ultra Thin Time Header --}}
-                                    <th class="w-5 min-w-[28px] bg-[#d37332] text-white p-0 font-black text-[9px] border border-white">
-                                        {{ __('T') }}
+                                    {{-- Ultra Slim Time Header - No text --}}
+                                    <th class="w-[25px] min-w-[25px] bg-[#d37332] text-white p-0 m-0 border border-white">
+                                        {{-- Empty on purpose --}}
                                     </th>
                                     
                                     @foreach($specialistChunk as $specialist)
@@ -39,8 +39,8 @@
                             <tbody>
                                 @foreach($times as $time)
                                     <tr class="hover:bg-orange-50/50 transition-colors">
-                                        {{-- Ultra Thin Time Label --}}
-                                        <td class="bg-[#d37332] text-white p-0 font-black text-xs border border-white w-5 min-w-[28px]">
+                                        {{-- Ultra Slim Time Label --}}
+                                        <td class="bg-[#d37332] text-white p-0 m-0 font-black text-[10px] border border-white w-[25px] min-w-[25px] leading-none">
                                             {{ \Carbon\Carbon::parse($time)->format('g') }}
                                         </td>
 
@@ -52,7 +52,7 @@
                                                 @endphp
                                                 
                                                 @if($childName)
-                                                    <div class="font-black text-[#d37332] border-2 border-[#d37332] bg-orange-50 p-3 rounded-lg text-xl leading-tight shadow-md dark:bg-orange-900/40 dark:text-white">
+                                                    <div class="font-black text-[#d37332] border-2 border-[#d37332] bg-orange-50 p-2 rounded-lg text-xl leading-tight shadow-md dark:bg-orange-900/40 dark:text-white">
                                                         {{ $childName }}
                                                     </div>
                                                 @else
@@ -77,7 +77,7 @@
     </div>
 
     <style>
-        /* Strong borders for the grid */
+        /* Force ultra slim width and strong lines */
         table, th, td {
             border: 2px solid #333 !important;
         }
@@ -85,10 +85,6 @@
         table {
             width: 100%;
             table-layout: fixed;
-        }
-
-        .dark th, .dark td {
-            border-color: #777 !important;
         }
     </style>
 </x-filament-panels::page>
