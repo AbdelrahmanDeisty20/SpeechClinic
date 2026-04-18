@@ -157,7 +157,7 @@ class BookinMonthlyResource extends Resource
                                     ->afterStateUpdated(function (Set $set, Get $get, $state) {
                                         if (!$state) return;
                                         $dayNameEn = strtolower(\Carbon\Carbon::parse($state)->format('l'));
-                                        $branchId = $get('../../branch_id_temp');
+                                        $branchId = $get('../../branch_id_temp') ?? $get('branch_id_temp');
                                         
                                         if (!$branchId) return;
 
@@ -212,6 +212,7 @@ class BookinMonthlyResource extends Resource
                                 \Filament\Forms\Components\Hidden::make('user_id')
                                     ->default(fn () => auth()->id()),
                             ])
+                            ->disabled(fn (Get $get) => !$get('booking_id'))
                             ->columns(2)
                             ->defaultItems(0)
                             ->columnSpanFull()
