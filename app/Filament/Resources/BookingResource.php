@@ -161,7 +161,7 @@ class BookingResource extends Resource
                                             ->label('')
                                             ->content(__('صورة الطفل'))
                                             ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
-                                        Image::make(fn ($record) => $record?->child_photo_url, __('الصورة')),
+                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('الصورة')),
                                         Placeholder::make('child_name')
                                             ->label(__('اسم الطفل'))
                                             ->content(fn ($record) => $record?->child_name),
