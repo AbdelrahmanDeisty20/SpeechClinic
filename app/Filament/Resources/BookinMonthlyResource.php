@@ -44,8 +44,9 @@ class BookinMonthlyResource extends Resource
         return $schema
             ->schema([
                 Select::make('booking_id')
-                    ->relationship('booking', 'booking_number')
-                    ->label(__('Assessment Booking Number'))
+                    ->relationship('booking', 'id')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->booking_number ?? "#{$record->id} ({$record->child_name})")
+                    ->label(__('Assessment Booking'))
                     ->required()
                     ->searchable()
                     ->preload(),
