@@ -138,6 +138,7 @@ class CvResource extends Resource
                 ImageColumn::make('image')
                     ->label('Photo')
                     ->disk('public')
+                    ->getStateUsing(fn($record) => $record->image ? "cvs/{$record->image}" : null)
                     ->size(100),
                 TextColumn::make('name_en')
                     ->label(__('Candidate (English)'))

@@ -18,7 +18,7 @@ class BannerResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image ? asset('storage/banners/' . $this->image) : null,
+            'image' => $this->image_url,
         ];
     }
 }

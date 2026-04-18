@@ -64,7 +64,7 @@ class BannerResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('Photo')
-                    ->disk('public') // ✅ عرض الصورة
+                    ->disk('public')
                     ->size(100),
 
                 TextColumn::make('title_en')->searchable()->sortable(),
