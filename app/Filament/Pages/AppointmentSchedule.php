@@ -43,11 +43,11 @@ class AppointmentSchedule extends Page implements HasForms
         return __('Sessions Schedule');
     }
 
-    public function form(Form $form): Form
+    public function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
     {
-        return $form
+        return $schema
             ->schema([
-                \Filament\Forms\Components\Section::make()
+                \Filament\Schemas\Components\Section::make()
                     ->schema([
                         DatePicker::make('date')
                             ->label(__('Date'))
