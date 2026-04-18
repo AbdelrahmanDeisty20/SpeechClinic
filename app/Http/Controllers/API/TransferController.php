@@ -18,6 +18,7 @@ class TransferController extends Controller
     public function getVodafoneCash()
     {
         $numbers = TransferNumber::where('name', 'like', '%Vodafone%')
+            ->orWhere('name', 'like', '%vadafone%')
             ->orWhere('name', 'like', '%فودافون%')
             ->get();
 
@@ -34,6 +35,7 @@ class TransferController extends Controller
     public function getInstaPay()
     {
         $numbers = TransferNumber::where('name', 'like', '%InstaPay%')
+            ->orWhere('name', 'like', '%instabay%')
             ->orWhere('name', 'like', '%انستا%')
             ->get();
 
