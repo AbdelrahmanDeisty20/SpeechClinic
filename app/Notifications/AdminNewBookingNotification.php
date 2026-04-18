@@ -7,6 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Filament\Notifications\Notification as FilamentNotification;
+use Filament\Notifications\Actions\Action;
+use App\Filament\Resources\BookingResource;
+use App\Filament\Resources\BookinMonthlyResource;
 
 class AdminNewBookingNotification extends Notification
 {
@@ -43,10 +46,20 @@ class AdminNewBookingNotification extends Notification
             $message = "تم حجز كشف شهري جديد برقم طلب {$bookingNumber}.";
         }
 
+        $url = $this->type === 'assessment' 
+            ? BookingResource::getUrl('view', ['record' => $this->booking->id])
+            : BookinMonthlyResource::getUrl('view', ['record' => $this->booking->id]);
+
         return FilamentNotification::make()
             ->title($title)
             ->body($message)
             ->info()
+            ->actions([
+                Action::make('view')
+                    ->label(__('عرض التفاصيل'))
+                    ->url($url)
+                    ->color('primary'),
+            ])
             ->getDatabaseMessage();
     }
 }
