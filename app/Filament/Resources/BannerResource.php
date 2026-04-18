@@ -7,15 +7,12 @@ use App\Models\Banner;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
-use Filament\Schemas\Components\Image;
 use Filament\Tables\Table;
 use Filament\Actions;
 
@@ -24,85 +21,37 @@ class BannerResource extends Resource
     protected static ?string $model = Banner::class;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-photo';
-
     protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
     protected static ?int $navigationSort = 51;
-
-    public static function getNavigationGroup(): ?string
-    {
-        return __('المحتوى والإحصائيات');
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return __('البنرات الإعلانية');
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return __('البنرات الإعلانية');
-    }
-
-    public static function getLabel(): string
-    {
-        return __('بنر');
-    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make(__('Banner Details'))
+                Section::make('Banner Details')
                     ->schema([
                         FileUpload::make('image')
-                            ->label(__('Photo'))
+                            ->label('Photo')
                             ->image()
                             ->disk('public')
-                            ->directory('banners')
-                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "banners/{$state}" : $state)
-                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
-                            ->imageEditor()
+                            ->directory('banners') // ✅ التخزين هنا
                             ->required()
                             ->columnSpanFull(),
                     ]),
+
                 Grid::make(2)
                     ->schema([
-                        Section::make(__('Arabic Content'))
-                            ->description(__('Content displayed in Arabic.'))
+                        Section::make('Arabic Content')
                             ->schema([
-                                TextInput::make('title_ar')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->label(__('Title (Arabic)')),
-                                Textarea::make('description_ar')
-                                    ->rows(3)
-                                    ->label(__('Description (Arabic)')),
-                            ])
-                            ->columnSpan(1),
-                        Section::make(__('English Content'))
-                            ->description(__('Content displayed in English.'))
-                            ->schema([
-                                TextInput::make('title_en')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->label(__('Title (English)')),
-                                Textarea::make('description_en')
-                                    ->rows(3)
-                                    ->label(__('Description (English)')),
-                            ])
-                            ->columnSpan(1),
-                    ]),
-            ]);
-    }
+                                TextInput::make('title_ar')->required(),
+                                Textarea::make('description_ar')->rows(3),
+                            ]),
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return $schema
-            ->schema([
-                Section::make(__('Banner Image'))
-                    ->schema([
-                        Image::make(fn ($record) => $record?->image_url ?? asset('images/placeholder.png'), __('Photo'))
-                            ->imageWidth('100%'),
+                        Section::make('English Content')
+                            ->schema([
+                                TextInput::make('title_en')->required(),
+                                Textarea::make('description_en')->rows(3),
+                            ]),
                     ]),
             ]);
     }
@@ -112,26 +61,13 @@ class BannerResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label(__('Photo'))
-                    ->disk('public')
-                    ->getStateUsing(fn($record) => $record->image ? "banners/{$record->image}" : null)
-                    ->square()
+                    ->label('Photo')
+                    ->disk('public') // ✅ عرض الصورة
                     ->size(100),
-                TextColumn::make('title_en')
-                    ->label(__('Title (English)'))
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('title_ar')
-                    ->label(__('Title (Arabic)'))
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
+
+                TextColumn::make('title_en')->searchable()->sortable(),
+                TextColumn::make('title_ar')->searchable()->sortable(),
+                TextColumn::make('created_at')->dateTime()->sortable(),
             ])
             ->actions([
                 Actions\EditAction::make(),
@@ -142,13 +78,6 @@ class BannerResource extends Resource
                     Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
