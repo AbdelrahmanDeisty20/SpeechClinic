@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Filament\Notifications\Notification as FilamentNotification;
 
 class BookingStatusNotification extends Notification
 {
@@ -57,11 +58,10 @@ class BookingStatusNotification extends Notification
             ]);
         }
 
-        return [
-            'booking_id' => $this->booking->id,
-            'status' => $this->status,
-            'title' => $title,
-            'message' => $body,
-        ];
+        return FilamentNotification::make()
+            ->title($title)
+            ->body($body)
+            ->success()
+            ->getDatabaseMessage();
     }
 }

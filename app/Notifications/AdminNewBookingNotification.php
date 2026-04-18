@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Filament\Notifications\Notification as FilamentNotification;
 
 class AdminNewBookingNotification extends Notification
 {
@@ -31,9 +32,6 @@ class AdminNewBookingNotification extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the array representation of the notification.
-     */
     public function toArray(object $notifiable): array
     {
         if ($this->type === 'assessment') {
@@ -45,11 +43,10 @@ class AdminNewBookingNotification extends Notification
             $message = "تم حجز كشف شهري جديد برقم طلب {$bookingNumber}.";
         }
 
-        return [
-            'booking_id' => $this->booking->id,
-            'type' => $this->type,
-            'title' => $title,
-            'message' => $message,
-        ];
+        return FilamentNotification::make()
+            ->title($title)
+            ->body($message)
+            ->info()
+            ->getDatabaseMessage();
     }
 }
