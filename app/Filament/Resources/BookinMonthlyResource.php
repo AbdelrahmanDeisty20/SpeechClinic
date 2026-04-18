@@ -23,7 +23,7 @@ use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Image;
-use Filament\Schemas\Components\RepeatableEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Tables\Columns\TextColumn as TableTextColumn;
 
 class BookinMonthlyResource extends Resource
