@@ -46,13 +46,19 @@ class LatestBookings extends BaseWidget
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
+                        'accepted' => 'info',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
+                        'completed' => 'gray',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match($state) {
                         'pending' => __('Pending'),
+                        'accepted' => __('Accepted'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
+                        'completed' => __('Completed'),
+                        default => $state,
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date'))
@@ -70,8 +76,10 @@ class LatestBookings extends BaseWidget
                     ->label(__('Status'))
                     ->options([
                         'pending' => __('Pending'),
+                        'accepted' => __('Accepted'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
+                        'completed' => __('Completed'),
                     ]),
             ])
             ->emptyStateHeading(__('No bookings found'));
