@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\API;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
 class CVResource extends JsonResource
 {
@@ -19,7 +19,7 @@ class CVResource extends JsonResource
             'name' => $this->name,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image,
+            'image' => $this->image ? asset('storage/cvs/' . $this->image) : null,
         ];
     }
 }
