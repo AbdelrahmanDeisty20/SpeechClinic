@@ -70,6 +70,8 @@ class CvResource extends Resource
                             ->disk('public')
                             ->required()
                             ->imageEditor()
+                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "cvs/{$state}" : $state)
+                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                             ->columnSpanFull(),
                         Grid::make(2)
                             ->schema([

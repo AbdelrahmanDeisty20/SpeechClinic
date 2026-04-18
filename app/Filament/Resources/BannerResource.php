@@ -35,6 +35,8 @@ class BannerResource extends Resource
                             ->image()
                             ->disk('public')
                             ->directory('banners') // ✅ التخزين هنا
+                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "banners/{$state}" : $state)
+                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                             ->required()
                             ->columnSpanFull(),
                     ]),
