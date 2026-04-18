@@ -16,12 +16,13 @@ class BookinMonthlyResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'booking' => BookingResource::collection($this->whenLoaded('booking')),
+            'booking_number' => $this->booking->booking_number ?? null,
+            'image' => $this->image ? asset('storage/monthlies/' . $this->image) : null,
             'price' => $this->price,
             'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'booking_details' => new BookingResource($this->whenLoaded('booking')),
             'appointments' => AppointmentResource::collection($this->whenLoaded('appointments')),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

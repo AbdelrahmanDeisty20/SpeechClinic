@@ -36,7 +36,7 @@ class BookingController extends Controller
         if (!$result['status']) {
             return $this->error($result['message'], 422);
         }
-        return $this->success(BookingResource::make($result['data']), $result['message']);
+        return $this->success(new BookingResource($result['data']), $result['message']);
     }
     public function storeMonthly(BookingMonthlyRequest $request)
     {
@@ -44,7 +44,7 @@ class BookingController extends Controller
         if (!$result['status']) {
             return $this->error($result['message'], 422);
         }
-        return $this->success(BookinMonthlyResource::make($result['data']), $result['message']);
+        return $this->success(new BookinMonthlyResource($result['data']), $result['message']);
     }
     public function getAllBookings()
     {
