@@ -138,4 +138,8 @@ return [
     'check_out_successful' => 'Check-out successful, see you next time!',
     'branch_id_required' => 'The branch must be selected first to record attendance',
     'branch_not_found' => 'The selected branch does not exist in our records',
+    'phone_required' => 'The phone number is required to complete the booking',
+    'phone_string' => 'The phone number must be a valid string',
+    'phone_max' => 'The phone number must not exceed 20 characters',
+    'phone_regex' => 'The provided phone number is invalid (must start with 0 or +)',
 ];

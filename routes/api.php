@@ -73,6 +73,7 @@ Route::group(['middleware' => setLang::class], function () {
         Route::post('make-bookings', [BookingController::class, 'store']);
         Route::post('make-bookings-monthly', [BookingController::class, 'storeMonthly']);
         Route::post('monthly-booking-details', [BookingMonthlyController::class, 'getDetails']);
+        Route::get('monthly-details', [BookingMonthlyController::class, 'getDetails']);
     });
 
     // Special Specialist Routes (For Doctors Only)
