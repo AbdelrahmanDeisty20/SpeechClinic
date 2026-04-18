@@ -107,6 +107,7 @@ class BookingResource extends Resource
                                     ->label(__('الحالة'))
                                     ->options([
                                         'pending' => __('Pending'),
+                                        'accepted' => __('Accepted'),
                                         'confirmed' => __('Confirmed'),
                                         'cancelled' => __('Cancelled'),
                                         'completed' => __('Completed'),
@@ -195,6 +196,7 @@ class BookingResource extends Resource
                                             ->label(__('الحالة'))
                                             ->content(fn ($record) => match ($record?->status) {
                                                 'pending' => __('Pending'),
+                                                'accepted' => __('Accepted'),
                                                 'confirmed' => __('Confirmed'),
                                                 'cancelled' => __('Cancelled'),
                                                 'completed' => __('Completed'),
@@ -257,12 +259,14 @@ class BookingResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
+                        'accepted' => 'info',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
                         'completed' => 'gray',
                     })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
                         'pending' => __('Pending'),
+                        'accepted' => __('Accepted'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
                         'completed' => __('Completed'),
@@ -290,6 +294,7 @@ class BookingResource extends Resource
                     ->label(__('الحالة'))
                     ->options([
                         'pending' => __('Pending'),
+                        'accepted' => __('Accepted'),
                         'confirmed' => __('Confirmed'),
                         'cancelled' => __('Cancelled'),
                         'completed' => __('Completed'),

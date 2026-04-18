@@ -137,6 +137,7 @@ class BookinMonthlyResource extends Resource
                                     ->label(__('Booking Status'))
                                     ->options([
                                         'pending' => __('Pending'),
+                                        'accepted' => __('Accepted'),
                                         'confirmed' => __('Confirmed'),
                                         'cancelled' => __('Cancelled'),
                                         'completed' => __('Completed'),
@@ -338,6 +339,7 @@ class BookinMonthlyResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
+                        'accepted' => 'info',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
                         'completed' => 'gray',

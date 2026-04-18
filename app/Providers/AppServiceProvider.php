@@ -27,5 +27,8 @@ class AppServiceProvider extends ServiceProvider
         \BezhanSalleh\LanguageSwitch\LanguageSwitch::configureUsing(function (\BezhanSalleh\LanguageSwitch\LanguageSwitch $switch) {
             $switch->locales(['ar', 'en']);
         });
+
+        \App\Models\Booking::observe(\App\Observers\BookingObserver::class);
+        \App\Models\BookinMonthly::observe(\App\Observers\BookinMonthlyObserver::class);
     }
 }
