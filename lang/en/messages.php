@@ -126,4 +126,5 @@ return [
     'test_notification_user_body' => 'This is a test notification sent to all users',
     'Completed' => 'Completed',
     'access_denied_specialist' => 'Access denied. Specialists only.',
+    'access_denied_user' => 'Access denied. Users only.',
 ];

@@ -140,4 +140,5 @@ return [
     'test_notification_user_body' => 'هذا إشعار تجريبي مرسل لجميع المستخدمين',
     'Completed' => 'تم الانتهاء',
     'access_denied_specialist' => 'عفواً، لا يمكن الوصول لهذه الصفحة',
+    'access_denied_user' => 'عفواً، لا يمكن الوصول لهذه الصفحة',
 ];
