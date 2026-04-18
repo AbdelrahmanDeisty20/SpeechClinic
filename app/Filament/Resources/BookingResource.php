@@ -176,6 +176,9 @@ class BookingResource extends Resource
                                         Placeholder::make('price')
                                             ->label(__('Price'))
                                             ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('ج.م')),
+                                        Placeholder::make('booking_number')
+                                            ->label(__('Booking Number'))
+                                            ->content(fn ($record) => $record?->booking_number ?? '-'),
                                     ])->columnSpan(1),
 
                                 // Column 3: Appointment Details
