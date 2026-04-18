@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('bookin_monthlies', function (Blueprint $table) {
             $table->string('image')->nullable()->change();
-            $table->foreignId('appointment_id')->nullable()->change();
         });
     }
 
