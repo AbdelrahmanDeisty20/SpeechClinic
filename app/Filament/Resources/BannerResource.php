@@ -64,9 +64,6 @@ class BannerResource extends Resource
                             ->imageEditor()
                             ->required()
                             ->columnSpanFull(),
-                        Toggle::make('is_active')
-                            ->label(__('Is Active'))
-                            ->default(true),
                     ]),
                 Grid::make(2)
                     ->schema([
@@ -128,8 +125,6 @@ class BannerResource extends Resource
                     ->label(__('Title (Arabic)'))
                     ->searchable()
                     ->sortable(),
-                ToggleColumn::make('is_active')
-                    ->label(__('Is Active')),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
