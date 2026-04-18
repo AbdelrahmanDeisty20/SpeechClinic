@@ -148,6 +148,7 @@ class BookinMonthlyResource extends Resource
                             ->schema([
                                 DatePicker::make('date')
                                     ->label(__('Session Date'))
+                                    ->prefixIcon('heroicon-o-calendar')
                                     ->live()
                                     ->afterStateUpdated(function (Set $set, $state) {
                                         if (!$state) return;
@@ -159,19 +160,23 @@ class BookinMonthlyResource extends Resource
                                     })
                                     ->required(),
                                 Select::make('day_id')
-                                    ->label(__('Day'))
+                                    ->label(__('Day of Week'))
+                                    ->prefixIcon('heroicon-o-clock')
                                     ->relationship('day', 'name_en')
                                     ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                                     ->required()
                                     ->preload()
                                     ->searchable()
                                     ->disabled()
-                                    ->dehydrated(),
+                                    ->dehydrated()
+                                    ->columnSpan(1),
                                 TimePicker::make('time')
                                     ->label(__('Session Time'))
+                                    ->prefixIcon('heroicon-o-clock')
                                     ->required(),
                                 Select::make('specialist_id')
-                                    ->label(__('Specialist'))
+                                    ->label(__('Specialist Name'))
+                                    ->prefixIcon('heroicon-o-user')
                                     ->options(\App\Models\User::where('type', 'specialist')->get()->pluck('full_name', 'id'))
                                     ->required()
                                     ->searchable()
@@ -248,21 +253,25 @@ class BookinMonthlyResource extends Resource
                             ->content(fn ($record) => $record->appointments()->count() . ' ' . __('Sessions')),
                         
                         RepeatableEntry::make('appointments')
-                            ->label(__('Sessions List'))
+                            ->label(__('Detailed Sessions Schedule'))
                             ->schema([
                                 Grid::make(4)
                                     ->schema([
                                         Placeholder::make('day')
                                             ->label(__('Day'))
+                                            ->prefixIcon('heroicon-o-calendar-days')
                                             ->content(fn ($record) => $record?->day?->name),
                                         Placeholder::make('date')
                                             ->label(__('Date'))
+                                            ->prefixIcon('heroicon-o-calendar')
                                             ->content(fn ($record) => $record?->date),
                                         Placeholder::make('time')
                                             ->label(__('Time'))
+                                            ->prefixIcon('heroicon-o-clock')
                                             ->content(fn ($record) => $record?->time ? \Carbon\Carbon::parse($record->time)->format('h:i A') : '-'),
                                         Placeholder::make('specialist')
                                             ->label(__('Specialist'))
+                                            ->prefixIcon('heroicon-o-user')
                                             ->content(fn ($record) => $record?->specialist?->full_name),
                                     ]),
                             ])
