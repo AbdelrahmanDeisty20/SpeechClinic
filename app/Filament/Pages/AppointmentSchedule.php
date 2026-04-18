@@ -19,7 +19,7 @@ class AppointmentSchedule extends Page implements HasForms
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static string $view = 'filament.pages.appointment-schedule';
+    protected string $view = 'filament.pages.appointment-schedule';
 
     protected static string|\UnitEnum|null $navigationGroup = 'Appointments Management';
 
