@@ -12,21 +12,25 @@ class TransferController extends Controller
 {
     use ApiResponse;
 
+    protected $transferService;
+
+    public function __construct(\App\Services\API\TransferService $transferService)
+    {
+        $this->transferService = $transferService;
+    }
+
     /**
      * Get Vodafone Cash transfer numbers.
      */
     public function getVodafoneCash()
     {
-        $numbers = TransferNumber::where('name', 'like', '%Vodafone%')
-            ->orWhere('name', 'like', '%vadafone%')
-            ->orWhere('name', 'like', '%فودافون%')
-            ->get();
-
-        if ($numbers->isEmpty()) {
-            return $this->error(__('messages.no_transfer_numbers_found'), 404);
+        $result = $this->transferService->getVodafoneCash();
+        
+        if (!$result['status']) {
+            return $this->error($result['message'], 404);
         }
 
-        return $this->success(TransferNumberResource::collection($numbers), __('messages.data_retrieved_successfully'));
+        return $this->success(TransferNumberResource::collection($result['data']), $result['message']);
     }
 
     /**
@@ -34,15 +38,13 @@ class TransferController extends Controller
      */
     public function getInstaPay()
     {
-        $numbers = TransferNumber::where('name', 'like', '%InstaPay%')
-            ->orWhere('name', 'like', '%instabay%')
-            ->orWhere('name', 'like', '%انستا%')
-            ->get();
-
-        if ($numbers->isEmpty()) {
-            return $this->error(__('messages.no_transfer_numbers_found'), 404);
+        $result = $this->transferService->getInstaPay();
+        
+        if (!$result['status']) {
+            return $this->error($result['message'], 404);
         }
 
-        return $this->success(TransferNumberResource::collection($numbers), __('messages.data_retrieved_successfully'));
+        return $this->success(TransferNumberResource::collection($result['data']), $result['message']);
     }
 }
+

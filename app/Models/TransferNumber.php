@@ -11,3 +11,5 @@ class TransferNumber extends Model
 
     protected $fillable = ['name', 'number'];
 }
+
+
