@@ -159,6 +159,8 @@ class BookinMonthlyResource extends Resource
                                         $dayNameEn = strtolower(\Carbon\Carbon::parse($state)->format('l'));
                                         $branchId = $get('../../branch_id_temp');
                                         
+                                        if (!$branchId) return;
+
                                         $daysMap = [
                                             'saturday' => 'السبت',
                                             'sunday' => 'الأحد',
