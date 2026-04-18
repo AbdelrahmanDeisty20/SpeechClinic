@@ -281,8 +281,8 @@ class BookingResource extends Resource
                     ]),
             ])
             ->actions([
-                Actions\ViewAction::make(),
-                \Filament\Tables\Actions\Action::make('setMonthlyPackage')
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('setMonthlyPackage')
                     ->label(__('Prepare Monthly Package'))
                     ->icon('heroicon-o-currency-dollar')
                     ->color('success')
