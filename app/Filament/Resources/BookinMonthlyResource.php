@@ -151,7 +151,7 @@ class BookinMonthlyResource extends Resource
                                     ->live()
                                     ->afterStateUpdated(function (Set $set, $state) {
                                         if (!$state) return;
-                                        $dayName = \Carbon\Carbon::parse($state)->format('l');
+                                        $dayName = strtolower(\Carbon\Carbon::parse($state)->format('l'));
                                         $day = \App\Models\Day::where('name_en', $dayName)->first();
                                         if ($day) {
                                             $set('day_id', $day->id);
@@ -250,8 +250,11 @@ class BookinMonthlyResource extends Resource
                         RepeatableEntry::make('appointments')
                             ->label(__('Sessions List'))
                             ->schema([
-                                Grid::make(3)
+                                Grid::make(4)
                                     ->schema([
+                                        Placeholder::make('day')
+                                            ->label(__('Day'))
+                                            ->content(fn ($record) => $record?->day?->name),
                                         Placeholder::make('date')
                                             ->label(__('Date'))
                                             ->content(fn ($record) => $record?->date),
