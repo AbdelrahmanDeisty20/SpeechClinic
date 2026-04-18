@@ -124,6 +124,9 @@ class BookingService
                     ]
                 );
 
+                // Load all details for the creative response
+                $bookingMonthly->load(['booking.availableTime.day.branch', 'appointments.specialist', 'appointments.day.branch']);
+
                 return [
                     'status' => true,
                     'message' => __('messages.booking_success'),
