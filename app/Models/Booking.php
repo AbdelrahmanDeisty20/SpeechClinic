@@ -40,6 +40,7 @@ class Booking extends Model
     public function getChildPhotoUrlAttribute()
     {
         if (!$this->child_photo) return null;
-        return asset('storage/children/' . $this->child_photo);
+        
+        return asset('storage/' . $this->child_photo);
     }
 }

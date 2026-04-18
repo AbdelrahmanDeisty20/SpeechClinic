@@ -26,7 +26,8 @@ class BookinMonthly extends Model
     public function getImageUrlAttribute()
     {
         if (!$this->image) return null;
-        return asset('storage/monthlies/' . $this->image);
+        
+        return asset('storage/' . $this->image);
     }
 }
 

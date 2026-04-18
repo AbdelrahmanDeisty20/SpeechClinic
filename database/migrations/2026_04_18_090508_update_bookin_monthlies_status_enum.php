@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookin_monthlies', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled'])->default('pending')->change();
-        });
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE bookin_monthlies MODIFY COLUMN status ENUM('pending', 'confirmed', 'completed', 'cancelled') DEFAULT 'pending'");
     }
 
     /**

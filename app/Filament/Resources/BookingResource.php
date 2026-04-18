@@ -68,6 +68,7 @@ class BookingResource extends Resource
                             ->label(__('الصورة'))
                             ->image()
                             ->avatar()
+                            ->disk('public')
                             ->directory('children')
                             ->columnSpanFull(),
                         TextInput::make('child_name')
@@ -159,7 +160,8 @@ class BookingResource extends Resource
                                             ->label('')
                                             ->content(__('صورة الطفل'))
                                             ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
-                                        Image::make(fn ($record) => $record->child_photo_url ?? '', __('الصورة')),
+                                        Image::make('child_photo', __('الصورة'))
+                                            ->disk('public'),
                                         Placeholder::make('child_name')
                                             ->label(__('اسم الطفل'))
                                             ->content(fn ($record) => $record?->child_name),
@@ -231,7 +233,6 @@ class BookingResource extends Resource
 
                 ImageColumn::make('child_photo')
                     ->disk('public')
-                    ->getStateUsing(fn($record) => $record->child_photo ? "children/{$record->child_photo}" : null)
                     ->circular()
                     ->label(__('الصورة')),
                 TextColumn::make('child_name')

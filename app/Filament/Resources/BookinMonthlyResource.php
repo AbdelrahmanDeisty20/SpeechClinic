@@ -144,6 +144,7 @@ class BookinMonthlyResource extends Resource
                                     ->required(),
                                 FileUpload::make('image')
                                     ->label(__('Receipt/Image'))
+                                    ->disk('public')
                                     ->directory('monthlies')
                                     ->image(),
                             ]),
@@ -275,7 +276,8 @@ class BookinMonthlyResource extends Resource
                                     ->label(__('Date'))
                                     ->content(fn ($record) => $record?->created_at?->format('Y-m-d H:i')),
                                 
-                                Image::make(fn ($record) => $record->image ? asset('storage/monthlies/' . $record->image) : '', __('Receipt Image'))
+                                Image::make('image', __('صورة الإيصال'))
+                                    ->disk('public')
                                     ->columnSpanFull(),
                             ]),
                     ]),
@@ -314,12 +316,15 @@ class BookinMonthlyResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('image')
+                    ->label(__('صورة الإيصال'))
+                    ->disk('public'),
                 TextColumn::make('booking.booking_number')
-                    ->label(__('Assessment Number'))
+                    ->label(__('رقم الحجز التقييمي'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('booking.child_name')
-                    ->label(__('Child Name'))
+                    ->label(__('اسم الطفل'))
                     ->searchable(),
                 TextColumn::make('booking.user.phone')
                     ->label(__('Phone'))
