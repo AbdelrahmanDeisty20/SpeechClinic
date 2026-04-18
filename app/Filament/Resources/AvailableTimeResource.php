@@ -83,14 +83,12 @@ class AvailableTimeResource extends Resource
                                 
                                 return \App\Models\Day::create($data)->id;
                             }),
-                        Select::make('type')
-                            ->label(__('Type'))
-                            ->options([
-                                'assessment' => __('Assessment'),
-                                'monthly' => __('Monthly'),
-                            ])
+                        \Filament\Forms\Components\Hidden::make('type')
                             ->default('assessment')
                             ->required(),
+                        \Filament\Forms\Components\Placeholder::make('type_display')
+                            ->label(__('Type'))
+                            ->content(__('Assessment')),
                     ]),
 
                 Section::make(__('Timing & Capacity'))
