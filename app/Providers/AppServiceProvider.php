@@ -30,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
 
         \App\Models\Booking::observe(\App\Observers\BookingObserver::class);
         \App\Models\BookinMonthly::observe(\App\Observers\BookinMonthlyObserver::class);
+        \App\Models\AppNotification::observe(\App\Observers\AppNotificationObserver::class);
     }
 }

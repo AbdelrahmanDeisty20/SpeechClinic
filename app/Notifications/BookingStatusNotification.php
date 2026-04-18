@@ -55,15 +55,16 @@ class BookingStatusNotification extends Notification
         $title = 'تحديث حالة الحجز';
         $body = $messages[$this->status] ?? 'تم تحديث حالة حجزك.';
 
-        // Send FCM Notification manually via service
-        $fcmService = app(\App\Services\API\FirebaseNotificationService::class);
-        foreach ($notifiable->fcmTokens as $token) {
-            $fcmService->sendToToken($token->token, $title, $body, [
+        \App\Models\AppNotification::create([
+            'user_id' => $notifiable->id,
+            'title' => $title,
+            'body' => $body,
+            'type' => 'booking_status_update',
+            'data' => [
                 'booking_id' => (string) ($isMonthly ? $this->booking->booking_id : $this->booking->id),
                 'status' => $this->status,
-                'type' => 'booking_status_update'
-            ]);
-        }
+            ],
+        ]);
 
         $url = (!$isMonthly && $this->booking->type === 'assessment') 
             ? BookingResource::getUrl('view', ['record' => $this->booking->id])
