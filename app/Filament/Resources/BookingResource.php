@@ -111,6 +111,10 @@ class BookingResource extends Resource
                                     ->numeric()
                                     ->prefix(__('EGP'))
                                     ->required(),
+                                TextInput::make('booking_number')
+                                    ->label(__('Booking Number'))
+                                    ->placeholder(__('Enter Booking Number'))
+                                    ->maxLength(255),
                             ])
                             ->columnSpan(1),
 
@@ -229,6 +233,9 @@ class BookingResource extends Resource
                     ->label(__('Child Name'))
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('user.phone')
+                    ->label(__('Phone'))
+                    ->searchable(),
                 TextColumn::make('availableTime.day.branch.name_en')
                     ->label(__('Branch'))
                     ->getStateUsing(fn($record) => $record->availableTime?->day?->branch?->name)
