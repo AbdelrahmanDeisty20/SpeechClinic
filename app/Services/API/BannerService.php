@@ -11,22 +11,22 @@ class BannerService
 {
     use ApiResponse;
 
-    // public function getBanners()
-    // {
-    //     $banners = Banner::all();
-    //     if ($banners->isEmpty()) {
-    //         return [
-    //             'status' => false,
-    //             'message' => __('messages.banners_notfound'),
-    //             'data' => []
-    //         ];
-    //     }
-    //     return [
-    //         'status' => true,
-    //         'message' => __('messages.banners_successfully'),
-    //         'data' => BannerResource::collection($banners)
-    //     ];
-    // }
+    public function getBanners()
+    {
+        $banners = Banner::all();
+        if ($banners->isEmpty()) {
+            return [
+                'status' => false,
+                'message' => __('messages.banners_notfound'),
+                'data' => []
+            ];
+        }
+        return [
+            'status' => true,
+            'message' => __('messages.banners_successfully'),
+            'data' => BannerResource::collection($banners)
+        ];
+    }
 
     
 }
