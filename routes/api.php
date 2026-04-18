@@ -52,26 +52,32 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('call-us', [callUsController::class, 'index']);
     // Review Routes
     Route::get('reviews', [ReviewController::class, 'index']);
-    Route::post('create review', [ReviewController::class, 'store'])->middleware(['auth:sanctum',CheckSpecialist::class]);
+    Route::post('create review', [ReviewController::class, 'store'])->middleware(['auth:sanctum']);
     // Day Routes
     Route::get('days', [DayController::class, 'index']);
     // Available Time Routes
     Route::get('available-times', [AvaliableController::class, 'index']);
     //fcm Tokens
     Route::post('fcm-token', [NotificationController::class, 'sendToken']);
-    Route::post('fcm-token-user', [NotificationController::class, 'sendToken'])->middleware('auth:sanctum',CheckSpecialist::class);
+    Route::post('fcm-token-user', [NotificationController::class, 'sendToken'])->middleware('auth:sanctum');
     Route::post('send-notification-to-guests', [NotificationController::class, 'sendNotificationToGuests']);
     Route::post('send-test-notification-to-users', [NotificationController::class, 'sendTestNotificationToUsers']);
-    // Booking Routes
-    Route::group(['middleware' => ['auth:sanctum',CheckSpecialist::class]], function () {
+
+    // Booking Routes (For Parents/Users)
+    Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('bookings', [BookingController::class, 'index']);
         Route::post('make-bookings', [BookingController::class, 'store']);
         Route::post('make-bookings-monthly', [BookingController::class, 'storeMonthly']);
     });
-    Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
 
-    // Auth Sanctum Routes
-    Route::group(['middleware' => ['auth:sanctum',CheckSpecialist::class]], function () { 
+    // Special Specialist Routes (For Doctors Only)
+    Route::group(['middleware' => ['auth:sanctum', CheckSpecialist::class]], function () {
+        Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
+        // أضف هنا مسارات الجلسات وما يخص الدكاترة فقط
+    });
+
+    // Auth Sanctum Routes (General Profile Management)
+    Route::group(['middleware' => ['auth:sanctum']], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);
         Route::put('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('logout', [AuthController::class, 'logout']);
