@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\BookingMonthlyRequest;
 use App\Http\Requests\API\BookingRequest;
 use App\Http\Resources\API\BookingResource;
+use App\Http\Resources\API\BookinMonthlyResource;
 use App\Services\API\BookingService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class BookingController extends Controller
         if (!$result['status']) {
             return $this->error($result['message'], 422);
         }
-        return $this->success(BookingResource::make($result['data']), $result['message']);
+        return $this->success(BookinMonthlyResource::make($result['data']), $result['message']);
     }
     public function getAllBookings()
     {
