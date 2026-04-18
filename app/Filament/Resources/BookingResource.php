@@ -66,9 +66,8 @@ class BookingResource extends Resource
                     ->description(__('التفاصيل الأساسية للطفل.'))
                     ->schema([
                         FileUpload::make('child_photo')
-                            ->label(__('الصورة'))
+                            ->label('Photo')
                             ->image()
-                            ->avatar()
                             ->disk('public')
                             ->directory('children')
                             ->columnSpanFull(),
@@ -236,9 +235,9 @@ class BookingResource extends Resource
                     ->color('gray'),
 
                 ImageColumn::make('child_photo')
+                    ->label('Photo')
                     ->disk('public')
-                    ->circular()
-                    ->label(__('الصورة')),
+                    ->size(100),
                 TextColumn::make('child_name')
                     ->label(__('اسم الطفل'))
                     ->searchable()

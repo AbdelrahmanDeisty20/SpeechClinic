@@ -64,12 +64,10 @@ class CvResource extends Resource
                     ->description(__('Visual and basic identity.'))
                     ->schema([
                         FileUpload::make('image')
-                            ->label(__('Photo'))
+                            ->label('Photo')
                             ->image()
                             ->directory('cvs')
                             ->disk('public')
-                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "cvs/{$state}" : $state)
-                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                             ->required()
                             ->imageEditor()
                             ->columnSpanFull(),
@@ -136,11 +134,9 @@ class CvResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label(__('Photo'))
+                    ->label('Photo')
                     ->disk('public')
-                    ->getStateUsing(fn($record) => $record->image ? "cvs/{$record->image}" : null)
-                    ->circular()
-                    ->size(60),
+                    ->size(100),
                 TextColumn::make('name_en')
                     ->label(__('Candidate (English)'))
                     ->searchable()

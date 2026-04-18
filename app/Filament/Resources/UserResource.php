@@ -78,7 +78,7 @@ class UserResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 FileUpload::make('image')
-                                    ->label(__('Photo'))
+                                    ->label('Photo')
                                     ->image()
                                     ->directory('users')
                                     ->disk('public')
@@ -115,9 +115,9 @@ class UserResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label(__('Photo'))
+                    ->label('Photo')
                     ->disk('public')
-                    ->circular(),
+                    ->size(100),
                 TextColumn::make('full_name')
                     ->label(__('Full Name'))
                     ->searchable(['first_name', 'last_name'])

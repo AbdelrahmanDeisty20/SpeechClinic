@@ -144,7 +144,7 @@ class BookinMonthlyResource extends Resource
                                     ])
                                     ->required(),
                                 FileUpload::make('image')
-                                    ->label(__('Receipt/Image'))
+                                    ->label('Receipt Photo')
                                     ->disk('public')
                                     ->directory('monthlies')
                                     ->image(),
@@ -317,8 +317,9 @@ class BookinMonthlyResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label(__('صورة الإيصال'))
-                    ->disk('public'),
+                    ->label('Receipt Photo')
+                    ->disk('public')
+                    ->size(100),
                 TextColumn::make('booking.booking_number')
                     ->label(__('رقم الحجز التقييمي'))
                     ->searchable()
