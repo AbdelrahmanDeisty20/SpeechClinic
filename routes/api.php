@@ -15,6 +15,7 @@ use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PageController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SettingController;
+use App\Http\Controllers\API\SpecialistController;
 use App\Http\Middleware\CheckSpecialist;
 use App\Http\Middleware\CheckUser;
 use App\Http\Middleware\setLang;
@@ -76,6 +77,7 @@ Route::group(['middleware' => setLang::class], function () {
     // Special Specialist Routes (For Doctors Only)
     Route::group(['middleware' => ['auth:sanctum', CheckSpecialist::class]], function () {
         Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
+        Route::get('specialist/sessions', [SpecialistController::class, 'getDailySessions']);
         // أضف هنا مسارات الجلسات وما يخص الدكاترة فقط
     });
 
