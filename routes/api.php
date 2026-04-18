@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AUTH\AuthController;
 use App\Http\Controllers\API\AUTH\ForgetPasswordController;
+use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AvaliableController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\BookingController;
@@ -78,6 +79,11 @@ Route::group(['middleware' => setLang::class], function () {
     Route::group(['middleware' => ['auth:sanctum', CheckSpecialist::class]], function () {
         Route::get('all-bookings', [BookingController::class, 'getAllBookings']);
         Route::get('specialist/sessions', [SpecialistController::class, 'getDailySessions']);
+        
+        // Attendance Routes
+        Route::post('specialist/attendance/check-in', [AttendanceController::class, 'checkIn']);
+        Route::post('specialist/attendance/check-out', [AttendanceController::class, 'checkOut']);
+        
         // أضف هنا مسارات الجلسات وما يخص الدكاترة فقط
     });
 

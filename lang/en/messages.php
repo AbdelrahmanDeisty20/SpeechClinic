@@ -131,4 +131,9 @@ return [
     'booking_not_found' => 'Assessment booking not found',
     'monthly_booking_not_found' => 'No monthly booking found for this number',
     'booking_number_exists' => 'The provided booking number does not exist in our records',
+    'too_far_from_branch' => 'Sorry, you are too far from the branch location to check-in',
+    'already_checked_in_today' => 'You have already checked-in for today at this branch',
+    'check_in_successful' => 'Check-in successful, have a great shift!',
+    'no_active_check_in_found' => 'Sorry, no active check-in found for today to perform check-out',
+    'check_out_successful' => 'Check-out successful, see you next time!',
 ];
