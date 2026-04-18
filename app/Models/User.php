@@ -77,6 +77,10 @@ class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
     {
         return $this->hasMany(AppNotification::class);
     }
+    public function appointments()
+    {
+        return $this->hasMany(Aِppointment::class);
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {

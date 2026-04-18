@@ -78,7 +78,7 @@ Route::group(['middleware' => setLang::class], function () {
     });
 
     // Auth Sanctum Routes (General Profile Management)
-    Route::group(['middleware' => ['auth:sanctum']], function () { 
+    Route::group(['middleware' => ['auth:sanctum', CheckUser::class]], function () { 
         Route::get('show-profile', [AuthController::class, 'showProfile']);
         Route::put('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('logout', [AuthController::class, 'logout']);

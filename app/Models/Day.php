@@ -26,4 +26,8 @@ class Day extends Model
     {
         return app()->getLocale() === 'ar' ? $this->name_ar : $this->name_en;
     }
+    public function appointments()
+    {
+        return $this->hasMany(Aِppointment::class);
+    }
 }
