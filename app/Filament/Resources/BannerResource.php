@@ -15,6 +15,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Schemas\Components\Image;
 use Filament\Tables\Table;
 use Filament\Actions;
 
@@ -97,11 +98,24 @@ class BannerResource extends Resource
             ]);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->schema([
+                Section::make(__('Banner Image'))
+                    ->schema([
+                        Image::make(fn ($record) => $record?->image_url ?? asset('images/placeholder.png'), __('Photo'))
+                            ->imageWidth('100%'),
+                    ]),
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 ImageColumn::make('image')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->getStateUsing(fn($record) => $record->image ? "banners/{$record->image}" : null)
                     ->square()

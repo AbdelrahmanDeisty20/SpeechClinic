@@ -51,7 +51,9 @@ class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
 
     public function getImageUrlAttribute()
     {
-        return asset('storage/users/' . $this->image);
+        return $this->image 
+            ? asset('storage/' . $this->image) 
+            : asset('images/placeholder.png');
     }
     public function getFullNameAttribute()
     {
@@ -63,7 +65,7 @@ class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
     }
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->image ? asset('storage/users/' . $this->image) : null;
+        return $this->image ? asset('storage/' . $this->image) : null;
     }
     public function refreshTokens()
     {

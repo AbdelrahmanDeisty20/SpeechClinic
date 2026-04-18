@@ -13,6 +13,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Schemas\Components\Image;
 use Filament\Tables\Table;
 use Filament\Actions;
 
@@ -116,11 +117,26 @@ class CvResource extends Resource
             ]);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->schema([
+                Section::make(__('Candidate Photo'))
+                    ->schema([
+                        Image::make(fn ($record) => $record?->image_url ?? asset('images/placeholder.png'), __('Photo'))
+                            ->imageWidth('200px')
+                            ->imageHeight('200px')
+                            ->circular(),
+                    ]),
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 ImageColumn::make('image')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->getStateUsing(fn($record) => $record->image ? "cvs/{$record->image}" : null)
                     ->circular()

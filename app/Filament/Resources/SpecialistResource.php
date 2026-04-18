@@ -83,6 +83,13 @@ class SpecialistResource extends Resource
                                     ->tel()
                                     ->required()
                                     ->maxLength(255),
+                                FileUpload::make('image')
+                                    ->label(__('Photo'))
+                                    ->image()
+                                    ->directory('users')
+                                    ->disk('public')
+                                    ->imageEditor()
+                                    ->columnSpanFull(),
                                 Hidden::make('type')
                                     ->default('specialist'),
                             ])->columnSpan(2),
@@ -115,6 +122,10 @@ class SpecialistResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('image')
+                    ->label(__('Photo'))
+                    ->disk('public')
+                    ->circular(),
                 TextColumn::make('full_name')
                     ->label(__('Full Name'))
                     ->searchable(['first_name', 'last_name'])
