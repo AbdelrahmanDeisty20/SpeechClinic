@@ -30,6 +30,7 @@ class BookingResource extends Resource
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static string|\UnitEnum|null $navigationGroup = 'Booking Management';
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
