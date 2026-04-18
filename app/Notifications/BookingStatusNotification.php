@@ -48,8 +48,9 @@ class BookingStatusNotification extends Notification
 
         $messages = [
             'accepted' => "تم قبول حجزك {$bookingType} بنجاح. سنقوم بالتواصل معك قريباً لتأكيد الموعد.",
-            'confirmed' => "تم تأكيد حجزك {$bookingType} بنجاح. رقم الحجز الخاص بك هو: {$bookingNumber}",
+            'confirmed' => "تم تأكيد حجزك {$bookingType} بنجاح.",
             'cancelled' => "نعتذر، لقد تم إلغاء حجزك {$bookingType}.",
+            'completed' => "تم إكمال حجزك {$bookingType} بنجاح. رقم الحجز الخاص بك هو: {$bookingNumber}",
         ];
 
         $title = 'تحديث حالة الحجز';

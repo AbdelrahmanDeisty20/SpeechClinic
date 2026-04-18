@@ -29,7 +29,7 @@ class BookingObserver
             $newStatus = $booking->status;
             
             // Only notify if status is one of the target states
-            if (in_array($newStatus, ['accepted', 'confirmed', 'cancelled'])) {
+            if (in_array($newStatus, ['accepted', 'confirmed', 'cancelled', 'completed'])) {
                 $booking->user->notify(new \App\Notifications\BookingStatusNotification($booking, $newStatus));
             }
         }

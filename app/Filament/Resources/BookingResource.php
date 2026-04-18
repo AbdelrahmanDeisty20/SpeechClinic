@@ -124,8 +124,8 @@ class BookingResource extends Resource
                                     ->label(__('رقم الحجز'))
                                     ->placeholder(__('أدخل رقم الحجز'))
                                     ->maxLength(255)
-                                    ->hidden(fn (Get $get) => $get('status') !== 'confirmed')
-                                    ->required(fn (Get $get) => $get('status') === 'confirmed'),
+                                    ->hidden(fn (Get $get) => $get('status') !== 'completed')
+                                    ->required(fn (Get $get) => $get('status') === 'completed'),
                             ])
                             ->columnSpan(1),
 
