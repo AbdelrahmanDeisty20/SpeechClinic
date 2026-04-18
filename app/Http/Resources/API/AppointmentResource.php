@@ -17,7 +17,7 @@ class AppointmentResource extends JsonResource
         return [
             'id' => $this->id,
             'date' => $this->date,
-            'time' => $this->time,
+            'time' => $this->time ? \Carbon\Carbon::parse($this->time)->format('h:i A') : null,
             'day' => [
                 'id' => $this->day_id,
                 'name_ar' => $this->day?->name_ar,
