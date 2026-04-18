@@ -16,8 +16,11 @@ class CostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'price' => (float) $this->price,
-            'branch' => BranchResource::make($this->whenLoaded('branch')),
+            'price' => $this->price,
+            'branch' => [
+                'id' => $this->branch_id,
+                'name' => $this->branch?->name,
+            ],
         ];
     }
 }

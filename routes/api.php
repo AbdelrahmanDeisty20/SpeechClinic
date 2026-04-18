@@ -12,6 +12,7 @@ use App\Http\Controllers\API\TransferController;
 use App\Http\Controllers\API\ExperienceController;
 use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
+use App\Http\Controllers\API\CostController;
 use App\Http\Controllers\API\CVProfileController;
 use App\Http\Controllers\API\DayController;
 use App\Http\Controllers\API\NotificationController;
@@ -58,6 +59,7 @@ Route::group(['middleware' => setLang::class], function () {
     Route::get('call-us', [callUsController::class, 'index']);
     // Review Routes
     Route::get('reviews', [ReviewController::class, 'index']);
+    Route::get('costs', [CostController::class, 'index']);
     Route::post('create review', [ReviewController::class, 'store'])->middleware(['auth:sanctum', CheckUser::class]);
     
     // Transfer Routes (التحويلات)
