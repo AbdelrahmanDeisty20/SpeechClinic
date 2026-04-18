@@ -19,7 +19,7 @@ class CVResource extends JsonResource
             'name' => $this->name,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image ? asset('storage/cvs/' . $this->image) : null,
+            'image' => $this->image_url
         ];
     }
 }
