@@ -94,19 +94,16 @@ class AppointmentSchedule extends Page implements HasForms
             ->get();
 
         // Define times (Hours)
-        // We can make this dynamic based on clinic hours, but for now let's use a standard range
         $times = [
-            '10:00:00', '11:00:00', '12:00:00', '01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:00:00', '07:00:00', '08:00:00'
+            '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'
         ];
 
         $matrix = [];
         foreach ($appointments as $appointment) {
-            $timeKey = date('h:00:00', strtotime($appointment->time));
-            // Normalize to 24h for mapping if needed, or keeping it simple
-            $timeKey = $appointment->time; // If time is stored as hh:mm:ss
+            // Standardize appointment time to match our grid $times
+            $timeKey = date('H:00:00', strtotime($appointment->time));
             
-            // Map common times to grid slots
-            $matrix[$appointment->time][$appointment->specialist_id] = $appointment->bookinMonthly?->booking?->child_name ?? '-';
+            $matrix[$timeKey][$appointment->specialist_id] = $appointment->bookinMonthly?->booking?->child_name ?? '-';
         }
 
         return [
