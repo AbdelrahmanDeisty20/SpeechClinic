@@ -184,4 +184,48 @@ class BookingService
             'data' => BookingResource::collection($bookings)
         ];
     }
+
+    /**
+     * Get the full details of a monthly booking by assessment booking number.
+     */
+    public function getMonthlyBookingDetails(string $bookingNumber)
+    {
+        try {
+            // 1. Find the assessment
+            $assessment = Booking::where('booking_number', $bookingNumber)->first();
+
+            if (!$assessment) {
+                return [
+                    'status' => false,
+                    'message' => __('messages.booking_not_found'),
+                    'data' => null
+                ];
+            }
+
+            // 2. Find the monthly booking with all details
+            $monthlyBooking = \App\Models\BookinMonthly::where('booking_id', $assessment->id)
+                ->with(['booking.availableTime.day.branch', 'appointments.specialist', 'appointments.day.branch'])
+                ->first();
+
+            if (!$monthlyBooking) {
+                return [
+                    'status' => false,
+                    'message' => __('messages.monthly_booking_not_found'),
+                    'data' => null
+                ];
+            }
+
+            return [
+                'status' => true,
+                'message' => __('messages.data_retrieved_successfully'),
+                'data' => $monthlyBooking
+            ];
+        } catch (Exception $e) {
+            return [
+                'status' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ];
+        }
+    }
 }
