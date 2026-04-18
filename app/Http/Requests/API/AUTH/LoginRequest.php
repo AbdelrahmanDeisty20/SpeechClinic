@@ -22,10 +22,18 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string',
         ];
+
+        // Check if the user is a specialist to loosen password length requirements
+        $user = \App\Models\User::where('email', $this->email)->first();
+        if (!$user || $user->type !== 'specialist') {
+            $rules['password'] .= '|min:8';
+        }
+
+        return $rules;
     }
 
     public function messages()
