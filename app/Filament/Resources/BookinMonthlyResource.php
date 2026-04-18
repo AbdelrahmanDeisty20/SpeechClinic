@@ -12,6 +12,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -71,6 +72,7 @@ class BookinMonthlyResource extends Resource
                                             $set('child_name_temp', $booking->child_name);
                                             $set('child_age_temp', $booking->child_age . ' ' . __('Years'));
                                             $set('branch_temp', $booking->availableTime?->day?->branch?->name);
+                                            $set('branch_id_temp', $booking->availableTime?->day?->branch_id);
                                             $set('problem_temp', $booking->problem_description);
                                         }
                                     })
@@ -80,6 +82,7 @@ class BookinMonthlyResource extends Resource
                                             $set('child_name_temp', $record->booking->child_name);
                                             $set('child_age_temp', $record->booking->child_age . ' ' . __('Years'));
                                             $set('branch_temp', $record->booking->availableTime?->day?->branch?->name);
+                                            $set('branch_id_temp', $record->booking->availableTime?->day?->branch_id);
                                             $set('problem_temp', $record->booking->problem_description);
                                         }
                                     }),
@@ -112,6 +115,7 @@ class BookinMonthlyResource extends Resource
                                     ->label(__('Problem'))
                                     ->disabled()
                                     ->dehydrated(false),
+                                \Filament\Forms\Components\Hidden::make('branch_id_temp'),
                             ]),
                     ]),
 
@@ -150,10 +154,32 @@ class BookinMonthlyResource extends Resource
                                     ->label(__('Session Date'))
                                     ->prefixIcon('heroicon-o-calendar')
                                     ->live()
-                                    ->afterStateUpdated(function (Set $set, $state) {
+                                    ->afterStateUpdated(function (Set $set, Get $get, $state) {
                                         if (!$state) return;
-                                        $dayName = strtolower(\Carbon\Carbon::parse($state)->format('l'));
-                                        $day = \App\Models\Day::where('name_en', $dayName)->first();
+                                        $dayNameEn = strtolower(\Carbon\Carbon::parse($state)->format('l'));
+                                        $branchId = $get('../../branch_id_temp');
+                                        
+                                        $daysMap = [
+                                            'saturday' => 'السبت',
+                                            'sunday' => 'الأحد',
+                                            'monday' => 'الاثنين',
+                                            'tuesday' => 'الثلاثاء',
+                                            'wednesday' => 'الأربعاء',
+                                            'thursday' => 'الخميس',
+                                            'friday' => 'الجمعة',
+                                        ];
+
+                                        $day = \App\Models\Day::firstOrCreate(
+                                            [
+                                                'name_en' => $dayNameEn,
+                                                'branch_id' => $branchId,
+                                            ],
+                                            [
+                                                'name_ar' => $daysMap[$dayNameEn] ?? $dayNameEn,
+                                                'is_active' => true,
+                                            ]
+                                        );
+
                                         if ($day) {
                                             $set('day_id', $day->id);
                                         }
