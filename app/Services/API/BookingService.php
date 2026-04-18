@@ -54,8 +54,7 @@ class BookingService
                 // 3. Handle child photo upload
                 $photoPath = null;
                 if (isset($data['child_photo']) && $data['child_photo'] instanceof \Illuminate\Http\UploadedFile) {
-                    $originalPath = $data['child_photo']->store('children', 'public');
-                    $photoPath = basename($originalPath);
+                    $photoPath = $data['child_photo']->store('children', 'public');
                 }
 
                 // 4. Create the booking
@@ -111,8 +110,7 @@ class BookingService
                 // 2. Handle receipt/image upload
                 $photoPath = null;
                 if (isset($data['child_photo']) && $data['child_photo'] instanceof \Illuminate\Http\UploadedFile) {
-                    $originalPath = $data['child_photo']->store('monthlies', 'public');
-                    $photoPath = basename($originalPath);
+                    $photoPath = $data['child_photo']->store('monthlies', 'public');
                 }
 
                 // 3. Update or Create the monthly booking record (Price set by admin in dashboard)
