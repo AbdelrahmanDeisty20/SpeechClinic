@@ -94,10 +94,9 @@ class BookingService
     {
         try {
             return DB::transaction(function () use ($data) {
-                // 1. Verify assessment booking exists and is for the same child/parent?
-                // We'll rely on the assessment booking number.
+                // 1. Verify assessment booking exists and belongs to the user
                 $assessment = Booking::where('booking_number', $data['booking_number'])
-                    ->where('user_id', auth()->id())  // Ensure they own it
+                    ->where('user_id', auth()->id())
                     ->where('type', 'assessment')
                     ->first();
 
@@ -109,61 +108,25 @@ class BookingService
                     ];
                 }
 
-                // 2. Available time logic
-                $availableTime = AvailableTime::with('day.branch.cost')
-                    ->lockForUpdate()
-                    ->findOrFail($data['available_time_id']);
-
-                if ($availableTime->limit <= 0) {
-                    return [
-                        'status' => false,
-                        'message' => __('messages.insufficient_limit'),
-                        'data' => null
-                    ];
-                }
-
-                // 3. Fetch monthly price
-                $branch = $availableTime->day->branch;
-                $cost = $branch
-                    ->cost()
-                    ->where('type', 'monthly')
-                    ->first();
-
-                if (!$cost) {
-                    return [
-                        'status' => false,
-                        'message' => __('messages.branch_cost_not_found'),
-                        'data' => null
-                    ];
-                }
-
-                // 4. Handle child photo (monthly might use the same or a new one)
-                $photoPath = $assessment->child_photo;  // Default to assessment photo
+                // 2. Handle receipt/image upload
+                $photoPath = null;
                 if (isset($data['child_photo']) && $data['child_photo'] instanceof \Illuminate\Http\UploadedFile) {
-                    $originalPath = $data['child_photo']->store('children', 'public');
+                    $originalPath = $data['child_photo']->store('monthlies', 'public');
                     $photoPath = basename($originalPath);
                 }
 
-                // 5. Create the monthly booking
-                $booking = Booking::create([
-                    'user_id' => auth()->id(),
-                    'available_time_id' => $data['available_time_id'],
-                    'child_name' => $data['child_name'],
-                    'child_age' => $data['child_age'],
-                    'child_photo' => $photoPath,
-                    'problem_description' => $data['problem_description'],
-                    'type' => 'monthly',
-                    'price' => $cost->price,
+                // 3. Create the monthly booking record (Price and appointments will be set by admin)
+                $bookingMonthly = \App\Models\BookinMonthly::create([
+                    'booking_id' => $assessment->id,
+                    'image' => $photoPath,
+                    'price' => null,
                     'status' => 'pending',
                 ]);
-
-                // 6. Decrement the limit
-                $availableTime->decrement('limit');
 
                 return [
                     'status' => true,
                     'message' => __('messages.booking_success'),
-                    'data' => $booking
+                    'data' => $bookingMonthly
                 ];
             });
         } catch (Exception $e) {
