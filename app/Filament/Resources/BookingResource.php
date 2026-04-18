@@ -9,6 +9,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -112,7 +113,8 @@ class BookingResource extends Resource
                                         'cancelled' => __('Cancelled'),
                                         'completed' => __('Completed'),
                                     ])
-                                    ->required(),
+                                    ->required()
+                                    ->live(),
                                 TextInput::make('price')
                                     ->label(__('السعر'))
                                     ->numeric()
@@ -121,7 +123,9 @@ class BookingResource extends Resource
                                 TextInput::make('booking_number')
                                     ->label(__('رقم الحجز'))
                                     ->placeholder(__('أدخل رقم الحجز'))
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->hidden(fn (Get $get) => $get('status') !== 'confirmed')
+                                    ->required(fn (Get $get) => $get('status') === 'confirmed'),
                             ])
                             ->columnSpan(1),
 
