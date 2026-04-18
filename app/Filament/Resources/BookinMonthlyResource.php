@@ -9,6 +9,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Resources\Resource;
@@ -145,13 +146,27 @@ class BookinMonthlyResource extends Resource
                         Repeater::make('appointments')
                             ->relationship('appointments')
                             ->schema([
+                                DatePicker::make('date')
+                                    ->label(__('Session Date'))
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, $state) {
+                                        if (!$state) return;
+                                        $dayName = \Carbon\Carbon::parse($state)->format('l');
+                                        $day = \App\Models\Day::where('name_en', $dayName)->first();
+                                        if ($day) {
+                                            $set('day_id', $day->id);
+                                        }
+                                    })
+                                    ->required(),
                                 Select::make('day_id')
                                     ->label(__('Day'))
                                     ->relationship('day', 'name_en')
                                     ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                                     ->required()
                                     ->preload()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->disabled()
+                                    ->dehydrated(),
                                 TimePicker::make('time')
                                     ->label(__('Session Time'))
                                     ->required(),
@@ -164,10 +179,10 @@ class BookinMonthlyResource extends Resource
                                 \Filament\Forms\Components\Hidden::make('user_id')
                                     ->default(fn () => auth()->id()),
                             ])
-                            ->columns(3)
+                            ->columns(4)
                             ->defaultItems(0)
                             ->columnSpanFull()
-                            ->itemLabel(fn (array $state): ?string => $state['time'] ?? null),
+                            ->itemLabel(fn (array $state): ?string => ($state['date'] ?? '') . ' ' . ($state['time'] ?? '')),
                     ]),
             ]);
     }
@@ -226,11 +241,29 @@ class BookinMonthlyResource extends Resource
                             ]),
                     ]),
 
-                Section::make(__('Sessions/Appointments'))
+                Section::make(__('Sessions Details'))
                     ->schema([
                         Placeholder::make('sessions_count')
                             ->label(__('Total Sessions'))
                             ->content(fn ($record) => $record->appointments()->count() . ' ' . __('Sessions')),
+                        
+                        RepeatableEntry::make('appointments')
+                            ->label(__('Sessions List'))
+                            ->schema([
+                                Grid::make(3)
+                                    ->schema([
+                                        Placeholder::make('date')
+                                            ->label(__('Date'))
+                                            ->content(fn ($record) => $record?->date),
+                                        Placeholder::make('time')
+                                            ->label(__('Time'))
+                                            ->content(fn ($record) => $record?->time ? \Carbon\Carbon::parse($record->time)->format('h:i A') : '-'),
+                                        Placeholder::make('specialist')
+                                            ->label(__('Specialist'))
+                                            ->content(fn ($record) => $record?->specialist?->full_name),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

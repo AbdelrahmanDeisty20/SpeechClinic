@@ -12,6 +12,7 @@ class Appointment extends Model
         'bookin_monthly_id',
         'specialist_id',
         'time',
+        'date',
     ];
 
     public function user()
