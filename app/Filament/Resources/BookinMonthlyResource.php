@@ -13,6 +13,13 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Actions;
 use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Placeholder;
+use Filament\Schemas\Components\Image;
+use Filament\Schemas\Components\RepeatableEntry;
+use Filament\Tables\Columns\TextColumn as TableTextColumn;
 
 class BookinMonthlyResource extends Resource
 {
@@ -68,6 +75,71 @@ class BookinMonthlyResource extends Resource
                     ->directory('monthlies')
                     ->image()
                     ->columnSpanFull(),
+            ]);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->schema([
+                Section::make(__('Linked Assessment Details'))
+                    ->description(__('Information from the initial assessment booking.'))
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                Placeholder::make('child_name')
+                                    ->label(__('Child Name'))
+                                    ->content(fn ($record) => $record?->booking?->child_name),
+                                Placeholder::make('child_age')
+                                    ->label(__('Age'))
+                                    ->content(fn ($record) => $record?->booking?->child_age . ' ' . __('Years')),
+                                Placeholder::make('booking_number')
+                                    ->label(__('Assessment Number'))
+                                    ->content(fn ($record) => $record?->booking?->booking_number),
+                                
+                                Placeholder::make('parent_name')
+                                    ->label(__('Parent Name'))
+                                    ->content(fn ($record) => $record?->booking?->user?->full_name),
+                                Placeholder::make('parent_phone')
+                                    ->label(__('Phone'))
+                                    ->content(fn ($record) => $record?->booking?->user?->phone),
+                                Placeholder::make('branch')
+                                    ->label(__('Branch'))
+                                    ->content(fn ($record) => $record?->booking?->availableTime?->day?->branch?->name),
+                            ]),
+
+                        Placeholder::make('problem_description')
+                            ->label(__('Problem Description'))
+                            ->content(fn ($record) => $record?->booking?->problem_description)
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make(__('Payment & Status'))
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                Placeholder::make('price')
+                                    ->label(__('Total Price'))
+                                    ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('ج.م')),
+                                Placeholder::make('status')
+                                    ->label(__('Payment Status'))
+                                    ->content(fn ($record) => __($record?->status)),
+                                
+                                Image::make(fn ($record) => $record->image ? asset('storage/monthlies/' . $record->image) : '', __('Receipt Image'))
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
+
+                Section::make(__('Sessions/Appointments'))
+                    ->description(__('Sessions scheduled for this monthly package.'))
+                    ->schema([
+                        Placeholder::make('sessions_count')
+                            ->label(__('Total Sessions'))
+                            ->content(fn ($record) => $record->appointments()->count() . ' ' . __('Sessions')),
+                        
+                        // If we want to list appointments, we can use a Placeholder with HTML if needed
+                        // But for now, showing the count is a good start as requested.
+                    ]),
             ]);
     }
 

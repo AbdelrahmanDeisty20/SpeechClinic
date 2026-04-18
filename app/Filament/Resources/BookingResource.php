@@ -212,6 +212,13 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('booking_number')
+                    ->label(__('Booking Number'))
+                    ->searchable()
+                    ->sortable()
+                    ->copyable()
+                    ->badge()
+                    ->color('gray'),
 
                 ImageColumn::make('child_photo')
                     ->disk('public')
