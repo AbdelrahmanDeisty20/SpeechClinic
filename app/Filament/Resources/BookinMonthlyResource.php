@@ -7,6 +7,9 @@ use App\Models\BookinMonthly;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -50,42 +53,122 @@ class BookinMonthlyResource extends Resource
     {
         return $schema
             ->schema([
-                Select::make('booking_id')
-                    ->relationship('booking', 'id')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->booking_number ?? "#{$record->id} ({$record->child_name})")
-                    ->label(__('Assessment Booking'))
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live(),
-                TextInput::make('booking_number')
-                    ->label(__('Booking Number'))
-                    ->placeholder(__('Enter Booking Number'))
-                    ->maxLength(255)
-                    ->afterStateHydrated(function (TextInput $component, $record) {
-                        $component->state($record?->booking?->booking_number);
-                    })
-                    ->saveRelationshipsUsing(function ($record, $state) {
-                        $record->booking()->update(['booking_number' => $state]);
-                    }),
-                TextInput::make('price')
-                    ->label(__('Price'))
-                    ->numeric()
-                    ->prefix(__('EGP')),
-                Select::make('status')
-                    ->label(__('Status'))
-                    ->options([
-                        'pending' => __('Pending'),
-                        'confirmed' => __('Confirmed'),
-                        'cancelled' => __('Cancelled'),
-                        'completed' => __('Completed'),
-                    ])
-                    ->required(),
-                FileUpload::make('image')
-                    ->label(__('Receipt/Image'))
-                    ->directory('monthlies')
-                    ->image()
-                    ->columnSpanFull(),
+                Section::make(__('Booking Source'))
+                    ->description(__('Link this monthly package to an assessment booking.'))
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('booking_number')
+                                    ->label(__('Booking Number'))
+                                    ->placeholder(__('Enter Booking Number'))
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, $state) {
+                                        if (!$state) return;
+                                        $booking = \App\Models\Booking::where('booking_number', $state)->first();
+                                        if ($booking) {
+                                            $set('booking_id', $booking->id);
+                                            $set('child_name_temp', $booking->child_name);
+                                            $set('child_age_temp', $booking->child_age . ' ' . __('Years'));
+                                            $set('branch_temp', $booking->availableTime?->day?->branch?->name);
+                                            $set('problem_temp', $booking->problem_description);
+                                        }
+                                    })
+                                    ->afterStateHydrated(function (TextInput $component, $record, Set $set) {
+                                        if ($record?->booking) {
+                                            $component->state($record->booking->booking_number);
+                                            $set('child_name_temp', $record->booking->child_name);
+                                            $set('child_age_temp', $record->booking->child_age . ' ' . __('Years'));
+                                            $set('branch_temp', $record->booking->availableTime?->day?->branch?->name);
+                                            $set('problem_temp', $record->booking->problem_description);
+                                        }
+                                    }),
+                                Select::make('booking_id')
+                                    ->relationship('booking', 'id')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->booking_number ?? "#{$record->id}")
+                                    ->label(__('Confirmed Booking'))
+                                    ->required()
+                                    ->searchable()
+                                    ->preload()
+                                    ->disabled()
+                                    ->dehydrated(),
+                            ]),
+                        
+                        Grid::make(4)
+                            ->schema([
+                                TextInput::make('child_name_temp')
+                                    ->label(__('Child Name'))
+                                    ->disabled()
+                                    ->dehydrated(false),
+                                TextInput::make('child_age_temp')
+                                    ->label(__('Age'))
+                                    ->disabled()
+                                    ->dehydrated(false),
+                                TextInput::make('branch_temp')
+                                    ->label(__('Branch'))
+                                    ->disabled()
+                                    ->dehydrated(false),
+                                TextInput::make('problem_temp')
+                                    ->label(__('Problem'))
+                                    ->disabled()
+                                    ->dehydrated(false),
+                            ]),
+                    ]),
+
+                Section::make(__('Payment & Package'))
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('price')
+                                    ->label(__('Total Package Price'))
+                                    ->numeric()
+                                    ->prefix(__('EGP'))
+                                    ->required(),
+                                Select::make('status')
+                                    ->label(__('Booking Status'))
+                                    ->options([
+                                        'pending' => __('Pending'),
+                                        'confirmed' => __('Confirmed'),
+                                        'cancelled' => __('Cancelled'),
+                                        'completed' => __('Completed'),
+                                    ])
+                                    ->required(),
+                                FileUpload::make('image')
+                                    ->label(__('Receipt/Image'))
+                                    ->directory('monthlies')
+                                    ->image(),
+                            ]),
+                    ]),
+
+                Section::make(__('Sessions/Appointments'))
+                    ->description(__('Schedule the appointments for this monthly package.'))
+                    ->schema([
+                        Repeater::make('appointments')
+                            ->relationship('appointments')
+                            ->schema([
+                                Select::make('day_id')
+                                    ->label(__('Day'))
+                                    ->relationship('day', 'name_en')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
+                                    ->required()
+                                    ->preload()
+                                    ->searchable(),
+                                TimePicker::make('time')
+                                    ->label(__('Session Time'))
+                                    ->required(),
+                                Select::make('specialist_id')
+                                    ->label(__('Specialist'))
+                                    ->options(\App\Models\User::where('type', 'specialist')->get()->pluck('full_name', 'id'))
+                                    ->required()
+                                    ->searchable()
+                                    ->preload(),
+                                \Filament\Forms\Components\Hidden::make('user_id')
+                                    ->default(fn () => auth()->id()),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(0)
+                            ->columnSpanFull()
+                            ->itemLabel(fn (array $state): ?string => $state['time'] ?? null),
+                    ]),
             ]);
     }
 

@@ -10,12 +10,18 @@ class Aِppointment extends Model
         'user_id',
         'day_id',
         'bookin_monthly_id',
+        'specialist_id',
         'time',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function specialist()
+    {
+        return $this->belongsTo(User::class, 'specialist_id');
     }
 
     public function day()
