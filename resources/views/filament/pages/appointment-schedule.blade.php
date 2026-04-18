@@ -24,9 +24,9 @@
                         <table class="w-full border-collapse text-center text-sm min-w-[1200px]">
                             <thead>
                                 <tr class="bg-[#d37332] text-white">
-                                    {{-- Right Small Time Header (First column for RTL) --}}
-                                    <th class="w-10 bg-[#d37332] text-white p-2 font-black text-[10px] border border-white">
-                                        {{ __('وقت') }}
+                                    {{-- Ultra Slim Time Header --}}
+                                    <th class="w-8 min-w-[40px] bg-[#d37332] text-white p-1 font-black text-[10px] border border-white">
+                                        {{ __('T') }}
                                     </th>
                                     
                                     @foreach($specialistChunk as $specialist)
@@ -39,8 +39,8 @@
                             <tbody>
                                 @foreach($times as $time)
                                     <tr class="hover:bg-orange-50/50 transition-colors">
-                                        {{-- Right Small Time Label --}}
-                                        <td class="bg-[#d37332] text-white p-2 font-black text-lg border border-white w-10">
+                                        {{-- Ultra Slim Time Label --}}
+                                        <td class="bg-[#d37332] text-white p-1 font-black text-sm border border-white w-8 min-w-[40px]">
                                             {{ \Carbon\Carbon::parse($time)->format('g') }}
                                         </td>
 
@@ -70,7 +70,7 @@
             
             @if($specialists->isEmpty())
                 <div class="p-12 text-center text-gray-400 font-bold border-2 border-dashed border-gray-200 rounded-xl">
-                    {{ __('No specialists found for the selected filter.') }}
+                    {{ __('No specialists found.') }}
                 </div>
             @endif
         </div>
