@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AUTH\ForgetPasswordController;
 use App\Http\Controllers\API\AvaliableController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\BookingController;
+use App\Http\Controllers\API\BookingMonthlyController;
 use App\Http\Controllers\API\BranchController;
 use App\Http\Controllers\API\callUsController;
 use App\Http\Controllers\API\ContactController;
