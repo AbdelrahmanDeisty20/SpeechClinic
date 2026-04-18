@@ -141,4 +141,8 @@ return [
     'Completed' => 'تم الانتهاء',
     'access_denied_specialist' => 'عفواً، لا يمكن الوصول لهذه الصفحة',
     'access_denied_user' => 'عفواً، لا يمكن الوصول لهذه الصفحة',
+    'data_retrieved_successfully' => 'تم جلب البيانات بنجاح',
+    'booking_not_found' => 'عفواً، لم يتم العثور على الحجز التقييمي',
+    'monthly_booking_not_found' => 'عفواً، لم يتم العثور على حجز شهري مرتبط بهذا الرقم',
+    'booking_number_exists' => 'رقم الحجز المدخل غير موجود في النظام',
 ];

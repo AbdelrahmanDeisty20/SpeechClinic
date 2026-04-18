@@ -127,4 +127,8 @@ return [
     'Completed' => 'Completed',
     'access_denied_specialist' => 'Access denied. Specialists only.',
     'access_denied_user' => 'Access denied. Users only.',
+    'data_retrieved_successfully' => 'Data retrieved successfully',
+    'booking_not_found' => 'Assessment booking not found',
+    'monthly_booking_not_found' => 'No monthly booking found for this number',
+    'booking_number_exists' => 'The provided booking number does not exist in our records',
 ];
