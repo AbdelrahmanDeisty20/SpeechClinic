@@ -277,8 +277,7 @@ class BookinMonthlyResource extends Resource
                                     ->label(__('Date'))
                                     ->content(fn ($record) => $record?->created_at?->format('Y-m-d H:i')),
                                 
-                                Image::make('image', __('صورة الإيصال'))
-                                    ->disk('public')
+                                Image::make(fn ($record) => $record?->image_url, __('صورة الإيصال'))
                                     ->columnSpanFull(),
                             ]),
                     ]),
