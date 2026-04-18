@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class SpecialistSeeder extends Seeder
 {
@@ -47,17 +48,38 @@ class SpecialistSeeder extends Seeder
             $firstName = $nameParts[0];
             $lastName = $nameParts[1] ?? '';
 
-            User::updateOrCreate(
-                ['email' => $data['email']],
-                [
+            // Ensure password is at least 8 characters
+            $pwd = $data['password'];
+            if (strlen($pwd) < 8) {
+                $pwd = Str::padRight($pwd, 8, '0');
+            }
+
+            // Check if user exists to verify type as requested
+            $user = User::where('email', $data['email'])->first();
+
+            if ($user) {
+                // If user exists, only update if they are already a specialist or have no type
+                if ($user->type === 'specialist' || empty($user->type)) {
+                    $user->update([
+                        'first_name' => $firstName,
+                        'last_name' => $lastName,
+                        'password' => Hash::make($pwd),
+                        'type' => 'specialist',
+                        'is_active' => true,
+                    ]);
+                }
+            } else {
+                // Create new specialist
+                User::create([
                     'first_name' => $firstName,
                     'last_name' => $lastName,
-                    'password' => Hash::make($data['password']),
+                    'email' => $data['email'],
+                    'password' => Hash::make($pwd),
                     'type' => 'specialist',
                     'is_active' => true,
                     'email_verified_at' => now(),
-                ]
-            );
+                ]);
+            }
         }
     }
 }
