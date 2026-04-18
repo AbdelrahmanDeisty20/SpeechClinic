@@ -54,7 +54,7 @@ class BannerResource extends Resource
             ->schema([
                 Section::make(__('Banner Details'))
                     ->schema([
-                        FileUpload::make('image_url')
+                        FileUpload::make('image')
                             ->label(__('Photo'))
                             ->image()
                             ->disk('public')
