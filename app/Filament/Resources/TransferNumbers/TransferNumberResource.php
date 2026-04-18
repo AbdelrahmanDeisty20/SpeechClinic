@@ -18,7 +18,7 @@ class TransferNumberResource extends Resource
 {
     protected static ?string $model = TransferNumber::class;
 
-    protected static ?string $navigationIcon = Heroicon::OutlinedPhone;
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-phone';
 
     protected static ?string $navigationLabel = 'أرقام التحويل';
 
