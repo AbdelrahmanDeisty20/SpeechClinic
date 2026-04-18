@@ -20,6 +20,6 @@ class BookinMonthly extends Model
 
     public function appointments()
     {
-        return $this->hasMany(Aِppointment::class, 'bookin_monthly_id');
+        return $this->hasMany(Appointment::class, 'bookin_monthly_id');
     }
 }
