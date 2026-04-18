@@ -56,8 +56,8 @@ class AppointmentSchedule extends Page implements HasForms
                         Select::make('branch_id')
                             ->label(__('Branch'))
                             ->options(Branch::all()->pluck('name', 'id'))
-                            ->live()
-                            ->required(),
+                            ->placeholder(__('All Branches'))
+                            ->live(),
                     ])->columns(2),
             ])
             ->statePath('data');
@@ -68,24 +68,20 @@ class AppointmentSchedule extends Page implements HasForms
         $date = $this->data['date'] ?? now()->format('Y-m-d');
         $branchId = $this->data['branch_id'] ?? null;
 
-        if (!$branchId) {
-            return [
-                'specialists' => collect([]),
-                'times' => [],
-                'matrix' => [],
-            ];
-        }
-
         // Fetch ALL specialists
         $specialists = User::where('type', 'specialist')->get();
 
-        // Fetch appointments for this date and branch
-        $appointments = Appointment::with(['specialist', 'bookinMonthly.booking'])
-            ->where('date', $date)
-            ->whereHas('day', function ($query) use ($branchId) {
+        // Fetch appointments for this date
+        $appointmentsQuery = Appointment::with(['specialist', 'bookinMonthly.booking'])
+            ->where('date', $date);
+
+        if ($branchId) {
+            $appointmentsQuery->whereHas('day', function ($query) use ($branchId) {
                 $query->where('branch_id', $branchId);
-            })
-            ->get();
+            });
+        }
+        
+        $appointments = $appointmentsQuery->get();
 
         // Define times (Hours: 10 AM to 5 PM)
         $times = [
