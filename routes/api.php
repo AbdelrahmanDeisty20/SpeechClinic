@@ -102,5 +102,9 @@ Route::group(['middleware' => setLang::class], function () {
         Route::get('show-profile', [AuthController::class, 'showProfile']);
         Route::put('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('logout', [AuthController::class, 'logout']);
+        
+        // Unified Notification Routes
+        Route::get('notifications', [NotificationController::class, 'notifications']);
+        Route::post('notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
     });
 });
