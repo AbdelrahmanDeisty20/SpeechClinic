@@ -98,7 +98,7 @@ class BookingResource extends Resource
                                 Select::make('available_time_id')
                                     ->label(__('الموعد المتاح'))
                                     ->relationship('availableTime', 'id')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => __('اليوم') . ": {$record->day?->name} - " . __('الوقت') . ": " . \Carbon\Carbon::parse($record->start_time)->format('h:i A') . " - " . \Carbon\Carbon::parse($record->end_time)->format('h:i A') . " ({$record->day?->branch?->name})")
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => __('اليوم') . ": {$record->day?->name} - " . __('الوقت') . ": " . \Carbon\Carbon::parse($record->time)->format('h:i A') . " ({$record->day?->branch?->name})")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -214,9 +214,8 @@ class BookingResource extends Resource
                                                 $day = $record?->availableTime?->day?->name;
                                                 $state = $record?->availableTime;
                                                 if (!$state) return $day ?? '-';
-                                                $start = \Carbon\Carbon::parse($state->start_time)->format('h:i A');
-                                                $end = \Carbon\Carbon::parse($state->end_time)->format('h:i A');
-                                                return "{$day} ({$start} - {$end})";
+                                                $time = \Carbon\Carbon::parse($state->time)->format('h:i A');
+                                                return "{$day} ({$time})";
                                             }),
                                     ])->columnSpan(1),
                             ]),
