@@ -58,6 +58,13 @@ class AppointmentSchedule extends Page implements HasForms
                             ->options(Branch::all()->pluck('name', 'id'))
                             ->live()
                             ->required(),
+                        Select::make('specialist_ids')
+                            ->label(__('Filter Specialists'))
+                            ->options(User::where('type', 'specialist')->get()->pluck('full_name', 'id'))
+                            ->multiple()
+                            ->placeholder(__('All Specialists'))
+                            ->live()
+                            ->columnSpanFull(),
                     ])->columns(2),
             ])
             ->statePath('data');
@@ -72,6 +79,7 @@ class AppointmentSchedule extends Page implements HasForms
     {
         $date = $this->data['date'] ?? now()->format('Y-m-d');
         $branchId = $this->data['branch_id'] ?? null;
+        $selectedSpecialistIds = $this->data['specialist_ids'] ?? [];
 
         if (!$branchId) {
             return [
@@ -81,9 +89,14 @@ class AppointmentSchedule extends Page implements HasForms
             ];
         }
 
-        // Fetch specialists for this branch (those who have appointments or work there)
-        // For simplicity, we fetch all specialists.
-        $specialists = User::where('type', 'specialist')->get();
+        // Fetch specialists
+        $specialistsQuery = User::where('type', 'specialist');
+        
+        if (!empty($selectedSpecialistIds)) {
+            $specialistsQuery->whereIn('id', $selectedSpecialistIds);
+        }
+        
+        $specialists = $specialistsQuery->get();
 
         // Fetch appointments for this date and branch
         $appointments = Appointment::with(['specialist', 'bookinMonthly.booking'])
