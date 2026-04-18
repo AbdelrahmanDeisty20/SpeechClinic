@@ -21,7 +21,7 @@ class AppointmentSchedule extends Page implements HasForms
 
     protected static string $view = 'filament.pages.appointment-schedule';
 
-    protected static ?string $navigationGroup = 'Appointments Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Appointments Management';
 
     public ?array $data = [];
 
