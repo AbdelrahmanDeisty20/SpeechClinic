@@ -43,7 +43,7 @@ Route::group(['middleware' => setLang::class], function () {
     Route::post('reset-password', [ForgetPasswordController::class, 'resetPassword']);
     Route::post('refresh-token', [AuthController::class, 'refreshToken']);
     // Banner Routes
-    Route::get('banners', [BannerController::class, 'index']);
+    // Route::get('banners', [BannerController::class, 'index']);
     // Contact Routes
     Route::post('contacts', [ContactController::class, 'store']);
     // Page Routes
