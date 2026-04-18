@@ -16,22 +16,17 @@
 
         <div class="relative overflow-hidden rounded-xl border border-gray-400 bg-white shadow-lg dark:bg-gray-900">
             <div class="overflow-x-auto">
-                <table class="w-full border-collapse border border-gray-400 text-center text-sm">
+                <table class="w-full border-collapse border border-gray-400 text-center text-sm min-w-[1000px]">
                     <thead>
-                        <tr>
-                            <th class="sticky left-0 z-30 w-16 bg-[#d37332] text-white p-3 font-bold border border-gray-400">
-                                {{ __('Time') }}
-                            </th>
+                        <tr class="bg-[#d37332] text-white">
                             @foreach($specialists as $specialist)
-                                <th class="border border-gray-400 p-3 min-w-[80px] bg-gray-100 dark:bg-gray-800 dark:text-gray-100 h-40 align-bottom">
-                                    <div class="flex flex-col items-center justify-end h-full">
-                                        <div class="transform -rotate-90 origin-bottom mb-4 whitespace-nowrap font-black text-gray-800 dark:text-gray-200">
-                                            {{ $specialist->full_name }}
-                                        </div>
+                                <th class="border border-white p-3 min-w-[150px] font-black h-40">
+                                    <div class="flex flex-col items-center justify-center">
+                                        {{ $specialist->full_name }}
                                     </div>
                                 </th>
                             @endforeach
-                            <th class="w-16 bg-[#d37332] text-white p-3 font-bold border border-gray-400">
+                            <th class="w-20 bg-[#d37332] text-white p-3 font-black text-lg border border-white">
                                 {{ __('Time') }}
                             </th>
                         </tr>
@@ -39,31 +34,25 @@
                     <tbody>
                         @foreach($times as $time)
                             <tr class="hover:bg-orange-50/50 transition-colors">
-                                {{-- Left Sticky Time --}}
-                                <td class="sticky left-0 z-20 bg-[#d37332] text-white p-3 font-black text-lg border border-gray-400 shadow-xl">
-                                    {{ \Carbon\Carbon::parse($time)->format('g') }}
-                                    <span class="block text-[8px] opacity-70">{{ \Carbon\Carbon::parse($time)->format('A') }}</span>
-                                </td>
-
                                 {{-- Session Cells --}}
                                 @foreach($specialists as $specialist)
-                                    <td class="border border-gray-400 p-2 h-20 bg-white dark:bg-gray-900">
+                                    <td class="border border-gray-400 p-2 h-24 bg-white dark:bg-gray-900">
                                         @php
                                             $childName = $matrix[$time][$specialist->id] ?? null;
                                         @endphp
                                         
-                                        @if($childName)
-                                            <div class="font-bold text-gray-900 border-l-4 border-[#d37332] bg-orange-50 p-2 rounded text-[12px] leading-tight break-words dark:bg-orange-900/20 dark:text-white">
+                                        @if($childName && $childName != '-')
+                                            <div class="font-bold text-[#d37332] border-2 border-[#d37332] bg-orange-50 p-3 rounded-lg text-[14px] leading-tight shadow-sm dark:bg-orange-900/40 dark:text-white">
                                                 {{ $childName }}
                                             </div>
                                         @else
-                                            <div class="text-gray-100 dark:text-gray-800">.</div>
+                                            <div class="text-gray-200">.</div>
                                         @endif
                                     </td>
                                 @endforeach
 
-                                {{-- Right Time --}}
-                                <td class="bg-[#d37332] text-white p-3 font-black text-lg border border-gray-400">
+                                {{-- Right Time LabelOnly (No AM/PM) --}}
+                                <td class="bg-[#d37332] text-white p-3 font-black text-2xl border border-white">
                                     {{ \Carbon\Carbon::parse($time)->format('g') }}
                                 </td>
                             </tr>
@@ -75,14 +64,14 @@
     </div>
 
     <style>
-        /* Force high contrast lines */
+        /* Force clear lines */
         th, td {
-            border: 1px solid #999 !important;
+            border: 1px solid #444 !important;
         }
-
-        /* Ensure sticky shadow */
-        .sticky {
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        
+        /* Dark mode border adjustments */
+        .dark th, .dark td {
+            border-color: #555 !important;
         }
     </style>
 </x-filament-panels::page>
