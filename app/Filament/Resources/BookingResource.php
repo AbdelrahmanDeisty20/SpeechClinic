@@ -281,8 +281,8 @@ class BookingResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('setMonthlyPackage')
+                Actions\ViewAction::make(),
+                Actions\Action::make('setMonthlyPackage')
                     ->label(__('Prepare Monthly Package'))
                     ->icon('heroicon-o-currency-dollar')
                     ->color('success')
@@ -308,11 +308,11 @@ class BookingResource extends Resource
                             ->success()
                             ->send();
                     }),
-                Tables\Actions\EditAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
