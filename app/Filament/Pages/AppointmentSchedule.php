@@ -8,7 +8,6 @@ use App\Models\User;
 use Filament\Pages\Page;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Form;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Carbon\Carbon;
@@ -30,6 +29,7 @@ class AppointmentSchedule extends Page implements HasForms
         $this->form->fill([
             'date' => now()->format('Y-m-d'),
             'branch_id' => Branch::first()?->id,
+            'specialist_ids' => [],
         ]);
     }
 
@@ -70,11 +70,6 @@ class AppointmentSchedule extends Page implements HasForms
             ->statePath('data');
     }
 
-    public function getHeaderWidgets(): array
-    {
-        return [];
-    }
-
     public function getScheduleData(): array
     {
         $date = $this->data['date'] ?? now()->format('Y-m-d');
@@ -101,7 +96,7 @@ class AppointmentSchedule extends Page implements HasForms
         // Fetch appointments for this date and branch
         $appointments = Appointment::with(['specialist', 'bookinMonthly.booking'])
             ->where('date', $date)
-            ->whereHas('bookinMonthly.booking.availableTime.day', function ($query) use ($branchId) {
+            ->whereHas('day', function ($query) use ($branchId) {
                 $query->where('branch_id', $branchId);
             })
             ->get();
@@ -113,10 +108,14 @@ class AppointmentSchedule extends Page implements HasForms
 
         $matrix = [];
         foreach ($appointments as $appointment) {
-            // Standardize appointment time to match our grid $times
+            // Standardize appointment time to match our grid $times (H:00:00)
             $timeKey = date('H:00:00', strtotime($appointment->time));
             
-            $matrix[$timeKey][$appointment->specialist_id] = $appointment->bookinMonthly?->booking?->child_name ?? '-';
+            $childName = $appointment->bookinMonthly?->booking?->child_name;
+            
+            if ($childName) {
+                $matrix[$timeKey][$appointment->specialist_id] = $childName;
+            }
         }
 
         return [

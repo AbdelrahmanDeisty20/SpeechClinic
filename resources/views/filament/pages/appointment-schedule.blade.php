@@ -20,7 +20,7 @@
                     <thead>
                         <tr class="bg-[#d37332] text-white">
                             @foreach($specialists as $specialist)
-                                <th class="border border-white p-3 min-w-[150px] font-black h-40">
+                                <th class="border border-white p-3 min-w-[150px] font-black">
                                     <div class="flex flex-col items-center justify-center">
                                         {{ $specialist->full_name }}
                                     </div>
@@ -41,17 +41,17 @@
                                             $childName = $matrix[$time][$specialist->id] ?? null;
                                         @endphp
                                         
-                                        @if($childName && $childName != '-')
+                                        @if($childName)
                                             <div class="font-bold text-[#d37332] border-2 border-[#d37332] bg-orange-50 p-3 rounded-lg text-[14px] leading-tight shadow-sm dark:bg-orange-900/40 dark:text-white">
                                                 {{ $childName }}
                                             </div>
                                         @else
-                                            <div class="text-gray-200">.</div>
+                                            <div class="text-gray-100 italic">...</div>
                                         @endif
                                     </td>
                                 @endforeach
 
-                                {{-- Right Time LabelOnly (No AM/PM) --}}
+                                {{-- Right Time Label --}}
                                 <td class="bg-[#d37332] text-white p-3 font-black text-2xl border border-white">
                                     {{ \Carbon\Carbon::parse($time)->format('g') }}
                                 </td>
@@ -64,14 +64,19 @@
     </div>
 
     <style>
-        /* Force clear lines */
+        /* Force clear lines consistent with the user's paper request */
         th, td {
-            border: 1px solid #444 !important;
+            border: 2px solid #555 !important;
         }
         
-        /* Dark mode border adjustments */
+        /* Ensure table expands properly */
+        table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        
         .dark th, .dark td {
-            border-color: #555 !important;
+            border-color: #888 !important;
         }
     </style>
 </x-filament-panels::page>
