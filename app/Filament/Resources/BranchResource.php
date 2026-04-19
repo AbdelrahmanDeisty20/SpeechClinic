@@ -52,8 +52,12 @@ class BranchResource extends Resource
             ->schema([
                 Section::make(__('Branch Details'))
                     ->schema([
-                        TextInput::make('name')
-                            ->label(__('Branch Name'))
+                        TextInput::make('name_ar')
+                            ->label(__('Branch Name (Arabic)'))
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('name_en')
+                            ->label(__('Branch Name (English)'))
                             ->required()
                             ->maxLength(255),
                         TextInput::make('phone')
@@ -69,9 +73,10 @@ class BranchResource extends Resource
                             ->label(__('Longitude'))
                             ->numeric()
                             ->required(),
-                        TextInput::make('address')
-                            ->label(__('Address'))
+                        TextInput::make('address_link')
+                            ->label(__('Google Maps Link'))
                             ->required()
+                            ->url()
                             ->maxLength(255)
                             ->columnSpanFull(),
                     ])
