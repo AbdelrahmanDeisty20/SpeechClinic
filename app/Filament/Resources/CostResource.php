@@ -98,9 +98,6 @@ class CostResource extends Resource
                         'assessment' => 'info',
                         'monthly' => 'success',
                     }),
-                TextColumn::make('name')
-                    ->label(__('Category'))
-                    ->searchable(),
                 TextColumn::make('price')
                     ->label(__('Amount'))
                     ->money('EGP', divideBy: 1),
