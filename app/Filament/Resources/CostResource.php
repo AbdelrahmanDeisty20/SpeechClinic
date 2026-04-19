@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CostResource\Pages;
 use App\Models\Cost;
 use App\Models\Branch;
+use Filament\Actions\EditAction;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -115,7 +116,7 @@ class CostResource extends Resource
                     ->relationship('branch', 'name'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
