@@ -31,118 +31,51 @@ class CvResource extends Resource
         return __('Doctor\'s CV');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getModel()::count();
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return __('CVs');
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return __('CVs');
-    }
-
-    public static function getLabel(): string
-    {
-        return __('CV');
-    }
-
-    public static function getModelLabel(): string
-    {
-        return __('Candidate CV');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Candidate CVs');
-    }
-
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make(__('Candidate Profile'))
-                    ->description(__('Visual and basic identity.'))
+                Section::make(__('Doctor Information'))
                     ->schema([
                         FileUpload::make('image')
                             ->label(__('Photo'))
                             ->image()
-                            ->directory('cvs')
                             ->disk('public')
-                            ->required()
-                            ->imageEditor()
-                            ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "cvs/{$state}" : $state)
-                            ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
+                            ->directory('cvs')
                             ->columnSpanFull(),
-                        Section::make(__('Doctor Information'))
+                        
+                        Grid::make(2)
                             ->schema([
-                                TextInput::make('name')
-                                    ->label(__('Doctor Name'))
+                                TextInput::make('name_ar')
+                                    ->label(__('Doctor Name (Arabic)'))
                                     ->required()
                                     ->maxLength(255),
-                                TextInput::make('phone')
-                                    ->label(__('Phone'))
-                                    ->tel()
+                                TextInput::make('name_en')
+                                    ->label(__('Doctor Name (English)'))
                                     ->required()
                                     ->maxLength(255),
-                                RichEditor::make('biography')
-                                    ->label(__('Short Biography'))
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns([
-                                'sm' => 1,
-                                'md' => 2,
-                                'lg' => 2,
-                            ]),
-                    ]),
-
-                Grid::make(2)
-                    ->schema([
-                        Section::make(__('Arabic Content'))
-                            ->description(__('Localized titles and descriptions.'))
-                            ->schema([
+                                
                                 TextInput::make('title_ar')
+                                    ->label(__('Job Title (Arabic)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label(__('Job Title (Arabic)')),
-                                Textarea::make('description_ar')
-                                    ->rows(6)
-                                    ->label(__('Biography (Arabic)')),
-                            ])
-                            ->columnSpan(1),
-
-                        Section::make(__('English Content'))
-                            ->description(__('Localized titles and descriptions.'))
-                            ->schema([
+                                    ->maxLength(255),
                                 TextInput::make('title_en')
+                                    ->label(__('Job Title (English)'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label(__('Job Title (English)')),
-                                Textarea::make('description_en')
-                                    ->rows(6)
-                                    ->label(__('Biography (English)')),
-                            ])
-                            ->columnSpan(1),
-                    ]),
-            ]);
-    }
+                                    ->maxLength(255),
+                            ]),
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return $schema
-            ->schema([
-                Section::make(__('Candidate Photo'))
-                    ->schema([
-                        Image::make(fn ($record) => $record?->image_url ?? asset('images/placeholder.png'), __('Photo'))
-                            ->imageWidth('200px')
-                            ->imageHeight('200px')
-                            ->circular(),
-                    ]),
+                        RichEditor::make('description_ar')
+                            ->label(__('Short Biography (Arabic)'))
+                            ->required()
+                            ->columnSpanFull(),
+                        
+                        RichEditor::make('description_en')
+                            ->label(__('Short Biography (English)'))
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(1),
             ]);
     }
 
@@ -150,20 +83,21 @@ class CvResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image_url')
+                ImageColumn::make('image')
                     ->label(__('Photo'))
                     ->disk('public')
-                    ->size(100),
-                TextColumn::make('name_en')
-                    ->label(__('Candidate (English)'))
-                    ->searchable()
-                    ->sortable()
-                    ->description(fn(Cv $record): string => $record->title_en ?? ''),
+                    ->circular(),
                 TextColumn::make('name_ar')
-                    ->label(__('Candidate (Arabic)'))
+                    ->label(__('Name AR'))
                     ->searchable()
-                    ->sortable()
-                    ->description(fn(Cv $record): string => $record->title_ar ?? ''),
+                    ->sortable(),
+                TextColumn::make('name_en')
+                    ->label(__('Name EN'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('title_ar')
+                    ->label(__('Title AR'))
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->label(__('Created At'))
                     ->dateTime()
@@ -173,15 +107,14 @@ class CvResource extends Resource
             ->filters([
                 //
             ])
-            ->emptyStateHeading(__('No CVs found'))
             ->actions([
                 Actions\ViewAction::make()->label(__('View')),
                 Actions\EditAction::make()->label(__('Edit')),
                 Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -198,6 +131,7 @@ class CvResource extends Resource
         return [
             'index' => Pages\ListCvs::route('/'),
             'create' => Pages\CreateCv::route('/create'),
+            'view' => Pages\ViewCv::route('/{record}'),
             'edit' => Pages\EditCv::route('/{record}/edit'),
         ];
     }
