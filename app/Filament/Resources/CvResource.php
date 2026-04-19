@@ -108,13 +108,12 @@ class CvResource extends Resource
                 //
             ])
             ->actions([
-                Actions\ViewAction::make()->label(__('View')),
                 Actions\EditAction::make()->label(__('Edit')),
                 Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -131,7 +130,6 @@ class CvResource extends Resource
         return [
             'index' => Pages\ListCvs::route('/'),
             'create' => Pages\CreateCv::route('/create'),
-            'view' => Pages\ViewCv::route('/{record}'),
             'edit' => Pages\EditCv::route('/{record}/edit'),
         ];
     }
