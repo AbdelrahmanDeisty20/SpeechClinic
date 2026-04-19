@@ -92,5 +92,6 @@
     "Total Usage Limit": "Total Usage Limit",
     "Per User Limit": "Per User Limit",
     "Only for percentage type": "Only for percentage type",
-    "Leave empty for unlimited": "Leave empty for unlimited"
+    "Leave empty for unlimited": "Leave empty for unlimited",
+    "filament-shield::filament-shield.nav.role.icon": "heroicon-o-shield-check"
 }
