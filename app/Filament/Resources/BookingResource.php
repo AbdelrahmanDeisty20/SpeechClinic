@@ -14,7 +14,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
-use Filament\Schemas\Components\Actions as SchemaActions;
 use Filament\Schemas\Components\Image;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
@@ -222,32 +221,6 @@ class BookingResource extends Resource
                                                 'completed' => __('Completed'),
                                                 default => $record?->status,
                                             }),
-                                        
-                                        SchemaActions::make([
-                                            \Filament\Actions\Action::make('confirm')
-                                                ->label(__('Confirm'))
-                                                ->icon('heroicon-o-check-circle')
-                                                ->color('success')
-                                                ->requiresConfirmation()
-                                                ->action(fn ($record) => $record->update(['status' => 'confirmed']))
-                                                ->visible(fn ($record) => $record->status === 'accepted'),
-
-                                            \Filament\Actions\Action::make('complete')
-                                                ->label(__('Completed'))
-                                                ->icon('heroicon-o-check-badge')
-                                                ->color('gray')
-                                                ->requiresConfirmation()
-                                                ->action(fn ($record) => $record->update(['status' => 'completed']))
-                                                ->visible(fn ($record) => $record->status === 'confirmed'),
-
-                                            \Filament\Actions\Action::make('cancel')
-                                                ->label(__('Cancelled'))
-                                                ->icon('heroicon-o-x-circle')
-                                                ->color('danger')
-                                                ->requiresConfirmation()
-                                                ->action(fn ($record) => $record->update(['status' => 'pending']))
-                                                ->visible(fn ($record) => in_array($record->status, ['pending', 'accepted', 'confirmed'])),
-                                        ])->fullWidth(false)->alignStart(),
                                         Placeholder::make('branch_name')
                                             ->label(__('الفرع'))
                                             ->content(fn ($record) => $record?->availableTime?->day?->branch?->name),
