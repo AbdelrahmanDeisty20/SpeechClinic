@@ -54,10 +54,6 @@ class CostResource extends Resource
             ->schema([
                 Section::make(__('Pricing Details'))
                     ->schema([
-                        TextInput::make('name')
-                            ->label(__('Price Category'))
-                            ->required()
-                            ->maxLength(255),
                         TextInput::make('price')
                             ->label(__('Amount'))
                             ->numeric()
