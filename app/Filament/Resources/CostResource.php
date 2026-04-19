@@ -72,7 +72,8 @@ class CostResource extends Resource
                             ->required(),
                         Select::make('branch_id')
                             ->label(__('Branch'))
-                            ->relationship('branch', 'name')
+                            ->relationship('branch', 'name_ar')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -89,8 +90,9 @@ class CostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('branch.name')
+                TextColumn::make('branch.name_ar')
                     ->label(__('Branch'))
+                    ->getStateUsing(fn($record) => $record->branch?->name)
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('type')
@@ -110,7 +112,8 @@ class CostResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('branch_id')
                     ->label(__('Branch'))
-                    ->relationship('branch', 'name'),
+                    ->relationship('branch', 'name_ar')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name),
             ])
             ->actions([
                 Actions\EditAction::make(),
