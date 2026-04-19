@@ -104,11 +104,8 @@ class BookingResource extends Resource
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->label(__('Available Appointment')),
-                                Select::make('branch_id')
-                                    ->relationship('branch', 'name')
-                                    ->required()
-                                    ->label(__('Branch')),
+                                    ->label(__('Available Appointment'))
+                                    ->columnSpanFull(),
                                 Select::make('status')
                                     ->label(__('Booking Status'))
                                     ->options([
@@ -119,6 +116,10 @@ class BookingResource extends Resource
                                         'completed' => __('Completed'),
                                     ])
                                     ->required(),
+                                TextInput::make('booking_number')
+                                    ->label(__('Booking Number'))
+                                    ->default(fn () => '#' . strtoupper(uniqid()))
+                                    ->readOnly(),
                                 Select::make('type')
                                     ->label(__('Type'))
                                     ->options([
@@ -127,17 +128,12 @@ class BookingResource extends Resource
                                     ])
                                     ->default('assessment')
                                     ->hidden(),
-                                TextInput::make('booking_number')
-                                    ->label(__('Booking Number'))
-                                    ->default(fn () => '#' . strtoupper(uniqid()))
-                                    ->readOnly(),
                             ])
                             ->columns([
                                 'sm' => 1,
                                 'md' => 2,
                                 'lg' => 2,
-                            ])
-                            ->columnSpan(1),
+                            ]),
 
                         Section::make(__('Problem Description'))
                             ->schema([
