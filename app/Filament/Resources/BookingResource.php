@@ -185,22 +185,23 @@ class BookingResource extends Resource
                                         Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo'))
                                             ->action(
                                                 \Filament\Actions\Action::make('view_photo')
-                                                    ->label(__('عرض احترافي'))
+                                                    ->label(__('عرض الصورة (Zoom)'))
                                                     ->modalHeading(__('صورة الطفل'))
                                                     ->modalWidth('4xl')
                                                     ->modalContent(fn ($record) => Html::make('
                                                         <div x-data="{ scale: 1 }" class="flex flex-col items-center gap-4">
-                                                            <div class="flex gap-2">
-                                                                <button type="button" @click="scale += 0.2" class="px-3 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-500 font-bold">+</button>
-                                                                <button type="button" @click="scale = 1" class="px-3 py-1 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-bold">Reset</button>
-                                                                <button type="button" @click="scale = Math.max(0.2, scale - 0.2)" class="px-3 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-500 font-bold">-</button>
+                                                            <div class="flex gap-2 sticky top-0 z-10 bg-white/80 backdrop-blur p-2 rounded-full border shadow-sm">
+                                                                <button type="button" @click="scale += 0.2" class="p-2 bg-primary-600 text-white rounded-full hover:bg-primary-500 font-bold w-10 h-10">+</button>
+                                                                <button type="button" @click="scale = 1" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 font-bold">Reset</button>
+                                                                <button type="button" @click="scale = Math.max(0.2, scale - 0.2)" class="p-2 bg-primary-600 text-white rounded-full hover:bg-primary-500 font-bold w-10 h-10">-</button>
                                                             </div>
-                                                            <div class="overflow-auto border rounded-xl bg-gray-50 flex items-center justify-center p-4 w-full" style="max-height: 70vh;">
+                                                            <div class="overflow-auto border rounded-xl bg-gray-50 flex items-center justify-center p-4 w-full cursor-zoom-in" style="max-height: 70vh;">
                                                                 <img src="' . $record->child_photo_url . '" 
                                                                      :style="{ transform: `scale(${scale})`, transition: \'transform 0.2s ease-in-out\' }" 
-                                                                     class="rounded-lg shadow-lg " />
+                                                                     class="rounded-lg shadow-lg"
+                                                                     @click="scale += 0.2" />
                                                             </div>
-                                                            <div class="text-sm text-gray-500">Zoom: <span x-text="Math.round(scale * 100) + \'%\'"></span></div>
+                                                            <div class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full border">Zoom Level: <span x-text="Math.round(scale * 100) + \'%\'"></span></div>
                                                         </div>
                                                     '))
                                                     ->modalSubmitAction(false)
@@ -246,19 +247,6 @@ class BookingResource extends Resource
                                                 default => $record?->status,
                                             }),
                                         
-                                        SchemaActions::make([
-                                            \Filament\Actions\SelectAction::make('update_status')
-                                                ->label(__('تغيير حالة الحجز'))
-                                                ->options([
-                                                    'pending' => __('Pending'),
-                                                    'accepted' => __('Accepted'),
-                                                    'confirmed' => __('Confirmed'),
-                                                    'cancelled' => __('Cancelled'),
-                                                    'completed' => __('Completed'),
-                                                ])
-                                                ->action(fn ($record, $data) => $record->update(['status' => $data['value']]))
-                                                ->size('sm'),
-                                        ])->fullWidth(false)->alignStart(),
                                         Placeholder::make('branch_name')
                                             ->label(__('الفرع'))
                                             ->content(fn ($record) => $record?->availableTime?->day?->branch?->name),

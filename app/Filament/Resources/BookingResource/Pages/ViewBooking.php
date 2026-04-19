@@ -18,6 +18,17 @@ class ViewBooking extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\SelectAction::make('status')
+                ->label(__('الحالة'))
+                ->options([
+                    'pending' => __('Pending'),
+                    'accepted' => __('Accepted'),
+                    'confirmed' => __('Confirmed'),
+                    'cancelled' => __('Cancelled'),
+                    'completed' => __('Completed'),
+                ])
+                ->action(fn ($record, $data) => $record->update(['status' => $data['value']])),
+
             Actions\EditAction::make()->label(__('تعديل')),
         ];
     }
