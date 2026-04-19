@@ -97,7 +97,8 @@ class BookingResource extends Resource
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->label(__('Parent/User')),
+                                    ->label(__('Parent/User'))
+                                    ->columnSpanFull(),
                                 Select::make('available_time_id')
                                     ->relationship('availableTime', 'id')
                                     ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->day?->date} - {$record->day?->branch?->name}")
