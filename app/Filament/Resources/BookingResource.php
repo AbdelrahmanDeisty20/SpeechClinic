@@ -116,7 +116,8 @@ class BookingResource extends Resource
                                         'cancelled' => __('Cancelled'),
                                         'completed' => __('Completed'),
                                     ])
-                                    ->required(),
+                                    ->required()
+                                    ->live(),
                                 TextInput::make('price')
                                     ->label(__('Price'))
                                     ->numeric()
@@ -124,8 +125,10 @@ class BookingResource extends Resource
                                     ->required(),
                                 TextInput::make('booking_number')
                                     ->label(__('Booking Number'))
-                                    ->default(fn () => '#' . strtoupper(uniqid()))
-                                    ->readOnly(),
+                                    ->placeholder(__('Enter booking number manualy'))
+                                    ->maxLength(255)
+                                    ->hidden(fn (Get $get) => !in_array($get('status'), ['confirmed', 'completed']))
+                                    ->required(fn (Get $get) => in_array($get('status'), ['confirmed', 'completed'])),
                                 Select::make('type')
                                     ->label(__('Type'))
                                     ->options([
