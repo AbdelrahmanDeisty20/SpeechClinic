@@ -180,8 +180,7 @@ class BookingResource extends Resource
                                             ->label('')
                                             ->content(__('Child Photo'))
                                             ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
-                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo'))
-                                            ->url(fn($record) => $record?->child_photo_url),
+                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo')),
                                         Placeholder::make('child_name')
                                             ->label(__('اسم الطفل'))
                                             ->content(fn ($record) => $record?->child_name),
@@ -254,9 +253,7 @@ class BookingResource extends Resource
                 ImageColumn::make('child_photo')
                     ->label(__('Photo'))
                     ->disk('public')
-                    ->size(100)
-                    ->url(fn($record) => $record?->child_photo_url)
-                    ->openUrlInNewTab(),
+                    ->size(100),
                 TextColumn::make('child_name')
                     ->label(__('اسم الطفل'))
                     ->searchable()
@@ -322,17 +319,6 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make()->label(__('View')),
-
-                Actions\SelectAction::make('status')
-                    ->label(__('تغيير الحالة'))
-                    ->options([
-                        'pending' => __('Pending'),
-                        'accepted' => __('Accepted'),
-                        'confirmed' => __('Confirmed'),
-                        'cancelled' => __('Cancelled'),
-                        'completed' => __('Completed'),
-                    ])
-                    ->action(fn($record, $data) => $record->update(['status' => $data['value']])),
                 
                 Actions\EditAction::make()->label(__('Edit')),
             ])
