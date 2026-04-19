@@ -42,7 +42,9 @@ class CvResource extends Resource
                             ->image()
                             ->disk('public')
                             ->directory('cvs')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn (string $context): bool => $context === 'create'),
                         
                         Grid::make(2)
                             ->schema([
