@@ -5,17 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CostResource\Pages;
 use App\Models\Cost;
 use App\Models\Branch;
-use Filament\Actions\EditAction;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Actions;
 use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 
 class CostResource extends Resource
@@ -116,11 +113,11 @@ class CostResource extends Resource
                     ->relationship('branch', 'name'),
             ])
             ->actions([
-                EditAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
