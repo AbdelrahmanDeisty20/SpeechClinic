@@ -19,6 +19,11 @@ class ExperienceForm
                     ->label(__('Experience Value'))
                     ->placeholder(__('e.g. +10'))
                     ->required(),
+            ])
+            ->columns([
+                'sm' => 1,
+                'md' => 2,
+                'lg' => 2,
             ]);
     }
 }
