@@ -9,22 +9,20 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Image;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
-use Filament\Schemas\Components\Actions as SchemaActions;
-use Filament\Schemas\Components\Html;
-use Filament\Schemas\Components\Image;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Tables;
 use Filament\Actions;
+use Filament\Tables;
 
 class BookingResource extends Resource
 {
@@ -85,10 +83,8 @@ class BookingResource extends Resource
                             ->label(__('Child Age'))
                             ->numeric()
                             ->required(),
-
                     ])
                     ->columns(2),
-
                 Grid::make(2)
                     ->schema([
                         Section::make(__('Booking Details'))
@@ -103,7 +99,7 @@ class BookingResource extends Resource
                                     ->columnSpanFull(),
                                 Select::make('available_time_id')
                                     ->relationship('availableTime', 'id')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->day?->date} - {$record->day?->branch?->name}")
+                                    ->getOptionLabelFromRecordUsing(fn($record) => "{$record->day?->date} - {$record->day?->branch?->name}")
                                     ->searchable()
                                     ->preload()
                                     ->required()
@@ -129,8 +125,8 @@ class BookingResource extends Resource
                                     ->label(__('Booking Number'))
                                     ->placeholder(__('Enter booking number manualy'))
                                     ->maxLength(255)
-                                    ->hidden(fn (Get $get) => !in_array($get('status'), ['confirmed', 'completed']))
-                                    ->required(fn (Get $get) => in_array($get('status'), ['confirmed', 'completed'])),
+                                    ->hidden(fn(Get $get) => !in_array($get('status'), ['confirmed', 'completed']))
+                                    ->required(fn(Get $get) => in_array($get('status'), ['confirmed', 'completed'])),
                                 Select::make('type')
                                     ->label(__('Type'))
                                     ->options([
@@ -145,7 +141,6 @@ class BookingResource extends Resource
                                 'md' => 2,
                                 'lg' => 2,
                             ]),
-
                         Section::make(__('Problem Description'))
                             ->schema([
                                 Textarea::make('problem_description')
@@ -167,10 +162,9 @@ class BookingResource extends Resource
                     ->schema([
                         Placeholder::make('problem_description')
                             ->label(__('الوصف'))
-                            ->content(fn ($record) => $record?->problem_description)
+                            ->content(fn($record) => $record?->problem_description)
                             ->columnSpanFull(),
                     ]),
-
                 Section::make(__('ملخص الحجز'))
                     ->schema([
                         Grid::make(3)
@@ -182,63 +176,38 @@ class BookingResource extends Resource
                                             ->label('')
                                             ->content(__('Child Photo'))
                                             ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
-                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo'))
-                                            ->action(
-                                                \Filament\Actions\Action::make('view_photo')
-                                                    ->label(__('عرض الصورة (Zoom)'))
-                                                    ->modalHeading(__('صورة الطفل'))
-                                                    ->modalWidth('4xl')
-                                                    ->modalContent(fn ($record) => Html::make('
-                                                        <div x-data="{ scale: 1 }" class="flex flex-col items-center gap-4">
-                                                            <div class="flex gap-2 sticky top-0 z-10 bg-white/80 backdrop-blur p-2 rounded-full border shadow-sm">
-                                                                <button type="button" @click="scale += 0.2" class="p-2 bg-primary-600 text-white rounded-full hover:bg-primary-500 font-bold w-10 h-10">+</button>
-                                                                <button type="button" @click="scale = 1" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 font-bold">Reset</button>
-                                                                <button type="button" @click="scale = Math.max(0.2, scale - 0.2)" class="p-2 bg-primary-600 text-white rounded-full hover:bg-primary-500 font-bold w-10 h-10">-</button>
-                                                            </div>
-                                                            <div class="overflow-auto border rounded-xl bg-gray-50 flex items-center justify-center p-4 w-full cursor-zoom-in" style="max-height: 70vh;">
-                                                                <img src="' . $record->child_photo_url . '" 
-                                                                     :style="{ transform: `scale(${scale})`, transition: \'transform 0.2s ease-in-out\' }" 
-                                                                     class="rounded-lg shadow-lg"
-                                                                     @click="scale += 0.2" />
-                                                            </div>
-                                                            <div class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full border">Zoom Level: <span x-text="Math.round(scale * 100) + \'%\'"></span></div>
-                                                        </div>
-                                                    '))
-                                                    ->modalSubmitAction(false)
-                                                    ->modalCancelActionLabel(__('إغلاق'))
-                                            ),
+                                        Image::make(fn($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo')),
                                         Placeholder::make('child_name')
                                             ->label(__('اسم الطفل'))
-                                            ->content(fn ($record) => $record?->child_name),
+                                            ->content(fn($record) => $record?->child_name),
                                         Placeholder::make('child_age')
                                             ->label(__('عمر الطفل'))
-                                            ->content(fn ($record) => ($record?->child_age ?? '0') . ' ' . __('سنة')),
-                                    ])->columnSpan(1),
-
+                                            ->content(fn($record) => ($record?->child_age ?? '0') . ' ' . __('سنة')),
+                                    ])
+                                    ->columnSpan(1),
                                 // Column 2: Parent Details
                                 Grid::make(1)
                                     ->schema([
                                         Placeholder::make('user_name')
                                             ->label(__('اسم ولي الأمر'))
-                                            ->content(fn ($record) => $record?->user?->full_name),
+                                            ->content(fn($record) => $record?->user?->full_name),
                                         Placeholder::make('user_phone')
                                             ->label(__('الهاتف'))
-                                            ->content(fn ($record) => $record?->user?->phone),
-
+                                            ->content(fn($record) => $record?->user?->phone),
                                         Placeholder::make('price')
                                             ->label(__('السعر'))
-                                            ->content(fn ($record) => number_format($record?->price ?? 0, 2) . ' ' . __('ج.م')),
+                                            ->content(fn($record) => number_format($record?->price ?? 0, 2) . ' ' . __('ج.م')),
                                         Placeholder::make('booking_number')
                                             ->label(__('رقم الحجز'))
-                                            ->content(fn ($record) => $record?->booking_number ?? '-'),
-                                    ])->columnSpan(1),
-
+                                            ->content(fn($record) => $record?->booking_number ?? '-'),
+                                    ])
+                                    ->columnSpan(1),
                                 // Column 3: Appointment Details
                                 Grid::make(1)
                                     ->schema([
                                         Placeholder::make('status')
                                             ->label(__('الحالة'))
-                                            ->content(fn ($record) => match ($record?->status) {
+                                            ->content(fn($record) => match ($record?->status) {
                                                 'pending' => __('Pending'),
                                                 'accepted' => __('Accepted'),
                                                 'confirmed' => __('Confirmed'),
@@ -246,20 +215,21 @@ class BookingResource extends Resource
                                                 'completed' => __('Completed'),
                                                 default => $record?->status,
                                             }),
-                                        
                                         Placeholder::make('branch_name')
                                             ->label(__('الفرع'))
-                                            ->content(fn ($record) => $record?->availableTime?->day?->branch?->name),
+                                            ->content(fn($record) => $record?->availableTime?->day?->branch?->name),
                                         Placeholder::make('appointment')
                                             ->label(__('الموعد'))
                                             ->content(function ($record) {
                                                 $day = $record?->availableTime?->day?->name;
                                                 $state = $record?->availableTime;
-                                                if (!$state) return $day ?? '-';
+                                                if (!$state)
+                                                    return $day ?? '-';
                                                 $time = \Carbon\Carbon::parse($state->time)->format('h:i A');
                                                 return "{$day} ({$time})";
                                             }),
-                                    ])->columnSpan(1),
+                                    ])
+                                    ->columnSpan(1),
                             ]),
                     ]),
             ]);
@@ -276,7 +246,6 @@ class BookingResource extends Resource
                     ->copyable()
                     ->badge()
                     ->color('gray'),
-
                 ImageColumn::make('child_photo')
                     ->label(__('Photo'))
                     ->disk('public')
@@ -346,7 +315,6 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make()->label(__('View')),
-                
                 Actions\EditAction::make()->label(__('Edit')),
             ])
             ->emptyStateHeading(__('No bookings found'))
@@ -374,4 +342,3 @@ class BookingResource extends Resource
         ];
     }
 }
-
