@@ -10,10 +10,16 @@ class ViewReview extends ViewRecord
 {
     protected static string $resource = ReviewResource::class;
 
+    public function getTitle(): string
+    {
+        return __('تفاصيل التقييم');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()->label(__('تعديل')),
+            Actions\DeleteAction::make()->label(__('حذف')),
         ];
     }
 }

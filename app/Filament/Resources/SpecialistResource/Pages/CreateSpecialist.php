@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSpecialist extends CreateRecord
 {
     protected static string $resource = SpecialistResource::class;
+
+    public function getTitle(): string
+    {
+        return __('إضافة أخصائي جديد');
+    }
 }

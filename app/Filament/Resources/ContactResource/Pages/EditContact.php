@@ -10,10 +10,15 @@ class EditContact extends EditRecord
 {
     protected static string $resource = ContactResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Contact Message');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 

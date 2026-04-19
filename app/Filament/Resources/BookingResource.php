@@ -30,27 +30,31 @@ class BookingResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'حجوزات المواعيد';
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('حجوزات المواعيد');
+        return __('Booking Management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('الحجوزات التقييمية');
+        return __('Assessment Bookings');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('الحجوزات التقييمية');
+        return __('Assessment Bookings');
     }
 
     public static function getLabel(): string
     {
-        return __('حجز تقييمي');
+        return __('Assessment Booking');
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
@@ -62,21 +66,21 @@ class BookingResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make(__('بيانات الطفل'))
-                    ->description(__('التفاصيل الأساسية للطفل.'))
+                Section::make(__('Child Information'))
+                    ->description(__('Basic child details.'))
                     ->schema([
                         FileUpload::make('child_photo')
-                            ->label('Photo')
+                            ->label(__('Photo'))
                             ->image()
                             ->disk('public')
                             ->directory('children')
                             ->columnSpanFull(),
                         TextInput::make('child_name')
-                            ->label(__('اسم الطفل'))
+                            ->label(__('Child Name'))
                             ->required()
                             ->maxLength(255),
                         TextInput::make('child_age')
-                            ->label(__('عمر الطفل'))
+                            ->label(__('Child Age'))
                             ->numeric()
                             ->required(),
 
@@ -85,26 +89,26 @@ class BookingResource extends Resource
 
                 Grid::make(2)
                     ->schema([
-                        Section::make(__('تفاصيل الحجز'))
-                            ->description(__('تحديد حالة الخدمة والتفاصيل.'))
+                        Section::make(__('Booking Details'))
+                            ->description(__('Service status and details.'))
                             ->schema([
                                 Select::make('user_id')
                                     ->relationship('user', 'email')
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->label(__('ولي الأمر/المستخدم')),
+                                    ->label(__('Parent/User')),
                                 Select::make('available_time_id')
-                                    ->label(__('الموعد المتاح'))
+                                    ->label(__('Available Appointment'))
                                     ->relationship('availableTime', 'id')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => __('اليوم') . ": {$record->day?->name} - " . __('الوقت') . ": " . \Carbon\Carbon::parse($record->time)->format('h:i A') . " ({$record->day?->branch?->name})")
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => __('Day') . ": {$record->day?->name} - " . __('Time') . ": " . \Carbon\Carbon::parse($record->time)->format('h:i A') . " ({$record->day?->branch?->name})")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
                                 \Filament\Forms\Components\Hidden::make('type')
                                     ->default('assessment'),
                                 Select::make('status')
-                                    ->label(__('الحالة'))
+                                    ->label(__('Status'))
                                     ->options([
                                         'pending' => __('Pending'),
                                         'accepted' => __('Accepted'),
@@ -115,23 +119,23 @@ class BookingResource extends Resource
                                     ->required()
                                     ->live(),
                                 TextInput::make('price')
-                                    ->label(__('السعر'))
+                                    ->label(__('Price'))
                                     ->numeric()
-                                    ->prefix(__('ج.م'))
+                                    ->prefix(__('EGP'))
                                     ->required(),
                                 TextInput::make('booking_number')
-                                    ->label(__('رقم الحجز'))
-                                    ->placeholder(__('أدخل رقم الحجز'))
+                                    ->label(__('Booking Number'))
+                                    ->placeholder(__('Enter booking number'))
                                     ->maxLength(255)
                                     ->hidden(fn (Get $get) => $get('status') !== 'completed')
                                     ->required(fn (Get $get) => $get('status') === 'completed'),
                             ])
                             ->columnSpan(1),
 
-                        Section::make(__('وصف المشكلة'))
+                        Section::make(__('Problem Description'))
                             ->schema([
                                 Textarea::make('problem_description')
-                                    ->label(__('وصف المشكلة'))
+                                    ->label(__('Problem Description'))
                                     ->required()
                                     ->rows(12)
                                     ->columnSpanFull(),
@@ -235,7 +239,7 @@ class BookingResource extends Resource
                     ->color('gray'),
 
                 ImageColumn::make('child_photo')
-                    ->label('Photo')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->size(100),
                 TextColumn::make('child_name')
@@ -302,15 +306,15 @@ class BookingResource extends Resource
                     ]),
             ])
             ->actions([
-                Actions\ViewAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
                 Actions\Action::make('setMonthlyPackage')
-                    ->label(__('تجهيز الباقة الشهرية'))
+                    ->label(__('Prepare Monthly Package'))
                     ->icon('heroicon-o-currency-dollar')
                     ->color('success')
                     ->visible(fn ($record) => $record->type === 'assessment' && $record->status === 'confirmed')
                     ->form([
                         TextInput::make('price')
-                            ->label(__('السعر الشهري'))
+                            ->label(__('Monthly Price'))
                             ->numeric()
                             ->required()
                             ->default(fn ($record) => $record->availableTime?->day?->branch?->cost?->where('type', 'monthly')->first()?->price ?? 0),
@@ -325,12 +329,13 @@ class BookingResource extends Resource
                         );
                         
                         \Filament\Notifications\Notification::make()
-                            ->title(__('تم تجهيز الباقة بنجاح'))
+                            ->title(__('Package prepared successfully'))
                             ->success()
                             ->send();
                     }),
-                Actions\EditAction::make(),
+                Actions\EditAction::make()->label(__('Edit')),
             ])
+            ->emptyStateHeading(__('No bookings found'))
             ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),

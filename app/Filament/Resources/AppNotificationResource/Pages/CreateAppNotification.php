@@ -10,6 +10,11 @@ class CreateAppNotification extends CreateRecord
 {
     protected static string $resource = AppNotificationResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Send New Notification');
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

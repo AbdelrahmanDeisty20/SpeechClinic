@@ -26,27 +26,31 @@ class UserResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'إدارة الموظفين والعملاء';
-    protected static ?int $navigationSort = 80;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('إدارة الموظفين والعملاء');
+        return __('Staff & Users');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('المستخدمين');
+        return __('Users');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('المستخدمين');
+        return __('Users');
     }
 
     public static function getLabel(): string
     {
-        return __('مستخدم');
+        return __('User');
     }
 
     public static function form(Schema $schema): Schema
@@ -78,7 +82,7 @@ class UserResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 FileUpload::make('image')
-                                    ->label('Photo')
+                                    ->label(__('Photo'))
                                     ->image()
                                     ->directory('users')
                                     ->disk('public')
@@ -115,7 +119,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label('Photo')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->size(100),
                 TextColumn::make('full_name')
@@ -143,10 +147,11 @@ class UserResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No users found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

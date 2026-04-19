@@ -10,11 +10,16 @@ class EditSpecialist extends EditRecord
 {
     protected static string $resource = SpecialistResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Specialist');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\ViewAction::make()->label(__('View')),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 }

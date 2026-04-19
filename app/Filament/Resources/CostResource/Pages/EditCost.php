@@ -10,10 +10,15 @@ class EditCost extends EditRecord
 {
     protected static string $resource = CostResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Cost');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 }

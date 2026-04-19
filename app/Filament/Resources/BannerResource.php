@@ -21,20 +21,44 @@ class BannerResource extends Resource
     protected static ?string $model = Banner::class;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-photo';
-    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
-    protected static ?int $navigationSort = 51;
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Content & Pages');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Banners');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Banners');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('Banner');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Section::make('Banner Details')
+                Section::make(__('Banner Details'))
                     ->schema([
                         FileUpload::make('image')
-                            ->label('Photo')
+                            ->label(__('Photo'))
                             ->image()
                             ->disk('public')
-                            ->directory('banners') // ✅ التخزين هنا
+                            ->directory('banners')
                             ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "banners/{$state}" : $state)
                             ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                             ->required()
@@ -43,16 +67,24 @@ class BannerResource extends Resource
 
                 Grid::make(2)
                     ->schema([
-                        Section::make('Arabic Content')
+                        Section::make(__('Arabic Content'))
                             ->schema([
-                                TextInput::make('title_ar')->required(),
-                                Textarea::make('description_ar')->rows(3),
+                                TextInput::make('title_ar')
+                                    ->label(__('Title (Arabic)'))
+                                    ->required(),
+                                Textarea::make('description_ar')
+                                    ->label(__('Description (Arabic)'))
+                                    ->rows(3),
                             ]),
 
-                        Section::make('English Content')
+                        Section::make(__('English Content'))
                             ->schema([
-                                TextInput::make('title_en')->required(),
-                                Textarea::make('description_en')->rows(3),
+                                TextInput::make('title_en')
+                                    ->label(__('Title (English)'))
+                                    ->required(),
+                                Textarea::make('description_en')
+                                    ->label(__('Description (English)'))
+                                    ->rows(3),
                             ]),
                     ]),
             ]);
@@ -63,17 +95,28 @@ class BannerResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image_url')
-                    ->label('Photo')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->size(100),
 
-                TextColumn::make('title_en')->searchable()->sortable(),
-                TextColumn::make('title_ar')->searchable()->sortable(),
-                TextColumn::make('created_at')->dateTime()->sortable(),
+                TextColumn::make('title_en')
+                    ->label(__('Title (English)'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('title_ar')
+                    ->label(__('Title (Arabic)'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->label(__('Created At'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No banners found'))
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

@@ -10,10 +10,15 @@ class EditSetting extends EditRecord
 {
     protected static string $resource = SettingResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Setting');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 

@@ -20,27 +20,32 @@ class AvailableTimeResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'حجوزات المواعيد';
 
-    protected static ?int $navigationSort = 30;
+
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('حجوزات المواعيد');
+        return __('Appointment Management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
     public static function getNavigationLabel(): string
     {
-        return __('مواعيد اليوم');
+        return __('Available Times');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('مواعيد اليوم');
+        return __('Available Times');
     }
 
     public static function getLabel(): string
     {
-        return __('موعد');
+        return __('Available Time');
     }
 
     public static function form(Schema $schema): Schema
@@ -167,10 +172,11 @@ class AvailableTimeResource extends Resource
                         'monthly' => __('Monthly'),
                     ]),
             ])
+            ->emptyStateHeading(__('No available times found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

@@ -10,11 +10,16 @@ class EditBooking extends EditRecord
 {
     protected static string $resource = BookingResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Assessment Booking');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\ViewAction::make()->label(__('View')),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 }

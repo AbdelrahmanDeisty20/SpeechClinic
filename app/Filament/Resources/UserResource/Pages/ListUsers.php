@@ -10,13 +10,16 @@ class ListUsers extends ListRecords
 {
     protected static string $resource = UserResource::class;
 
-    protected static ?string $title = 'Staff & Users';
+    public function getTitle(): string
+    {
+        return __('Staff & Users');
+    }
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-                ->label('New User')
+                ->label(__('New User'))
                 ->icon('heroicon-o-plus'),
         ];
     }

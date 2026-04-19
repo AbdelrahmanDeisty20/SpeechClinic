@@ -10,6 +10,11 @@ class CreateSetting extends CreateRecord
 {
     protected static string $resource = SettingResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Create Setting');
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

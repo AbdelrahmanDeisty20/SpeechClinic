@@ -10,10 +10,16 @@ class ListContacts extends ListRecords
 {
     protected static string $resource = ContactResource::class;
 
+    public function getTitle(): string
+    {
+        return __('رسائل التواصل');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
+                ->label(__('رسالة تواصل جديدة'))
                 ->icon('heroicon-o-plus'),
         ];
     }

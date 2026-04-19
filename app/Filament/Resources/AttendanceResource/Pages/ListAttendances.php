@@ -10,10 +10,16 @@ class ListAttendances extends ListRecords
 {
     protected static string $resource = AttendanceResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Attendance Records');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label(__('سجل حضور جديد')),
         ];
     }
 }

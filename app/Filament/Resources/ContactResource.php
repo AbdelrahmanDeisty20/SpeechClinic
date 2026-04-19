@@ -20,27 +20,32 @@ class ContactResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'التواصل والرسائل';
-    protected static ?int $navigationSort = 60;
+
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('التواصل والرسائل');
+        return __('App Configuration');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('رسائل التواصل');
+        return __('Contact Messages');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('رسائل التواصل');
+        return __('Contact Messages');
     }
 
     public static function getLabel(): string
     {
-        return __('رسالة');
+        return __('Message');
     }
 
     public static function form(Schema $schema): Schema
@@ -108,9 +113,11 @@ class ContactResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No contact messages found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

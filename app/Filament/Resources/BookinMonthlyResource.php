@@ -32,28 +32,31 @@ class BookinMonthlyResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'حجوزات المواعيد';
-    
-    protected static ?int $navigationSort = 20;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('حجوزات المواعيد');
+        return __('Booking Management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('الحجوزات الشهرية');
+        return __('Monthly Bookings');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('الحجوزات الشهرية');
+        return __('Monthly Bookings');
     }
 
     public static function getLabel(): string
     {
-        return __('حجز شهري');
+        return __('Monthly Booking');
     }
 
     public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
@@ -144,7 +147,7 @@ class BookinMonthlyResource extends Resource
                                     ])
                                     ->required(),
                                 FileUpload::make('image')
-                                    ->label('Receipt Photo')
+                                    ->label(__('Receipt Photo'))
                                     ->disk('public')
                                     ->directory('monthlies')
                                     ->image(),
@@ -317,15 +320,15 @@ class BookinMonthlyResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label('Receipt Photo')
+                    ->label(__('Receipt Photo'))
                     ->disk('public')
                     ->size(100),
                 TextColumn::make('booking.booking_number')
-                    ->label(__('رقم الحجز التقييمي'))
+                    ->label(__('Assessment Booking Number'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('booking.child_name')
-                    ->label(__('اسم الطفل'))
+                    ->label(__('Child Name'))
                     ->searchable(),
                 TextColumn::make('booking.user.phone')
                     ->label(__('Phone'))
@@ -358,9 +361,10 @@ class BookinMonthlyResource extends Resource
                 //
             ])
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
             ])
+            ->emptyStateHeading(__('No bookings found'))
             ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),

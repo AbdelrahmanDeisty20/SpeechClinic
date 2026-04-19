@@ -20,27 +20,26 @@ class SettingResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'إعدادات التطبيق';
-    protected static ?int $navigationSort = 90;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('إعدادات التطبيق');
+        return __('App Configuration');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('إعدادات عامة');
+        return __('General Settings');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('إعدادات عامة');
+        return __('General Settings');
     }
 
     public static function getLabel(): string
     {
-        return __('إعداد');
+        return __('Setting');
     }
 
     public static function form(Schema $schema): Schema
@@ -121,9 +120,10 @@ class SettingResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No settings found'))
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

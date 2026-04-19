@@ -23,27 +23,31 @@ class ReviewResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-star';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
-    protected static ?int $navigationSort = 53;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('المحتوى والإحصائيات');
+        return __('Content & Pages');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('تقييمات العملاء');
+        return __('Customer Reviews');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('تقييمات العملاء');
+        return __('Customer Reviews');
     }
 
     public static function getLabel(): string
     {
-        return __('تقييم');
+        return __('Review');
     }
 
     public static function form(Schema $schema): Schema
@@ -103,10 +107,11 @@ class ReviewResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No reviews found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

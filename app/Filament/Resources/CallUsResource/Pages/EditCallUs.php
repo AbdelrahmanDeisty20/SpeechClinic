@@ -10,10 +10,15 @@ class EditCallUs extends EditRecord
 {
     protected static string $resource = CallUsResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Call Request');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 }

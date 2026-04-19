@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTransferNumber extends CreateRecord
 {
     protected static string $resource = TransferNumberResource::class;
+
+    public function getTitle(): string
+    {
+        return __('Create Transfer Number');
+    }
 }

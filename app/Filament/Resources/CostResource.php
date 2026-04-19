@@ -19,27 +19,31 @@ class CostResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'بيانات العيادة';
-    protected static ?int $navigationSort = 46;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('بيانات العيادة');
+        return __('Clinic Management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('التكاليف والأسعار');
+        return __('Costs & Pricing');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('التكاليف والأسعار');
+        return __('Costs & Pricing');
     }
 
     public static function getLabel(): string
     {
-        return __('سعر');
+        return __('Price');
     }
 
     public static function form(Schema $schema): Schema
@@ -53,7 +57,7 @@ class CostResource extends Resource
                             ->label(__('Price'))
                             ->numeric()
                             ->required()
-                            ->prefix(__('ج.م')),
+                            ->prefix(__('EGP')),
                         Select::make('type')
                             ->label(__('Type'))
                             ->options([
@@ -106,10 +110,11 @@ class CostResource extends Resource
                         'monthly' => __('Monthly'),
                     ]),
             ])
+            ->emptyStateHeading(__('No costs found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

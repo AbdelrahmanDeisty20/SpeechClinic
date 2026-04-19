@@ -23,27 +23,32 @@ class AppNotificationResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bell';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'إدارة الموظفين والعملاء';
-    protected static ?int $navigationSort = 85;
+
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('إدارة الموظفين والعملاء');
+        return __('App Configuration');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('إشعارات التطبيق');
+        return __('App Notifications');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('إشعارات التطبيق');
+        return __('App Notifications');
     }
 
     public static function getLabel(): string
     {
-        return __('إشعار');
+        return __('App Notification');
     }
 
     public static function form(Schema $schema): Schema
@@ -106,9 +111,10 @@ class AppNotificationResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No notifications found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

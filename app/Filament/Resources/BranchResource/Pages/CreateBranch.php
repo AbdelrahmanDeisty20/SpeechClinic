@@ -10,6 +10,11 @@ class CreateBranch extends CreateRecord
 {
     protected static string $resource = BranchResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Create Branch');
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

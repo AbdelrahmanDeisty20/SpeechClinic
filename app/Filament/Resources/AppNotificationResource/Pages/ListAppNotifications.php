@@ -10,6 +10,11 @@ class ListAppNotifications extends ListRecords
 {
     protected static string $resource = AppNotificationResource::class;
 
+    public function getTitle(): string
+    {
+        return __('إشعارات التطبيق');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

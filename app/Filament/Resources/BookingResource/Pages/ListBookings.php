@@ -10,10 +10,16 @@ class ListBookings extends ListRecords
 {
     protected static string $resource = BookingResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Assessment Bookings');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label(__('New Booking')),
         ];
     }
 }

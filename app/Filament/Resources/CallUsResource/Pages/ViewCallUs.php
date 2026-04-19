@@ -10,10 +10,16 @@ class ViewCallUs extends ViewRecord
 {
     protected static string $resource = CallUsResource::class;
 
+    public function getTitle(): string
+    {
+        return __('تفاصيل طلب الاتصال');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()->label(__('تعديل')),
+            Actions\DeleteAction::make()->label(__('حذف')),
         ];
     }
 }

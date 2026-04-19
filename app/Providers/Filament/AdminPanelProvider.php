@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->font('Inter')
-            ->brandName('Speech Clinic')
+            ->brandName(__('Speech Clinic'))
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')
             ->favicon(asset('images/logo.jpg'))
@@ -79,6 +79,15 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
             ])
             ->databaseNotifications()
+            ->navigationGroups([
+                __('Doctor\'s CV'),
+                __('Appointment Management'),
+                __('Booking Management'),
+                __('Clinic Management'),
+                __('Content & Pages'),
+                __('Staff & Users'),
+                __('App Configuration'),
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);

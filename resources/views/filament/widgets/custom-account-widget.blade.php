@@ -8,7 +8,7 @@
             {{-- Logo Section --}}
             <div class="mb-4">
                 <div style="width: 80px; height: 80px; overflow: hidden; border-radius: 9999px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
-                    <img src="{{ asset('images/logo.jpg') }}" alt="Clinic Logo" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="{{ asset('images/logo.jpg') }}" alt="{{ __('Speech Clinic Logo') }}" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
 

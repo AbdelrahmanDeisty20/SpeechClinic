@@ -15,16 +15,18 @@ class TransferNumbersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('الوسيلة')
+                    ->label(__('Transfer Method'))
                     ->searchable(),
                 TextColumn::make('number')
-                    ->label('الرقم')
+                    ->label(__('Number'))
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -32,8 +34,9 @@ class TransferNumbersTable
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No transfer numbers found'))
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->label(__('Edit')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

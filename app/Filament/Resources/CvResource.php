@@ -23,27 +23,31 @@ class CvResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
-    protected static ?int $navigationSort = 52;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('المحتوى والإحصائيات');
+        return __('Doctor\'s CV');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('السير الذاتية');
+        return __('CVs');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('السير الذاتية');
+        return __('CVs');
     }
 
     public static function getLabel(): string
     {
-        return __('سيرة ذاتية');
+        return __('CV');
     }
 
     public static function getModelLabel(): string
@@ -64,7 +68,7 @@ class CvResource extends Resource
                     ->description(__('Visual and basic identity.'))
                     ->schema([
                         FileUpload::make('image')
-                            ->label('Photo')
+                            ->label(__('Photo'))
                             ->image()
                             ->directory('cvs')
                             ->disk('public')
@@ -136,7 +140,7 @@ class CvResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image_url')
-                    ->label('Photo')
+                    ->label(__('Photo'))
                     ->disk('public')
                     ->size(100),
                 TextColumn::make('name_en')
@@ -150,6 +154,7 @@ class CvResource extends Resource
                     ->sortable()
                     ->description(fn(Cv $record): string => $record->title_ar ?? ''),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -157,9 +162,11 @@ class CvResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No CVs found'))
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

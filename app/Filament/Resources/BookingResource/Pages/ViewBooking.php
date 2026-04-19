@@ -10,10 +10,15 @@ class ViewBooking extends ViewRecord
 {
     protected static string $resource = BookingResource::class;
 
+    public function getTitle(): string
+    {
+        return __('تفاصيل الحجز');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()->label(__('تعديل')),
         ];
     }
 }

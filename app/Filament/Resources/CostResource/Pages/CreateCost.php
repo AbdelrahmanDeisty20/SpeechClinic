@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCost extends CreateRecord
 {
     protected static string $resource = CostResource::class;
+
+    public function getTitle(): string
+    {
+        return __('Create Cost');
+    }
 }

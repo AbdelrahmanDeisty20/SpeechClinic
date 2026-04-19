@@ -12,10 +12,11 @@ class TransferNumberForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('الوسيلة (فودافون كاش / انستا باي / الخ)')
+                    ->label(__('Transfer Method'))
+                    ->placeholder(__('e.g. Vodafone Cash, InstaPay, ...'))
                     ->required(),
                 TextInput::make('number')
-                    ->label('الرقم')
+                    ->label(__('Number'))
                     ->required(),
             ]);
     }

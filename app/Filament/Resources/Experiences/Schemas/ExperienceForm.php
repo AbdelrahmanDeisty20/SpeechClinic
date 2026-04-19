@@ -12,10 +12,12 @@ class ExperienceForm
         return $schema
             ->components([
                 TextInput::make('title')
-                    ->label('العنوان (مثلاً: سنوات الخبرة)')
+                    ->label(__('Experience Title'))
+                    ->placeholder(__('e.g. Years of Experience'))
                     ->required(),
                 TextInput::make('value')
-                    ->label('القيمة (مثلاً: +10)')
+                    ->label(__('Experience Value'))
+                    ->placeholder(__('e.g. +10'))
                     ->required(),
             ]);
     }

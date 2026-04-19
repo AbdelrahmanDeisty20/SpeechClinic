@@ -20,27 +20,31 @@ class PageResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-duplicate';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى والإحصائيات';
-    protected static ?int $navigationSort = 54;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('المحتوى والإحصائيات');
+        return __('Content & Pages');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('الصفحات الثابتة');
+        return __('Static Pages');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('الصفحات الثابتة');
+        return __('Static Pages');
     }
 
     public static function getLabel(): string
     {
-        return __('صفحة');
+        return __('Page');
     }
 
     public static function form(Schema $schema): Schema
@@ -109,9 +113,10 @@ class PageResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No pages found'))
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

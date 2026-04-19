@@ -19,27 +19,31 @@ class BranchResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'بيانات العيادة';
-    protected static ?int $navigationSort = 40;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('بيانات العيادة');
+        return __('Clinic Management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('الفروع');
+        return __('Branches');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('الفروع');
+        return __('Branches');
     }
 
     public static function getLabel(): string
     {
-        return __('فرع');
+        return __('Branch');
     }
 
     public static function form(Schema $schema): Schema
@@ -108,10 +112,11 @@ class BranchResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No branches found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

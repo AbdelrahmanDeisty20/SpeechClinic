@@ -10,10 +10,16 @@ class EditReview extends EditRecord
 {
     protected static string $resource = ReviewResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit Review');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\ViewAction::make()->label(__('View')),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 }

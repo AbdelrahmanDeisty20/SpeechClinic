@@ -10,10 +10,15 @@ class ViewSpecialist extends ViewRecord
 {
     protected static string $resource = SpecialistResource::class;
 
+    public function getTitle(): string
+    {
+        return __('ملف الأخصائي');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()->label(__('تعديل')),
         ];
     }
 }

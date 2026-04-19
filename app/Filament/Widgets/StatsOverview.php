@@ -27,7 +27,7 @@ class StatsOverview extends BaseWidget
                 ->description(__('Registered users on the platform'))
                 ->descriptionIcon('heroicon-m-users')
                 ->color('success'),
-            Stat::make(__('Total Revenue'), '$' . Booking::where('status', 'confirmed')->sum('price'))
+            Stat::make(__('Total Revenue'), Booking::where('status', 'confirmed')->sum('price') . ' ' . __('ج.م'))
                 ->description(__('Revenue from confirmed bookings'))
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('info'),

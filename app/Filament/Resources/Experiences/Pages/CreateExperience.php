@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateExperience extends CreateRecord
 {
     protected static string $resource = ExperienceResource::class;
+
+    public function getTitle(): string
+    {
+        return __('Create Statistic');
+    }
 }

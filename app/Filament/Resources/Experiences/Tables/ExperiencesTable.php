@@ -15,16 +15,18 @@ class ExperiencesTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('العنوان')
+                    ->label(__('Experience Title'))
                     ->searchable(),
                 TextColumn::make('value')
-                    ->label('القيمة')
+                    ->label(__('Experience Value'))
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -32,8 +34,9 @@ class ExperiencesTable
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No experience records found'))
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->label(__('Edit')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

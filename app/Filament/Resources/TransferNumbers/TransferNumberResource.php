@@ -20,19 +20,32 @@ class TransferNumberResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-phone';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'بيانات العيادة';
-    protected static ?int $navigationSort = 45;
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('بيانات العيادة');
+        return __('Clinic Management');
     }
 
-    protected static ?string $navigationLabel = 'أرقام التحويل';
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
 
-    protected static ?string $pluralLabel = 'أرقام التحويل';
+    public static function getNavigationLabel(): string
+    {
+        return __('Transfer Numbers');
+    }
 
-    protected static ?string $label = 'رقم تحويل';
+    public static function getPluralLabel(): string
+    {
+        return __('Transfer Numbers');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('Transfer Number');
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 

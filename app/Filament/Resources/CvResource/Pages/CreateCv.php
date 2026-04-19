@@ -10,6 +10,11 @@ class CreateCv extends CreateRecord
 {
     protected static string $resource = CvResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Create CV');
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

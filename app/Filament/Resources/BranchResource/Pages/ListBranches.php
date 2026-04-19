@@ -10,10 +10,16 @@ class ListBranches extends ListRecords
 {
     protected static string $resource = BranchResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Branches');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
+                ->label(__('New Branch'))
                 ->icon('heroicon-o-plus'),
         ];
     }

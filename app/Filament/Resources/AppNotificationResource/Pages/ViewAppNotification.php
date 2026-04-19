@@ -10,6 +10,11 @@ class ViewAppNotification extends ViewRecord
 {
     protected static string $resource = AppNotificationResource::class;
 
+    public function getTitle(): string
+    {
+        return __('تفاصيل الإشعار');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

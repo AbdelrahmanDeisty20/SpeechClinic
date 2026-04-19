@@ -10,10 +10,15 @@ class EditCv extends EditRecord
 {
     protected static string $resource = CvResource::class;
 
+    public function getTitle(): string
+    {
+        return __('Edit CV');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->label(__('Delete')),
         ];
     }
 

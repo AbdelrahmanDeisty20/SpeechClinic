@@ -19,27 +19,31 @@ class CallUsResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-phone-arrow-up-right';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'التواصل والرسائل';
-    protected static ?int $navigationSort = 61;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('التواصل والرسائل');
+        return __('App Configuration');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('طلبات "اتصل بنا"');
+        return __('Call Requests');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('طلبات "اتصل بنا"');
+        return __('Call Requests');
     }
 
     public static function getLabel(): string
     {
-        return __('طلب اتصال');
+        return __('Call Request');
     }
 
     public static function form(Schema $schema): Schema
@@ -85,10 +89,11 @@ class CallUsResource extends Resource
             ->filters([
                 //
             ])
+            ->emptyStateHeading(__('No call requests found'))
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ViewAction::make()->label(__('View')),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

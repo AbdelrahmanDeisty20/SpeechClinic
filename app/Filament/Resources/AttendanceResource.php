@@ -22,25 +22,31 @@ class AttendanceResource extends Resource
     protected static ?string $model = Attendance::class;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-finger-print';
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('إدارة الوصول');
+        return __('Appointment Management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('الحضور والانصراف');
+        return __('Attendance');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('سجلات الحضور');
+        return __('Attendance Records');
     }
 
     public static function getLabel(): string
     {
-        return __('سجل حضور');
+        return __('Attendance Record');
     }
 
     public static function form(Schema $schema): Schema
@@ -141,17 +147,20 @@ class AttendanceResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn ($record) => $record->name),
                 \Filament\Tables\Filters\Filter::make('date')
                     ->form([
-                        DatePicker::make('from'),
-                        DatePicker::make('to'),
+                        DatePicker::make('from')
+                            ->label(__('From')),
+                        DatePicker::make('to')
+                            ->label(__('To')),
                     ])
                     ->query(fn ($query, array $data) => $query
                         ->when($data['from'], fn($q) => $q->whereDate('date', '>=', $data['from']))
                         ->when($data['to'], fn($q) => $q->whereDate('date', '<=', $data['to']))
                     )
             ])
+            ->emptyStateHeading(__('No attendance records found'))
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\EditAction::make()->label(__('Edit')),
+                Actions\DeleteAction::make()->label(__('Delete')),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
