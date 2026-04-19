@@ -117,6 +117,11 @@ class BookingResource extends Resource
                                         'completed' => __('Completed'),
                                     ])
                                     ->required(),
+                                TextInput::make('price')
+                                    ->label(__('Price'))
+                                    ->numeric()
+                                    ->prefix(__('EGP'))
+                                    ->required(),
                                 TextInput::make('booking_number')
                                     ->label(__('Booking Number'))
                                     ->default(fn () => '#' . strtoupper(uniqid()))
@@ -168,11 +173,11 @@ class BookingResource extends Resource
                                 // Column 1: Child Details
                                 Grid::make(1)
                                     ->schema([
-                                        Placeholder::make('photo_title')
+                                        Placeholder::make('child_photo_label')
                                             ->label('')
-                                            ->content(__('صورة الطفل'))
+                                            ->content(__('Child Photo'))
                                             ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
-                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('الصورة')),
+                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo')),
                                         Placeholder::make('child_name')
                                             ->label(__('اسم الطفل'))
                                             ->content(fn ($record) => $record?->child_name),
