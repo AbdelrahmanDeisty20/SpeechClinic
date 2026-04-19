@@ -4,20 +4,24 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CostResource\Pages;
 use App\Models\Cost;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
+use App\Models\Branch;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Actions;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 
 class CostResource extends Resource
 {
     protected static ?string $model = Cost::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-banknotes';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-currency-dollar';
 
     protected static ?int $navigationSort = 2;
 
@@ -51,13 +55,16 @@ class CostResource extends Resource
         return $schema
             ->schema([
                 Section::make(__('Pricing Details'))
-                    ->columns(3)
                     ->schema([
-                        TextInput::make('price')
-                            ->label(__('Price'))
-                            ->numeric()
+                        TextInput::make('name')
+                            ->label(__('Price Category'))
                             ->required()
-                            ->prefix(__('EGP')),
+                            ->maxLength(255),
+                        TextInput::make('price')
+                            ->label(__('Amount'))
+                            ->numeric()
+                            ->prefix(__('EGP'))
+                            ->required(),
                         Select::make('type')
                             ->label(__('Type'))
                             ->options([
@@ -67,11 +74,15 @@ class CostResource extends Resource
                             ->required(),
                         Select::make('branch_id')
                             ->label(__('Branch'))
-                            ->relationship('branch', 'name_en')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
+                            ->relationship('branch', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2,
                     ]),
             ]);
     }
@@ -80,9 +91,8 @@ class CostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('branch.name_en')
+                TextColumn::make('branch.name')
                     ->label(__('Branch'))
-                    ->getStateUsing(fn ($record) => $record->branch?->name)
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('type')
@@ -91,43 +101,32 @@ class CostResource extends Resource
                     ->color(fn(string $state): string => match ($state) {
                         'assessment' => 'info',
                         'monthly' => 'success',
-                    })
-                    ->formatStateUsing(fn(string $state): string => __($state === 'assessment' ? 'Assessment' : 'Monthly')),
+                    }),
+                TextColumn::make('name')
+                    ->label(__('Category'))
+                    ->searchable(),
                 TextColumn::make('price')
-                    ->label(__('Price'))
-                    ->money('EGP', locale: 'ar_EG')
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->label(__('Created At'))
-                    ->dateTime()
-                    ->sortable(),
+                    ->label(__('Amount'))
+                    ->money('EGP', divideBy: 1),
             ])
             ->filters([
-                \Filament\Tables\Filters\SelectFilter::make('type')
-                    ->label(__('Type'))
-                    ->options([
-                        'assessment' => __('Assessment'),
-                        'monthly' => __('Monthly'),
-                    ]),
+                Tables\Filters\SelectFilter::make('branch_id')
+                    ->label(__('Branch'))
+                    ->relationship('branch', 'name'),
             ])
-            ->emptyStateHeading(__('No costs found'))
             ->actions([
-                Actions\ViewAction::make()->label(__('View')),
-                Actions\EditAction::make()->label(__('Edit')),
-                Actions\DeleteAction::make()->label(__('Delete')),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -135,7 +134,6 @@ class CostResource extends Resource
         return [
             'index' => Pages\ListCosts::route('/'),
             'create' => Pages\CreateCost::route('/create'),
-            'view' => Pages\ViewCost::route('/{record}'),
             'edit' => Pages\EditCost::route('/{record}/edit'),
         ];
     }

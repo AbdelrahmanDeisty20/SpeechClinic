@@ -129,7 +129,11 @@ class BookinMonthlyResource extends Resource
 
                 Section::make(__('Payment & Package'))
                     ->schema([
-                        Grid::make(3)
+                        Grid::make([
+                            'sm' => 1,
+                            'md' => 2,
+                            'lg' => 2,
+                        ])
                             ->schema([
                                 TextInput::make('price')
                                     ->label(__('Total Package Price'))
@@ -148,11 +152,13 @@ class BookinMonthlyResource extends Resource
                                     ->required(),
                                 FileUpload::make('image')
                                     ->label(__('Receipt Photo'))
+                                    ->image()
+                                    ->directory('monthly-bookings')
                                     ->disk('public')
-                                    ->directory('monthlies')
-                                    ->image(),
+                                    ->columnSpanFull(),
                             ]),
                     ]),
+
 
                 Section::make(__('Sessions/Appointments'))
                     ->description(__('Schedule the appointments for this monthly package.'))

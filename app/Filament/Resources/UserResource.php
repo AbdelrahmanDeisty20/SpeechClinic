@@ -88,7 +88,13 @@ class UserResource extends Resource
                                     ->disk('public')
                                     ->imageEditor()
                                     ->columnSpanFull(),
-                            ])->columnSpan(2),
+                            ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
+                            ])
+                            ->columnSpan(2),
 
                         Section::make(__('Access & Details'))
                             ->description(__('Manage user roles and extra info.'))

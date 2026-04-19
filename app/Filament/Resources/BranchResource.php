@@ -50,35 +50,35 @@ class BranchResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make(__('Branch Identity'))
-                    ->description(__('Define localized branch names.'))
-                    ->columns(2)
+                Section::make(__('Branch Details'))
                     ->schema([
-                        TextInput::make('name_ar')
-                            ->label(__('Name AR'))
+                        TextInput::make('name')
+                            ->label(__('Branch Name'))
                             ->required()
                             ->maxLength(255),
-                        TextInput::make('name_en')
-                            ->label(__('Name EN'))
-                            ->required()
-                            ->maxLength(255),
-                    ]),
-
-                Section::make(__('Contact & Location'))
-                    ->description(__('Branch contact information and address.'))
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('address_link')
-                            ->label(__('Address Link'))
-                            ->url()
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpanFull(),
                         TextInput::make('phone')
                             ->label(__('Phone'))
                             ->tel()
                             ->required()
                             ->maxLength(255),
+                        TextInput::make('lat')
+                            ->label(__('Latitude'))
+                            ->numeric()
+                            ->required(),
+                        TextInput::make('lng')
+                            ->label(__('Longitude'))
+                            ->numeric()
+                            ->required(),
+                        TextInput::make('address')
+                            ->label(__('Address'))
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2,
                     ]),
             ]);
     }

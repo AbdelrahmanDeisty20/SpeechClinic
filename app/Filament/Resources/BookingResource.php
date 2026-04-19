@@ -99,16 +99,18 @@ class BookingResource extends Resource
                                     ->required()
                                     ->label(__('Parent/User')),
                                 Select::make('available_time_id')
-                                    ->label(__('Available Appointment'))
                                     ->relationship('availableTime', 'id')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => __('Day') . ": {$record->day?->name} - " . __('Time') . ": " . \Carbon\Carbon::parse($record->time)->format('h:i A') . " ({$record->day?->branch?->name})")
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->day?->date} - {$record->day?->branch?->name}")
                                     ->searchable()
                                     ->preload()
-                                    ->required(),
-                                \Filament\Forms\Components\Hidden::make('type')
-                                    ->default('assessment'),
+                                    ->required()
+                                    ->label(__('Available Appointment')),
+                                Select::make('branch_id')
+                                    ->relationship('branch', 'name')
+                                    ->required()
+                                    ->label(__('Branch')),
                                 Select::make('status')
-                                    ->label(__('Status'))
+                                    ->label(__('Booking Status'))
                                     ->options([
                                         'pending' => __('Pending'),
                                         'accepted' => __('Accepted'),
@@ -116,19 +118,24 @@ class BookingResource extends Resource
                                         'cancelled' => __('Cancelled'),
                                         'completed' => __('Completed'),
                                     ])
-                                    ->required()
-                                    ->live(),
-                                TextInput::make('price')
-                                    ->label(__('Price'))
-                                    ->numeric()
-                                    ->prefix(__('EGP'))
                                     ->required(),
+                                Select::make('type')
+                                    ->label(__('Type'))
+                                    ->options([
+                                        'assessment' => __('Assessment'),
+                                        'monthly' => __('Monthly'),
+                                    ])
+                                    ->default('assessment')
+                                    ->hidden(),
                                 TextInput::make('booking_number')
                                     ->label(__('Booking Number'))
-                                    ->placeholder(__('Enter booking number'))
-                                    ->maxLength(255)
-                                    ->hidden(fn (Get $get) => $get('status') !== 'completed')
-                                    ->required(fn (Get $get) => $get('status') === 'completed'),
+                                    ->default(fn () => '#' . strtoupper(uniqid()))
+                                    ->readOnly(),
+                            ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
                             ])
                             ->columnSpan(1),
 

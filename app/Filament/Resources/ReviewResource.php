@@ -72,14 +72,19 @@ class ReviewResource extends Resource
                             ->required()
                             ->minValue(1)
                             ->maxValue(5),
+                        Toggle::make('is_active')
+                            ->label(__('Is Active'))
+                            ->default(true),
                         Textarea::make('comment')
                             ->label(__('Comment'))
                             ->required()
                             ->rows(4)
                             ->columnSpanFull(),
-                        Toggle::make('is_active')
-                            ->label(__('Is Active'))
-                            ->default(true),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2,
                     ]),
             ]);
     }

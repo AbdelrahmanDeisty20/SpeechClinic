@@ -96,7 +96,13 @@ class SpecialistResource extends Resource
                                     ->columnSpanFull(),
                                 Hidden::make('type')
                                     ->default('specialist'),
-                            ])->columnSpan(2),
+                            ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
+                            ])
+                            ->columnSpan(2),
 
                         Section::make(__('Access & Details'))
                             ->description(__('Manage specialist access.'))

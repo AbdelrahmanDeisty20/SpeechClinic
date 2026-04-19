@@ -64,13 +64,17 @@ class AppNotificationResource extends Resource
                             ->searchable()
                             ->hint(__('Leave empty to send to all users')),
                         TextInput::make('title')
-                            ->label(__('Title'))
+                            ->label(__('Notification Title'))
                             ->required()
                             ->maxLength(255),
-                        Textarea::make('body')
-                            ->label(__('Message Content'))
+                        TextInput::make('link')
+                            ->label(__('Redirection Link (Optional)'))
+                            ->url()
+                            ->maxLength(255),
+                        RichEditor::make('message')
+                            ->label(__('Notification Message'))
                             ->required()
-                            ->rows(4),
+                            ->columnSpanFull(),
                         Select::make('type')
                             ->label(__('Notification Type'))
                             ->options([
@@ -80,6 +84,11 @@ class AppNotificationResource extends Resource
                             ])
                             ->default('info')
                             ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2,
                     ]),
             ]);
     }

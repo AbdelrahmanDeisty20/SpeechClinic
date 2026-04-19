@@ -77,16 +77,26 @@ class CvResource extends Resource
                             ->formatStateUsing(fn($state) => $state && !str_contains($state, '/') ? "cvs/{$state}" : $state)
                             ->dehydrateStateUsing(fn($state) => $state ? basename($state) : null)
                             ->columnSpanFull(),
-                        Grid::make(2)
+                        Section::make(__('Doctor Information'))
                             ->schema([
-                                TextInput::make('name_ar')
+                                TextInput::make('name')
+                                    ->label(__('Doctor Name'))
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label(__('Name (Arabic)')),
-                                TextInput::make('name_en')
+                                    ->maxLength(255),
+                                TextInput::make('phone')
+                                    ->label(__('Phone'))
+                                    ->tel()
                                     ->required()
-                                    ->maxLength(255)
-                                    ->label(__('Name (English)')),
+                                    ->maxLength(255),
+                                RichEditor::make('biography')
+                                    ->label(__('Short Biography'))
+                                    ->required()
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
                             ]),
                     ]),
 
