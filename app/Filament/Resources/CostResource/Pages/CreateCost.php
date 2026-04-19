@@ -14,4 +14,10 @@ class CreateCost extends CreateRecord
     {
         return __('Create Cost');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['name'] = 'General';
+        return $data;
+    }
 }
