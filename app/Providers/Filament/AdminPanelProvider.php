@@ -87,6 +87,7 @@ class AdminPanelProvider extends PanelProvider
                 __('Content & Pages'),
                 __('Staff & Users'),
                 __('App Configuration'),
+                __('filament-shield::filament-shield.nav.group'),
             ])
             ->authMiddleware([
                 Authenticate::class,
