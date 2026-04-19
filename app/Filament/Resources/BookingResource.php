@@ -14,6 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
+use Filament\Schemas\Components\Actions as SchemaActions;
+use Filament\Schemas\Components\Html;
 use Filament\Schemas\Components\Image;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
@@ -180,7 +182,30 @@ class BookingResource extends Resource
                                             ->label('')
                                             ->content(__('Child Photo'))
                                             ->extraAttributes(['class' => 'font-bold underline text-primary-600']),
-                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo')),
+                                        Image::make(fn ($record) => $record?->child_photo_url ?? asset('images/placeholder.png'), __('Photo'))
+                                            ->action(
+                                                \Filament\Actions\Action::make('view_photo')
+                                                    ->label(__('عرض احترافي'))
+                                                    ->modalHeading(__('صورة الطفل'))
+                                                    ->modalWidth('4xl')
+                                                    ->modalContent(fn ($record) => Html::make('
+                                                        <div x-data="{ scale: 1 }" class="flex flex-col items-center gap-4">
+                                                            <div class="flex gap-2">
+                                                                <button type="button" @click="scale += 0.2" class="px-3 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-500 font-bold">+</button>
+                                                                <button type="button" @click="scale = 1" class="px-3 py-1 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-bold">Reset</button>
+                                                                <button type="button" @click="scale = Math.max(0.2, scale - 0.2)" class="px-3 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-500 font-bold">-</button>
+                                                            </div>
+                                                            <div class="overflow-auto border rounded-xl bg-gray-50 flex items-center justify-center p-4 w-full" style="max-height: 70vh;">
+                                                                <img src="' . $record->child_photo_url . '" 
+                                                                     :style="{ transform: `scale(${scale})`, transition: \'transform 0.2s ease-in-out\' }" 
+                                                                     class="rounded-lg shadow-lg " />
+                                                            </div>
+                                                            <div class="text-sm text-gray-500">Zoom: <span x-text="Math.round(scale * 100) + \'%\'"></span></div>
+                                                        </div>
+                                                    '))
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel(__('إغلاق'))
+                                            ),
                                         Placeholder::make('child_name')
                                             ->label(__('اسم الطفل'))
                                             ->content(fn ($record) => $record?->child_name),
@@ -220,6 +245,20 @@ class BookingResource extends Resource
                                                 'completed' => __('Completed'),
                                                 default => $record?->status,
                                             }),
+                                        
+                                        SchemaActions::make([
+                                            \Filament\Actions\SelectAction::make('update_status')
+                                                ->label(__('تغيير حالة الحجز'))
+                                                ->options([
+                                                    'pending' => __('Pending'),
+                                                    'accepted' => __('Accepted'),
+                                                    'confirmed' => __('Confirmed'),
+                                                    'cancelled' => __('Cancelled'),
+                                                    'completed' => __('Completed'),
+                                                ])
+                                                ->action(fn ($record, $data) => $record->update(['status' => $data['value']]))
+                                                ->size('sm'),
+                                        ])->fullWidth(false)->alignStart(),
                                         Placeholder::make('branch_name')
                                             ->label(__('الفرع'))
                                             ->content(fn ($record) => $record?->availableTime?->day?->branch?->name),
