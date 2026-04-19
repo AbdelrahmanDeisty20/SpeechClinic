@@ -52,6 +52,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->brandName(__('Speech Clinic'))
+            ->brandLogo(asset('images/logo.jpg'))
+            ->brandLogoHeight('5rem')
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')
             ->favicon(asset('images/logo.jpg'))
