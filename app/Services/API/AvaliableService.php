@@ -14,7 +14,7 @@ class AvaliableService
      */
     public function getAllAvailableTimes()
     {
-        $availableTimes = AvailableTime::with('day')->paginate(10);
+        $availableTimes = AvailableTime::with(['day', 'date'])->paginate(10);
 
         if ($availableTimes->isEmpty()) {
             return [
@@ -27,7 +27,7 @@ class AvaliableService
         return [
             'status' => true,
             'message' => __('messages.available_times_successfully'),
-            'data' => AvailableTimeResource::collection($availableTimes)
+            'data' => $availableTimes
         ];
     }
 }

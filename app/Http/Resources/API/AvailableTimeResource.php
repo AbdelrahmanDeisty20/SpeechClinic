@@ -17,9 +17,11 @@ class AvailableTimeResource extends JsonResource
         return [
             'id' => $this->id,
             'day_id' => $this->day_id,
-            'time' => $this->time ? \Carbon\Carbon::parse($this->time)->format('h:i A') : null,
+            'from' => $this->from ? \Carbon\Carbon::parse($this->from)->format('h:i A') : null,
+            'to' => $this->to ? \Carbon\Carbon::parse($this->to)->format('h:i A') : null,
             'limit' => (int) $this->limit,
             'day' => DayResource::make($this->whenLoaded('day')),
+            'date' => AvailableDateResource::make($this->whenLoaded('date')),
         ];
     }
 }

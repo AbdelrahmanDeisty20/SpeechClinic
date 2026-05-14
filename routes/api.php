@@ -105,8 +105,19 @@ Route::group(['middleware' => setLang::class], function () {
         Route::put('update-profile', [AuthController::class, 'updateProfile']);
         Route::post('logout', [AuthController::class, 'logout']);
         
-        // Unified Notification Routes
+    // Unified Notification Routes
         Route::get('notifications', [NotificationController::class, 'notifications']);
         Route::post('notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
     });
 });
+
+// Temporary Route to run migrations (Delete after use)
+Route::get('/run-migrations', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return "تم تحديث الجداول بنجاح! 😎 <br><br> مخرجات الأمر: <br>" . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        return "حصلت مشكلة: " . $e->getMessage();
+    }
+});
+

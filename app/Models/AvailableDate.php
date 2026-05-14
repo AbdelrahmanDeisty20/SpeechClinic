@@ -4,15 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AvailableTime extends Model
+class AvailableDate extends Model
 {
     protected $fillable = [
-        'from',
-        'to',
-        'limit',
-        'type',
+        'date',
         'day_id',
-        'date_id',
     ];
 
     public function day()
@@ -20,8 +16,8 @@ class AvailableTime extends Model
         return $this->belongsTo(Day::class);
     }
 
-    public function date()
+    public function availableTimes()
     {
-        return $this->belongsTo(AvailableDate::class, 'date_id');
+        return $this->hasMany(AvailableTime::class, 'date_id');
     }
 }
