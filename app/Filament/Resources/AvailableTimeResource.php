@@ -107,13 +107,8 @@ class AvailableTimeResource extends Resource
                     ->description(__('Set the time window and max bookings.'))
                     ->columns(3)
                     ->schema([
-                        TimePicker::make('from')
-                            ->label(__('From'))
-                            ->seconds(false)
-                            ->required(),
-                        TimePicker::make('to')
-                            ->label(__('To'))
-                            ->seconds(false)
+                        TimePicker::make('time')
+                            ->label(__('Time'))
                             ->required(),
                         Select::make('date_id')
                             ->label(__('Specific Date (Optional)'))
@@ -164,12 +159,8 @@ class AvailableTimeResource extends Resource
                     ->label(__('Day'))
                     ->getStateUsing(fn ($record) => $record->day?->name)
                     ->sortable(),
-                TextColumn::make('from')
-                    ->label(__('From'))
-                    ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('h:i A') : '-')
-                    ->sortable(),
-                TextColumn::make('to')
-                    ->label(__('To'))
+                TextColumn::make('time')
+                    ->label(__('Time'))
                     ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('h:i A') : '-')
                     ->sortable(),
                 TextColumn::make('date.date')
