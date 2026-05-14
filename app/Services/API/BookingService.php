@@ -163,7 +163,7 @@ class BookingService
         return [
             'status' => true,
             'message' => __('messages.bookings_fetched_successfully'),
-            'data' => BookingResource::collection($bookings)
+            'data' => $bookings
         ];
     }
 
@@ -184,7 +184,7 @@ class BookingService
         return [
             'status' => true,
             'message' => __('messages.bookings_fetched_successfully'),
-            'data' => BookingResource::collection($bookings)
+            'data' => $bookings
         ];
     }
     public function getMonthlyBookings(){
