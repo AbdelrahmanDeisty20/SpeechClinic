@@ -54,4 +54,12 @@ class BookingController extends Controller
         }
         return $this->paginated(BookingResource::class, $result['data'], $result['message']);
     }
+    public function getMonthlyBookings()
+    {
+        $result = $this->bookingService->getMonthlyBookings();
+        if (!$result['status']) {
+            return $this->error($result['message'], 404);
+        }
+        return $this->paginated(BookinMonthlyResource::class, $result['data'], $result['message']);
+    }
 }

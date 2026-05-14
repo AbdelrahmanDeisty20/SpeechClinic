@@ -3,6 +3,7 @@
 namespace App\Services\API;
 
 use App\Http\Resources\API\BookingResource;
+use App\Http\Resources\API\BookinMonthlyResource;
 use App\Models\AvailableTime;
 use App\Models\Booking;
 use App\Traits\ApiResponse;
@@ -185,6 +186,25 @@ class BookingService
             'data' => BookingResource::collection($bookings)
         ];
     }
+     public function getMonthlyBookings(){
+        $Monthly = Booking::with('availableTime.day.branch')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->paginate(10);
+        if ($Monthly->isEmpty()) {
+            return [
+                'status' => false,
+                'message' => __('messages.no_bookings_found'),
+                'data' => []
+            ];
+        }
+
+        return [
+            'status' => true,
+            'message' => __('messages.bookings_fetched_successfully'),
+            'data' => $Monthly,
+        ];
+     }
 
     /**
      * Get the full details of a monthly booking by assessment booking number.
