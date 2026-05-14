@@ -122,6 +122,16 @@ class AvailableTimeResource extends Resource
                             ->searchable()
                             ->preload()
                             ->live()
+                            ->createOptionForm([
+                                \Filament\Forms\Components\DatePicker::make('date')
+                                    ->label(__('Date'))
+                                    ->required(),
+                                \Filament\Forms\Components\Select::make('day_id')
+                                    ->label(__('Day'))
+                                    ->relationship('day', 'name_en')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} ({$record->branch?->name})")
+                                    ->required(),
+                            ])
                             ->afterStateUpdated(function ($state, callable $set) {
                                 if ($state) {
                                     $dateRecord = \App\Models\AvailableDate::with('day')->find($state);
