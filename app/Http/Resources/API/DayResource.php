@@ -17,7 +17,7 @@ class DayResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'available_times' => AvailableTimeResource::collection($this->availableTimes),
+            'available_times' => AvailableTimeResource::collection($this->whenLoaded('availableTimes')),
             'branch' => BranchResource::make($this->whenLoaded('branch')),
         ];
     }
