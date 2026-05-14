@@ -107,9 +107,20 @@ class AvailableTimeResource extends Resource
                     ->description(__('Set the time window and max bookings.'))
                     ->columns(3)
                     ->schema([
-                        TimePicker::make('time')
-                            ->label(__('Time'))
+                        TimePicker::make('from')
+                            ->label(__('From'))
+                            ->seconds(false)
                             ->required(),
+                        TimePicker::make('to')
+                            ->label(__('To'))
+                            ->seconds(false)
+                            ->required(),
+                        Select::make('date_id')
+                            ->label(__('Specific Date (Optional)'))
+                            ->relationship('date', 'date')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->date)
+                            ->searchable()
+                            ->preload(),
                         TextInput::make('limit')
                             ->label(__('Max Bookings per Period'))
                             ->numeric()
@@ -133,12 +144,20 @@ class AvailableTimeResource extends Resource
                     ->label(__('Day'))
                     ->getStateUsing(fn ($record) => $record->day?->name)
                     ->sortable(),
-                TextColumn::make('time')
-                    ->label(__('Time'))
-                    ->formatStateUsing(function ($state) {
-                        return \Carbon\Carbon::parse($state)->isoFormat('hh:mm a');
-                    })
+                TextColumn::make('from')
+                    ->label(__('From'))
+                    ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('h:i A') : '-')
                     ->sortable(),
+                TextColumn::make('to')
+                    ->label(__('To'))
+                    ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('h:i A') : '-')
+                    ->sortable(),
+                TextColumn::make('date.date')
+                    ->label(__('Specific Date'))
+                    ->date()
+                    ->badge()
+                    ->color('info')
+                    ->placeholder(__('General/Weekly')),
                 TextColumn::make('limit')
                     ->label(__('Limit'))
                     ->numeric(),
