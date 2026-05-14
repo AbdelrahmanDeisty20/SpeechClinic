@@ -56,6 +56,22 @@ class AvailableTimeResource extends Resource
                     ->description(__('Define the day and service type.'))
                     ->columns(3)
                     ->schema([
+                        Select::make('date_id')
+                            ->label(__('Specific Date (Optional)'))
+                            ->relationship('date', 'date')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->date} - {$record->day?->name} ({$record->day?->branch?->name})")
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $dateRecord = \App\Models\AvailableDate::with('day')->find($state);
+                                    if ($dateRecord) {
+                                        $set('branch_id', $dateRecord->day?->branch_id);
+                                        $set('day_id', $dateRecord->day_id);
+                                    }
+                                }
+                            }),
                         Select::make('branch_id')
                             ->label(__('Branch'))
                             ->relationship('day.branch', 'name_en')
@@ -80,62 +96,19 @@ class AvailableTimeResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->disabled(fn ($get) => !$get('branch_id'))
-                            ->createOptionForm([
-                                TextInput::make('name_ar')
-                                    ->label(__('Name AR'))
-                                    ->required(),
-                                TextInput::make('name_en')
-                                    ->label(__('Name EN'))
-                                    ->required(),
-                            ])
-                            ->createOptionUsing(function (array $data, \Filament\Schemas\Components\Utilities\Get $get) {
-                                $data['branch_id'] = $get('branch_id');
-                                $data['is_active'] = true;
-                                
-                                return \App\Models\Day::create($data)->id;
-                            }),
+                            ->disabled(fn ($get) => !$get('branch_id')),
                         \Filament\Forms\Components\Hidden::make('type')
                             ->default('assessment')
                             ->required(),
-                        \Filament\Forms\Components\Placeholder::make('type_display')
-                            ->label(__('Type'))
-                            ->content(__('Assessment')),
                     ]),
 
                 Section::make(__('Timing & Capacity'))
                     ->description(__('Set the time window and max bookings.'))
-                    ->columns(3)
+                    ->columns(2)
                     ->schema([
                         TimePicker::make('time')
                             ->label(__('Time'))
                             ->required(),
-                        Select::make('date_id')
-                            ->label(__('Specific Date (Optional)'))
-                            ->relationship('date', 'date')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->date} - {$record->day?->name} ({$record->day?->branch?->name})")
-                            ->searchable()
-                            ->preload()
-                            ->live()
-                            ->createOptionForm([
-                                \Filament\Forms\Components\DatePicker::make('date')
-                                    ->label(__('Date'))
-                                    ->required(),
-                                \Filament\Forms\Components\Select::make('day_id')
-                                    ->label(__('Day'))
-                                    ->relationship('day', 'name_en')
-                                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} ({$record->branch?->name})")
-                                    ->required(),
-                            ])
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                if ($state) {
-                                    $dateRecord = \App\Models\AvailableDate::with('day')->find($state);
-                                    if ($dateRecord) {
-                                        $set('branch_id', $dateRecord->day?->branch_id);
-                                        $set('day_id', $dateRecord->day_id);
-                                    }
-                                }
-                            }),
                         TextInput::make('limit')
                             ->label(__('Max Bookings per Period'))
                             ->numeric()
