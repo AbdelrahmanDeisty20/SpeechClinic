@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\API;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
 class AvailableTimeResource extends JsonResource
 {
@@ -16,10 +16,10 @@ class AvailableTimeResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'day_id' => $this->day_id,
             'time' => $this->time ? \Carbon\Carbon::parse($this->time)->format('h:i A') : null,
             'limit' => (int) $this->limit,
-            'day' => $this->when($this->day_id, DayResource::make($this->whenLoaded('day'))),
-            'date' => $this->when($this->date_id, AvailableDateResource::make($this->whenLoaded('date'))),
+            'day' => DayResource::make($this->whenLoaded('day')),
         ];
     }
 }
