@@ -118,9 +118,19 @@ class AvailableTimeResource extends Resource
                         Select::make('date_id')
                             ->label(__('Specific Date (Optional)'))
                             ->relationship('date', 'date')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->date)
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->date} - {$record->day?->name} ({$record->day?->branch?->name})")
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $dateRecord = \App\Models\AvailableDate::with('day')->find($state);
+                                    if ($dateRecord) {
+                                        $set('branch_id', $dateRecord->day?->branch_id);
+                                        $set('day_id', $dateRecord->day_id);
+                                    }
+                                }
+                            }),
                         TextInput::make('limit')
                             ->label(__('Max Bookings per Period'))
                             ->numeric()
