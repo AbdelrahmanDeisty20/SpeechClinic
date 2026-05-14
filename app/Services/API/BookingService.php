@@ -188,7 +188,7 @@ class BookingService
         ];
     }
     public function getMonthlyBookings(){
-        $Monthly = BookinMonthly::with(['booking.availableTime.day.branch'])
+        $Monthly = BookinMonthly::with(['booking.day.branch'])
             ->whereHas('booking', function($query) {
                 $query->where('user_id', auth()->id());
             })
