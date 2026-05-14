@@ -187,9 +187,11 @@ class BookingService
             'data' => BookingResource::collection($bookings)
         ];
     }
-     public function getMonthlyBookings(){
-        $Monthly = BookinMonthly::with(['availableTime.day.branch','booking'])
-            ->where('user_id', auth()->id())
+    public function getMonthlyBookings(){
+        $Monthly = BookinMonthly::with(['booking.availableTime.day.branch'])
+            ->whereHas('booking', function($query) {
+                $query->where('user_id', auth()->id());
+            })
             ->latest()
             ->paginate(10);
         if ($Monthly->isEmpty()) {
