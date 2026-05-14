@@ -6,6 +6,7 @@ use App\Http\Resources\API\BookingResource;
 use App\Http\Resources\API\BookinMonthlyResource;
 use App\Models\AvailableTime;
 use App\Models\Booking;
+use App\Models\BookinMonthly;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -187,7 +188,7 @@ class BookingService
         ];
     }
      public function getMonthlyBookings(){
-        $Monthly = Booking::with(['availableTime.day.branch','booking'])
+        $Monthly = BookinMonthly::with(['availableTime.day.branch','booking'])
             ->where('user_id', auth()->id())
             ->latest()
             ->paginate(10);
